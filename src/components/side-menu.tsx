@@ -1,7 +1,18 @@
 import { type MenuOption, NIcon, NMenu } from 'naive-ui/lib'
 import { defineComponent, ref } from 'vue'
-import { UnorderedListOutlined } from '@vicons/antd'
-import { Task, ChartArea, Wallet } from '@vicons/carbon'
+import { GlobalOutlined } from '@vicons/antd'
+import { PaperPlaneOutline, PersonOutline } from '@vicons/ionicons5'
+import { Wrench20Regular, WrenchScrewdriver20Regular } from '@vicons/fluent'
+import {
+  Information,
+  UserProfile,
+  Education,
+  FaceCool,
+  Growth,
+  ZoomArea,
+  Book,
+  FaceSatisfied
+} from '@vicons/carbon'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@vicons/antd'
 import { RouterLink } from 'vue-router'
 import { isMobile } from '../util/reponsive'
@@ -12,20 +23,83 @@ const renderRouterLink = (to: string, label: string) => () => (
 )
 
 enum Keys {
-  toggle
+  Toggle,
+  Person,
+  Profile, //个人信息
+  Education, //学业情况
+  Market, //市场行情
+  Job, //职业行情
+  SkillNeed, //技能需求
+  Guide, //学习指导
+  Plan, //规划
+  Recommand, //推荐
+  Interest, //兴趣评估
+  Skill, //技能评估
+  Info
 }
 
 export default defineComponent({
   setup(props, { emit }) {
     const isCollapsed = ref(true)
-    const menuItems: MenuOption[] = []
+    const menuItems: MenuOption[] = [
+      {
+        label: '个人中心',
+        key: Keys.Person,
+        icon: renderIcon(<PersonOutline />),
+        children: [
+          {
+            label: renderRouterLink('/profile', '基本信息'),
+            key: Keys.Profile,
+            icon: renderIcon(<UserProfile />)
+          },
+          {
+            label: renderRouterLink('/academic', '学业信息'),
+            key: Keys.Education,
+            icon: renderIcon(<Education />)
+          }
+        ]
+      },
+      {
+        label: '市场行情',
+        key: Keys.Market,
+        icon: renderIcon(<GlobalOutlined />),
+        children: [
+          { label: '职业行情', key: Keys.Job, icon: renderIcon(<Growth />) },
+          { label: '技能需求', key: Keys.SkillNeed, icon: renderIcon(<FaceCool />) }
+        ]
+      },
+      {
+        label: '学习指导',
+        key: Keys.Guide,
+        icon: renderIcon(<ZoomArea />),
+        children: [
+          { label: '学习规划', key: Keys.Guide, icon: renderIcon(<PaperPlaneOutline />) },
+          { label: '资源推荐', key: Keys.Recommand, icon: renderIcon(<Book />) }
+        ]
+      },
+      {
+        label: '兴趣评估',
+        key: Keys.Interest,
+        icon: renderIcon(<FaceSatisfied />)
+      },
+      {
+        label: '技能评估',
+        key: Keys.Skill,
+        icon: renderIcon(<Wrench20Regular />)
+      },
+      {
+        label: '作者yfl',
+        key: Keys.Info,
+        icon: renderIcon(<Information />)
+      }
+    ]
     if (!isMobile().value) {
       menuItems.unshift({
-        label: () => <>{isCollapsed.value == true ? '展开' : '收起'}</>,
-        key: Keys.toggle,
+        label: () => <>{isCollapsed.value ? '展开' : '收起'}</>,
+        key: Keys.Toggle,
         icon: () => (
           <>
-            {isCollapsed.value == true ? (
+            {isCollapsed.value ? (
               <NIcon>
                 <MenuUnfoldOutlined />
               </NIcon>
@@ -41,9 +115,12 @@ export default defineComponent({
 
     const handleClick = async (key: Keys) => {
       switch (key) {
-        case Keys.toggle:
+        case Keys.Toggle:
           isCollapsed.value = !isCollapsed.value
           emit('toggle', isCollapsed.value)
+          break
+        case Keys.Info:
+          window.$message.info('你好👋')
           break
       }
     }
