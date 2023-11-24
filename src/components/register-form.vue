@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { FormInst, FormRules, NButton, NForm, NFormItem, NInput } from 'naive-ui/lib'
+import { type FormInst, type FormRules, NButton, NForm, NFormItem, NInput } from 'naive-ui/lib'
 import { ref } from 'vue'
 
 const data = ref({

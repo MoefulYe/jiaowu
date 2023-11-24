@@ -15,11 +15,11 @@
 </template>
 
 <script setup lang="ts">
-import { NSelect, SelectOption } from 'naive-ui/lib'
+import { NSelect, type SelectOption } from 'naive-ui/lib'
 import { ref } from 'vue'
 import { use } from 'echarts/core'
 import { BarChart } from 'echarts/charts'
-import { GridComponent, TitleComponent, TitleComponentOption } from 'echarts/components'
+import { GridComponent, TitleComponent, type TitleComponentOption } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'

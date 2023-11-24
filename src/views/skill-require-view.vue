@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { NDataTable, NSelect, NSwitch, NTooltip, SelectOption } from 'naive-ui/lib'
+import { NDataTable, NSelect, NSwitch, NTooltip, type SelectOption } from 'naive-ui/lib'
 import { ref } from 'vue'
 import { use } from 'echarts/core'
 import { PieChart } from 'echarts/charts'

@@ -59,7 +59,7 @@ import {
   NPopover,
   NAvatar,
   NDropdown,
-  DropdownOption
+  type DropdownOption
 } from 'naive-ui/lib'
 import { onMounted } from 'vue'
 import SideMenu from './side-menu'
