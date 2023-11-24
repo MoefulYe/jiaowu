@@ -64,8 +64,16 @@ export default defineComponent({
         key: Keys.Market,
         icon: renderIcon(<GlobalOutlined />),
         children: [
-          { label: '职业行情', key: Keys.Job, icon: renderIcon(<Growth />) },
-          { label: '技能需求', key: Keys.SkillNeed, icon: renderIcon(<FaceCool />) }
+          {
+            label: renderRouterLink('/job/market', '职业行情'),
+            key: Keys.Job,
+            icon: renderIcon(<Growth />)
+          },
+          {
+            label: renderRouterLink('/job/skill', '技能需求'),
+            key: Keys.SkillNeed,
+            icon: renderIcon(<FaceCool />)
+          }
         ]
       },
       {
