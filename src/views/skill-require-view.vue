@@ -3,48 +3,68 @@
     <h2 class="text-2xl font-bold">技能需求</h2>
     <span class="text-lg">筛选</span>
     <div class="flex">
-      <NSelect v-model:value="job" :options="jobs" class="inline w-24 p-2" placeholder="职位" />
-      <NSelect v-model:value="city" :options="cities" class="inline w-24 p-2" placeholder="城市" />
-      <NSelect v-model:value="area" :options="areas" class="inline w-24 p-2" placeholder="区域" />
+      <NSelect v-model:value="job" :options="jobOpts" class="inline w-24 p-2" placeholder="职位" />
+      <NSelect
+        v-model:value="city"
+        :options="cityOpts"
+        class="inline w-24 p-2"
+        placeholder="城市"
+      />
     </div>
     <div class="flex py-2">
       <span class="text-2xl font-bold">学历需求</span><span class="grow" /><span>
         <NSwitch />
-        仅查看当前城市 {{ city }} 市 {{ area }} 区
+        仅查看 {{ city }} 市
       </span>
     </div>
-    <VChart :option="chartOpts" autoresize class="h-96" />
-    <h2 class="text-2xl font-bold">
-      <NTooltip>
-        <template #trigger>
-          <span>技能需求排名</span>
-        </template>
-        <template #default>
-          <div class="flex flex-col">补充说明</div>
-        </template>
-      </NTooltip>
-    </h2>
-    <NDataTable :data="skillRequires" :columns="cols" />
+    <VChart :option="chartOpts" class="h-96" autoresize />
+    <h2 class="text-2xl font-bold">技能需求</h2>
+    <NTooltip>
+      <template #trigger>
+        <NSelect
+          :options="toCmpOpts"
+          v-model:value="toCmp"
+          class="inline p-2 w-24"
+          placeholder="比较"
+        />
+      </template>
+      <template #default> 比较 </template>
+    </NTooltip>
+    <VChart id="cmp" :option="cmpChartOpts" autoresize />
   </div>
 </template>
 
 <script setup lang="ts">
-import { NDataTable, NSelect, NSwitch, NTooltip, type SelectOption } from 'naive-ui/lib'
-import { ref } from 'vue'
+import { NSelect, NSwitch, NTooltip, type SelectOption } from 'naive-ui/lib'
+import { computed, onMounted, ref, watch } from 'vue'
 import { use } from 'echarts/core'
-import { PieChart } from 'echarts/charts'
-import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components'
+import { PieChart, BarChart } from 'echarts/charts'
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  GridComponent
+} from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import type { ComposeOption } from 'echarts/core'
-import type { PieSeriesOption } from 'echarts/charts'
+import type { PieSeriesOption, BarSeriesOption } from 'echarts/charts'
 import type {
   TitleComponentOption,
   TooltipComponentOption,
-  LegendComponentOption
+  LegendComponentOption,
+  GridComponentOption
 } from 'echarts/components'
 import VChart from 'vue-echarts'
 
-use([TitleComponent, TooltipComponent, LegendComponent, PieChart, CanvasRenderer])
+use([
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  PieChart,
+  CanvasRenderer,
+  GridComponent,
+  BarChart
+])
 
 type EChartsOption = ComposeOption<
   TitleComponentOption | TooltipComponentOption | LegendComponentOption | PieSeriesOption
@@ -79,71 +99,209 @@ const chartOpts: EChartsOption = {
 }
 
 const job = ref<string | undefined>(undefined)
-const city = ref<string | undefined>(undefined)
-const area = ref<string | undefined>(undefined)
+const city = ref<string>('北京')
+const toCmpOpts = computed<SelectOption[]>(() =>
+  ['全国'].concat(cities.filter((item) => item !== city.value)).map((item) => ({
+    label: item,
+    value: item
+  }))
+)
+const toCmp = ref<string>('全国')
+const data = ref<[string, number][][]>([[], []])
+watch(toCmp, async () => {
+  data.value[0] = await fetch()
+})
+watch(city, async () => {
+  data.value[1] = await fetch()
+})
 
-const skillRequires = [
-  { name: 'Java', value: 0.2 },
-  { name: 'Python', value: 0.2 },
-  { name: 'C++', value: 0.15 },
-  { name: 'C', value: 0.1 },
-  { name: 'PHP', value: 0.1 },
-  { name: 'JavaScript', value: 0.1 },
-  { name: 'C#', value: 0.05 },
-  { name: 'Go', value: 0.05 }
-]
+const fetch = async (): Promise<[string, number][]> => {
+  window.$loading.start()
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      window.$loading.finish()
+      resolve(rand())
+    }, 100)
+  })
+}
 
-const cols = [
-  { title: '名称', key: 'name' },
-  { title: '比例', key: 'value' }
-]
+const rand = (): [string, number][] => {
+  //从pool中随机选出10个技能， 并给出比例
+  const len = skillRequirePool.length
+  const res: [string, number][] = []
+  const used = new Set<number>()
+  for (let i = 0; i < 10; i++) {
+    let idx = Math.floor(Math.random() * len)
+    while (used.has(idx)) {
+      idx = Math.floor(Math.random() * len)
+    }
+    used.add(idx)
+    res.push([skillRequirePool[idx], Math.random() * 100 + 1])
+  }
+  let sum = res.reduce((acc, cur) => acc + cur[1], 0)
+  res.forEach((item) => {
+    item[1] = item[1] / sum
+  })
+  return res.sort((a, b) => b[1] - a[1])
+}
+
+type CmpChartOpts = ComposeOption<
+  | TitleComponentOption
+  | TooltipComponentOption
+  | LegendComponentOption
+  | GridComponentOption
+  | BarSeriesOption
+>
+
+const cmpChartOpts = computed<CmpChartOpts>(() => ({
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  legend: {},
+  yAxis: [
+    {
+      gridIndex: 0,
+      type: 'value',
+      inverse: true,
+      name: `${toCmp.value}市${job.value}岗位技能需求`
+    },
+    {
+      gridIndex: 1,
+      type: 'value',
+      name: `${city.value}市${job.value}岗位技能需求`
+    }
+  ],
+  xAxis: [
+    { gridIndex: 0, type: 'category', show: false, data: data.value[0].map(([name, _]) => name) },
+    { gridIndex: 1, type: 'category', show: false, data: data.value[1].map(([name, _]) => name) }
+  ],
+  grid: [{ top: '50%' }, { bottom: '50%' }],
+  series: [
+    {
+      type: 'bar',
+      data: data.value[0].map(([name, value]) => ({
+        name,
+        value,
+        label: {
+          show: true,
+          color: 'inherit',
+          formatter: (_) => name,
+          position: 'bottom'
+        }
+      }))
+    },
+    {
+      type: 'bar',
+      data: data.value[1].map(([name, value]) => ({
+        name,
+        value,
+        label: {
+          show: true,
+          color: 'inherit',
+          formatter: (_) => name,
+          position: 'top'
+        }
+      })),
+      yAxisIndex: 1,
+      xAxisIndex: 1
+    }
+  ]
+}))
+
+onMounted(async () => {
+  data.value = await Promise.all([fetch(), fetch()])
+})
 </script>
 
 <script lang="ts">
-const jobs: SelectOption[] = [
-  { label: '后端', value: '后端' },
-  { label: '前端', value: '前端' },
-  { label: '全栈', value: '全栈' },
-  { label: '测试', value: '测试' },
-  { label: '运维', value: '运维' },
-  { label: '产品', value: '产品' },
-  { label: 'UI', value: 'UI' },
-  { label: '运营', value: '运营' },
-  { label: '市场', value: '市场' },
-  { label: '销售', value: '销售' },
-  { label: '人事', value: '人事' },
-  { label: '行政', value: '行政' },
-  { label: '财务', value: '财务' },
-  { label: '法务', value: '法务' },
-  { label: '其他', value: '其他' }
+const jobs = [
+  '后端',
+  '前端',
+  '全栈',
+  '测试',
+  '运维',
+  '产品',
+  'UI',
+  '运营',
+  '市场',
+  '销售',
+  '人事',
+  '行政',
+  '财务',
+  '法务',
+  '其他'
+]
+const cities = [
+  '北京',
+  '上海',
+  '广州',
+  '深圳',
+  '杭州',
+  '温州',
+  '苏州',
+  '南京',
+  '成都',
+  '武汉',
+  '西安'
 ]
 
-const cities: SelectOption[] = [
-  { label: '北京', value: '北京' },
-  { label: '上海', value: '上海' },
-  { label: '广州', value: '广州' },
-  { label: '深圳', value: '深圳' },
-  { label: '杭州', value: '杭州' }
-]
+const cityOpts: SelectOption[] = cities.map((city) => ({
+  label: city,
+  value: city
+}))
+const jobOpts: SelectOption[] = jobs.map((job) => ({
+  label: job,
+  value: job
+}))
 
-const areas: SelectOption[] = [
-  { label: '朝阳区', value: '朝阳区' },
-  { label: '海淀区', value: '海淀区' },
-  { label: '丰台区', value: '丰台区' },
-  { label: '西城区', value: '西城区' },
-  { label: '东城区', value: '东城区' },
-  { label: '昌平区', value: '昌平区' },
-  { label: '大兴区', value: '大兴区' },
-  { label: '通州区', value: '通州区' },
-  { label: '顺义区', value: '顺义区' },
-  { label: '房山区', value: '房山区' },
-  { label: '石景山区', value: '石景山区' },
-  { label: '门头沟区', value: '门头沟区' },
-  { label: '怀柔区', value: '怀柔区' },
-  { label: '密云区', value: '密云区' },
-  { label: '延庆区', value: '延庆区' },
-  { label: '平谷区', value: '平谷区' },
-  { label: '燕郊', value: '燕郊' },
-  { label: '其他', value: '其他' }
+const skillRequirePool = [
+  'java',
+  'python',
+  'c++',
+  'c',
+  'php',
+  'javascript',
+  'c#',
+  'go',
+  'html',
+  'css',
+  'mysql',
+  'linux',
+  'vue',
+  'react',
+  'spring',
+  'springboot',
+  'django',
+  'flask',
+  'jquery',
+  'bootstrap',
+  'nodejs',
+  'typescript',
+  'redis',
+  'mongodb',
+  'rust',
+  'oracle',
+  'sqlserver',
+  'mysql',
+  'postgresql',
+  'docker',
+  'kubernetes',
+  'nginx',
+  'tomcat',
+  'apache',
+  'git',
+  'svn',
+  'maven',
+  'gradle',
+  'jvm'
 ]
 </script>
+
+<style lang="scss" scoped>
+#cmp {
+  height: 36rem;
+}
+</style>

@@ -34,8 +34,7 @@ enum Keys {
   Plan, //规划
   Recommand, //推荐
   Interest, //兴趣评估
-  Skill, //技能评估
-  Info
+  Skill //技能评估
 }
 
 export default defineComponent({
@@ -94,11 +93,6 @@ export default defineComponent({
         label: '技能评估',
         key: Keys.Skill,
         icon: renderIcon(<Wrench20Regular />)
-      },
-      {
-        label: '作者yfl',
-        key: Keys.Info,
-        icon: renderIcon(<Information />)
       }
     ]
     if (!isMobile().value) {
@@ -126,9 +120,6 @@ export default defineComponent({
         case Keys.Toggle:
           isCollapsed.value = !isCollapsed.value
           emit('toggle', isCollapsed.value)
-          break
-        case Keys.Info:
-          window.$message.info('你好👋')
           break
       }
     }
