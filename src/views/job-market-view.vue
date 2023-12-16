@@ -12,18 +12,36 @@
       />
     </div>
     <h2 class="text-2xl font-bold">薪资待遇</h2>
-    <NSelect
-      v-model:value="toCmp"
-      :options="cmpOpts"
-      class="inline p-2 w-96"
-      placeholder="对比城市"
-      multiple
+    <div class="flex">
+      <NSelect
+        v-model:value="toCmp"
+        :options="cmpOpts"
+        class="inline w-96 m-2"
+        placeholder="对比城市"
+        multiple
+      />
+      <NButton
+        class="inline m-2"
+        @click="
+          () => {
+            if (job !== undefined) {
+              fetch(categories, job)
+            }
+          }
+        "
+        >更新</NButton
+      >
+    </div>
+    <VChart
+      :option="chartOpts"
+      :style="`height: ${categories.length * 3 + 18}rem`"
+      autoresize
+      ref="chartRef"
     />
-    <VChart :option="chartOpts" :style="`height: ${categories.length * 3 + 18}rem`" autoresize />
     <h2 class="text-2xl font-bold">相关企业</h2>
     <div>
-      <span v-for="[company, url] in companies">
-        <a class="text-slate-800 hover:text-sky-900 underline" :href="url">{{ company }}</a
+      <span v-for="{ name, url } in companies">
+        <a class="text-slate-800 hover:text-sky-900 underline" :href="url">{{ name }}</a
         >，
       </span>
     </div>
@@ -31,8 +49,8 @@
 </template>
 
 <script setup lang="ts">
-import { NSelect, type SelectOption } from 'naive-ui/lib'
-import { ref, computed, onMounted, watch } from 'vue'
+import { NButton, NSelect, type SelectOption } from 'naive-ui/lib'
+import { ref, computed, onMounted, shallowRef } from 'vue'
 import { use } from 'echarts/core'
 import { BarChart } from 'echarts/charts'
 import {
@@ -48,6 +66,9 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import type { GridComponentOption } from 'echarts/components'
 import VChart from 'vue-echarts'
+import { Company, fetchCities, fetchCompanies, fetchJobs } from '../api/mock'
+import { SalaryAnalysisResp } from '../api/data_analysis'
+import { fetchCitySalaryAnalysis, fetchCountrySalaryAnalysis } from '../api/data_analysis'
 
 use([GridComponent, BarChart, CanvasRenderer, TitleComponent, LegendComponent, TooltipComponent])
 
@@ -55,73 +76,82 @@ type ChartOpts = ComposeOption<
   GridComponentOption | BarSeriesOption | LegendComponentOption | TooltipComponentOption
 >
 
-type Record = {
-  area: string
-  min: number
-  mean: number
-  max: number
+const chartRef = shallowRef(null)
+const jobs = ref<string[]>([])
+const cities = ref<string[]>([])
+const companies = ref<Company[]>([])
+const job = ref<string | undefined>()
+const city = ref<string | undefined>()
+const toCmp = ref<string[]>([])
+const data = ref<SalaryAnalysisResp[]>([])
+
+onMounted(() => {
+  fetchCities().then((ret) => (cities.value = ret))
+  fetchJobs().then((ret) => (jobs.value = ret))
+  fetchCompanies().then((ret) => (companies.value = ret))
+})
+
+const fetch = async (regions: string[], job: string) => {
+  data.value = await Promise.all(
+    [
+      fetchCountrySalaryAnalysis({
+        jobName: job
+      })
+    ].concat(
+      regions.map((region) =>
+        fetchCitySalaryAnalysis({
+          city: region,
+          jobName: job
+        })
+      )
+    )
+  )
 }
 
-const job = ref<string | undefined>(undefined)
-const city = ref<string>('北京')
-const toCmp = ref<string[]>([])
-const data = ref<Record[]>([])
-const categories = computed(() => ['全国', city.value, ...toCmp.value])
-const companies = [
-  ['华为', 'https://www.huawei.com'],
-  ['阿里巴巴', 'https://www.alibaba.com'],
-  ['腾讯', 'https://www.tencent.com'],
-  ['字节跳动', 'https://www.bytedance.com'],
-  ['百度', 'https://www.baidu.com'],
-  ['京东', 'https://www.jd.com'],
-  ['美团', 'https://www.meituan.com'],
-  ['滴滴', 'https://www.didiglobal.com'],
-  ['小米', 'https://www.mi.com'],
-  ['网易', 'https://www.163.com'],
-  ['携程', 'https://www.ctrip.com'],
-  ['拼多多', 'https://www.pinduoduo.com'],
-  ['360', 'https://www.360.com'],
-  ['新浪', 'https://www.sina.com.cn']
-]
-watch(categories, () => fetch())
-
-const cmpOpts = computed<SelectOption[]>(() =>
-  cities.map((item) => ({
-    label: item,
-    value: item,
-    disabled: item === city.value
+const jobOpts = computed<SelectOption[]>(() =>
+  jobs.value.map((job) => ({
+    label: job,
+    value: job
   }))
 )
 
-const fetch = async () => {
-  window.$loading.start()
-  setTimeout(() => {
-    data.value = categories.value.map((area) => {
-      const bound1 = Math.floor(Math.random() * 10000) + 3000
-      const bound2 = Math.floor(Math.random() * 10000) + 3000
-      const max = Math.max(bound1, bound2)
-      const min = Math.min(bound1, bound2)
-      const mean = min + Math.floor(Math.random() * (max - min))
-      return {
-        area,
-        min,
-        mean,
-        max
-      }
-    })
-    window.$loading.finish()
-  }, 100)
-}
+const cityOpts = computed<SelectOption[]>(() =>
+  cities.value.map((city) => ({
+    label: city,
+    value: city
+  }))
+)
 
-onMounted(() => {
-  fetch()
+const categories = computed(() => {
+  let ret = []
+  if (city.value != undefined) {
+    ret.push(city.value)
+  }
+  ret = ret.concat(toCmp.value)
+  return ret
 })
+
+const cmpOpts = computed<SelectOption[]>(() =>
+  cities.value.map((entry) => ({
+    label: entry,
+    value: entry,
+    disabled: entry === city.value
+  }))
+)
 
 const chartOpts = computed<ChartOpts>(() => ({
   xAxis: {},
   yAxis: {
     type: 'category',
-    data: categories.value
+    data: ['全国'].concat(categories.value),
+    axisPointer: {
+      type: 'shadow',
+      value: city.value,
+      show: true,
+      handle: {
+        show: true
+      }
+    }
   },
   tooltip: {
     trigger: 'axis',
@@ -134,96 +164,23 @@ const chartOpts = computed<ChartOpts>(() => ({
     {
       type: 'bar',
       name: '最少薪资',
-      color: '#99FF33',
-      data: data.value.map((item) =>
-        item.area === city.value
-          ? {
-              value: item.min,
-              itemStyle: {
-                color: '#BA74F5'
-              }
-            }
-          : {
-              value: item.min
-            }
-      )
+      data: data.value.map((item) => item.minSalary)
     },
     {
       type: 'bar',
       name: '平均薪资',
-      color: '#66CCFF',
-      data: data.value.map((item) =>
-        item.area === city.value
-          ? {
-              value: item.mean,
-              itemStyle: {
-                color: '#F5567C'
-              }
-            }
-          : {
-              value: item.mean
-            }
-      )
+      data: data.value.map((item) => item.avgSalary)
     },
     {
       type: 'bar',
       name: '最多薪资',
-      color: '#EAF500',
-      data: data.value.map((item) =>
-        item.area === city.value
-          ? {
-              value: item.max,
-              itemStyle: {
-                color: '#00FFCF'
-              }
-            }
-          : {
-              value: item.max
-            }
-      )
+      data: data.value.map((item) => item.maxSalary)
+    },
+    {
+      type: 'bar',
+      name: '岗位数量',
+      data: data.value.map((item) => item.jobNum)
     }
   ]
-}))
-</script>
-
-<script lang="ts">
-const jobs = [
-  '后端',
-  '前端',
-  '全栈',
-  '测试',
-  '运维',
-  '产品',
-  'UI',
-  '运营',
-  '市场',
-  '销售',
-  '人事',
-  '行政',
-  '财务',
-  '法务',
-  '其他'
-]
-const cities = [
-  '北京',
-  '上海',
-  '广州',
-  '深圳',
-  '杭州',
-  '温州',
-  '苏州',
-  '南京',
-  '成都',
-  '武汉',
-  '西安'
-]
-
-const cityOpts: SelectOption[] = cities.map((city) => ({
-  label: city,
-  value: city
-}))
-const jobOpts: SelectOption[] = jobs.map((job) => ({
-  label: job,
-  value: job
 }))
 </script>

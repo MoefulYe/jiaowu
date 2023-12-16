@@ -11,13 +11,6 @@
         placeholder="城市"
       />
     </div>
-    <div class="flex py-2">
-      <span class="text-2xl font-bold">学历需求</span><span class="grow" /><span>
-        <NSwitch />
-        仅查看 {{ city }} 市
-      </span>
-    </div>
-    <VChart :option="chartOpts" class="h-96" autoresize />
     <h2 class="text-2xl font-bold">技能需求</h2>
     <NTooltip>
       <template #trigger>
@@ -35,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { NSelect, NSwitch, NTooltip, type SelectOption } from 'naive-ui/lib'
+import { NSelect, NTooltip, type SelectOption } from 'naive-ui/lib'
 import { computed, onMounted, ref, watch } from 'vue'
 import { use } from 'echarts/core'
 import { PieChart, BarChart } from 'echarts/charts'
@@ -55,6 +48,12 @@ import type {
   GridComponentOption
 } from 'echarts/components'
 import VChart from 'vue-echarts'
+import { fetchCities, fetchJobs } from '../api/mock'
+import {
+  TechAnalysisResp,
+  fetchCityTechAnalysis,
+  fetchCountryTechAnalysis
+} from '../api/data_analysis'
 
 use([
   TitleComponent,
@@ -70,80 +69,74 @@ type EChartsOption = ComposeOption<
   TitleComponentOption | TooltipComponentOption | LegendComponentOption | PieSeriesOption
 >
 
-const chartOpts: EChartsOption = {
-  tooltip: {
-    trigger: 'item'
-  },
-  legend: {
-    orient: 'vertical',
-    left: 'left'
-  },
-  series: [
-    {
-      type: 'pie',
-      radius: '50%',
-      data: [
-        { value: 0.66, name: '大专' },
-        { value: 0.2, name: '本科' },
-        { value: 0.14, name: '硕士' }
-      ],
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
-      }
-    }
-  ]
+const jobs = ref<string[]>([])
+const cities = ref<string[]>([])
+const job = ref<string | undefined>()
+const city = ref<string | undefined>()
+const toCmp = ref<string>('全国')
+const data = ref<TechAnalysisResp | undefined>()
+const toCmpData = ref<TechAnalysisResp | undefined>()
+
+const fetchData = async () => {
+  if (city.value !== undefined && job.value !== undefined) {
+    data.value = await fetchCityTechAnalysis({
+      tech: job.value,
+      city: city.value
+    })
+  }
 }
 
-const job = ref<string | undefined>(undefined)
-const city = ref<string>('北京')
+const fetchCmpData = async () => {
+  if (job.value !== undefined) {
+    if (toCmp.value === '全国') {
+      toCmpData.value = await fetchCountryTechAnalysis({
+        tech: job.value
+      })
+    } else {
+      toCmpData.value = await fetchCityTechAnalysis({
+        tech: job.value,
+        city: toCmp.value
+      })
+    }
+  }
+}
+
+watch([job, city], () => fetchData())
+watch([job, toCmp], () => fetchCmpData())
+
+const cityOpts = computed<SelectOption[]>(() =>
+  cities.value.map((city) => ({ label: city, value: city }))
+)
+const jobOpts = computed<SelectOption[]>(() =>
+  jobs.value.map((job) => ({ label: job, value: job }))
+)
 const toCmpOpts = computed<SelectOption[]>(() =>
-  ['全国'].concat(cities.filter((item) => item !== city.value)).map((item) => ({
+  ['全国'].concat(cities.value.filter((item) => item !== city.value)).map((item) => ({
     label: item,
     value: item
   }))
 )
-const toCmp = ref<string>('全国')
-const data = ref<[string, number][][]>([[], []])
-watch(toCmp, async () => {
-  data.value[0] = await fetch()
-})
-watch(city, async () => {
-  data.value[1] = await fetch()
-})
 
-const fetch = async (): Promise<[string, number][]> => {
-  window.$loading.start()
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      window.$loading.finish()
-      resolve(rand())
-    }, 100)
-  })
+interface RateEntry {
+  name: string
+  rate: number
 }
 
-const rand = (): [string, number][] => {
-  //从pool中随机选出10个技能， 并给出比例
-  const len = skillRequirePool.length
-  const res: [string, number][] = []
-  const used = new Set<number>()
-  for (let i = 0; i < 10; i++) {
-    let idx = Math.floor(Math.random() * len)
-    while (used.has(idx)) {
-      idx = Math.floor(Math.random() * len)
-    }
-    used.add(idx)
-    res.push([skillRequirePool[idx], Math.random() * 100 + 1])
-  }
-  let sum = res.reduce((acc, cur) => acc + cur[1], 0)
-  res.forEach((item) => {
-    item[1] = item[1] / sum
+const sortedData = computed<RateEntry[]>(() => {
+  let ret: RateEntry[] = []
+  data.value?.techRate.forEach((value, key) => {
+    ret.push({ name: key, rate: value })
   })
-  return res.sort((a, b) => b[1] - a[1])
-}
+  return ret.sort((a, b) => a.rate - b.rate)
+})
+
+const sortedCmpData = computed<RateEntry[]>(() => {
+  let ret: RateEntry[] = []
+  toCmpData.value?.techRate.forEach((value, key) => {
+    ret.push({ name: key, rate: value })
+  })
+  return ret.sort((a, b) => a.rate - b.rate)
+})
 
 type CmpChartOpts = ComposeOption<
   | TitleComponentOption
@@ -166,25 +159,30 @@ const cmpChartOpts = computed<CmpChartOpts>(() => ({
       gridIndex: 0,
       type: 'value',
       inverse: true,
-      name: `${toCmp.value}市${job.value}岗位技能需求`
+      name: `${toCmp.value} ${job.value}岗位技能需求`
     },
     {
       gridIndex: 1,
       type: 'value',
-      name: `${city.value}市${job.value}岗位技能需求`
+      name: `${city.value} ${job.value}岗位技能需求`
     }
   ],
   xAxis: [
-    { gridIndex: 0, type: 'category', show: false, data: data.value[0].map(([name, _]) => name) },
-    { gridIndex: 1, type: 'category', show: false, data: data.value[1].map(([name, _]) => name) }
+    {
+      gridIndex: 0,
+      type: 'category',
+      show: false,
+      data: sortedCmpData.value.map((item) => item.name)
+    },
+    { gridIndex: 1, type: 'category', show: false, data: sortedData.value.map((item) => item.name) }
   ],
   grid: [{ top: '50%' }, { bottom: '50%' }],
   series: [
     {
       type: 'bar',
-      data: data.value[0].map(([name, value]) => ({
+      data: sortedCmpData.value.map(({ name, rate }) => ({
         name,
-        value,
+        value: rate,
         label: {
           show: true,
           color: 'inherit',
@@ -195,9 +193,9 @@ const cmpChartOpts = computed<CmpChartOpts>(() => ({
     },
     {
       type: 'bar',
-      data: data.value[1].map(([name, value]) => ({
+      data: sortedData.value.map(({ name, rate }) => ({
         name,
-        value,
+        value: rate,
         label: {
           show: true,
           color: 'inherit',
@@ -211,93 +209,10 @@ const cmpChartOpts = computed<CmpChartOpts>(() => ({
   ]
 }))
 
-onMounted(async () => {
-  data.value = await Promise.all([fetch(), fetch()])
+onMounted(() => {
+  fetchCities().then((ret) => (cities.value = ret))
+  fetchJobs().then((ret) => (jobs.value = ret))
 })
-</script>
-
-<script lang="ts">
-const jobs = [
-  '后端',
-  '前端',
-  '全栈',
-  '测试',
-  '运维',
-  '产品',
-  'UI',
-  '运营',
-  '市场',
-  '销售',
-  '人事',
-  '行政',
-  '财务',
-  '法务',
-  '其他'
-]
-const cities = [
-  '北京',
-  '上海',
-  '广州',
-  '深圳',
-  '杭州',
-  '温州',
-  '苏州',
-  '南京',
-  '成都',
-  '武汉',
-  '西安'
-]
-
-const cityOpts: SelectOption[] = cities.map((city) => ({
-  label: city,
-  value: city
-}))
-const jobOpts: SelectOption[] = jobs.map((job) => ({
-  label: job,
-  value: job
-}))
-
-const skillRequirePool = [
-  'java',
-  'python',
-  'c++',
-  'c',
-  'php',
-  'javascript',
-  'c#',
-  'go',
-  'html',
-  'css',
-  'mysql',
-  'linux',
-  'vue',
-  'react',
-  'spring',
-  'springboot',
-  'django',
-  'flask',
-  'jquery',
-  'bootstrap',
-  'nodejs',
-  'typescript',
-  'redis',
-  'mongodb',
-  'rust',
-  'oracle',
-  'sqlserver',
-  'mysql',
-  'postgresql',
-  'docker',
-  'kubernetes',
-  'nginx',
-  'tomcat',
-  'apache',
-  'git',
-  'svn',
-  'maven',
-  'gradle',
-  'jvm'
-]
 </script>
 
 <style lang="scss" scoped>
