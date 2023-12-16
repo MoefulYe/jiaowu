@@ -65,10 +65,6 @@ use([
   BarChart
 ])
 
-type EChartsOption = ComposeOption<
-  TitleComponentOption | TooltipComponentOption | LegendComponentOption | PieSeriesOption
->
-
 const jobs = ref<string[]>([])
 const cities = ref<string[]>([])
 const job = ref<string | undefined>()
