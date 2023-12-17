@@ -1,1 +1,0 @@
-import{_ as e,e as c,o as t}from"./index-022ce0f6.js";const s={},n={class:"flex w-full h-full justify-center items-center"};function o(r,a){return t(),c("div",n,"学业情况")}const f=e(s,[["render",o]]);export{f as default};
