@@ -66,8 +66,8 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import type { GridComponentOption } from 'echarts/components'
 import VChart from 'vue-echarts'
-import { Company, fetchCities, fetchCompanies, fetchJobs } from '../api/mock'
-import { SalaryAnalysisResp } from '../api/data_analysis'
+import { type Company, fetchCities, fetchCompanies, fetchJobs } from '../api/mock'
+import { type SalaryAnalysisResp } from '../api/data_analysis'
 import { fetchCitySalaryAnalysis, fetchCountrySalaryAnalysis } from '../api/data_analysis'
 
 use([GridComponent, BarChart, CanvasRenderer, TitleComponent, LegendComponent, TooltipComponent])

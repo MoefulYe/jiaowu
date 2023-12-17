@@ -40,7 +40,7 @@ import {
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import type { ComposeOption } from 'echarts/core'
-import type { PieSeriesOption, BarSeriesOption } from 'echarts/charts'
+import type { BarSeriesOption } from 'echarts/charts'
 import type {
   TitleComponentOption,
   TooltipComponentOption,
@@ -50,7 +50,7 @@ import type {
 import VChart from 'vue-echarts'
 import { fetchCities, fetchJobs } from '../api/mock'
 import {
-  TechAnalysisResp,
+  type TechAnalysisResp,
   fetchCityTechAnalysis,
   fetchCountryTechAnalysis
 } from '../api/data_analysis'
@@ -120,17 +120,21 @@ interface RateEntry {
 
 const sortedData = computed<RateEntry[]>(() => {
   let ret: RateEntry[] = []
-  data.value?.techRate.forEach((value, key) => {
-    ret.push({ name: key, rate: value })
-  })
+  if (data.value !== undefined) {
+    for (const [key, value] of Object.entries(data.value.techRate)) {
+      ret.push({ name: key, rate: value })
+    }
+  }
   return ret.sort((a, b) => a.rate - b.rate)
 })
 
 const sortedCmpData = computed<RateEntry[]>(() => {
   let ret: RateEntry[] = []
-  toCmpData.value?.techRate.forEach((value, key) => {
-    ret.push({ name: key, rate: value })
-  })
+  if (toCmpData.value !== undefined) {
+    for (const [key, value] of Object.entries(toCmpData.value.techRate)) {
+      ret.push({ name: key, rate: value })
+    }
+  }
   return ret.sort((a, b) => a.rate - b.rate)
 })
 

@@ -2,7 +2,7 @@ import axios, { AxiosError, type AxiosRequestConfig } from 'axios'
 import { useTokenStore } from '../stores/token'
 
 const service = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_AXIOS_BASE_URL,
   timeout: 30000
 })
 

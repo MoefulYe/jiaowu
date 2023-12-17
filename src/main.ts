@@ -10,5 +10,4 @@ const entry = async () => {
   const pinia = createPinia().use(piniaPluginPersistedstate)
   createApp(App).use(pinia).use(router).mount('#app')
 }
-
 entry()
