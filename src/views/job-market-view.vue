@@ -46,7 +46,6 @@ import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
 import {
   GridComponent,
-  TitleComponent,
   LegendComponent,
   type LegendComponentOption,
   TooltipComponent,
@@ -57,7 +56,7 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import type { GridComponentOption } from 'echarts/components'
 import VChart from 'vue-echarts'
-use([GridComponent, BarChart, CanvasRenderer, TitleComponent, LegendComponent, TooltipComponent])
+use([GridComponent, BarChart, CanvasRenderer, LegendComponent, TooltipComponent])
 type ChartOpts = ComposeOption<
   GridComponentOption | BarSeriesOption | LegendComponentOption | TooltipComponentOption
 >
@@ -100,29 +99,90 @@ const cityOpts = computed<SelectOption[]>(() =>
   }))
 )
 
-const chartOpts = computed<ChartOpts>(() => {
-  return {
-    xAxis: {},
-    yAxis: {
+const chartOpts = computed<ChartOpts>(() => ({
+  grid: [
+    { bottom: '71%', top: '8%' },
+    { top: '29%', bottom: '8%' }
+  ],
+  xAxis: [
+    {
+      name: '岗位数量',
+      position: 'top',
+      gridIndex: 0,
+      splitLine: {
+        show: false
+      },
+      axisLine: {
+        show: true
+      },
+      axisTick: {
+        show: true
+      }
+    },
+    {
+      name: '岗位薪资',
+      axisLabel: {
+        formatter: '{value}K'
+      },
+      position: 'bottom',
+      gridIndex: 1,
+      splitLine: {
+        show: false
+      },
+      axisLine: {
+        show: true
+      },
+      axisTick: {
+        show: true
+      }
+    }
+  ],
+  yAxis: [
+    {
       type: 'category',
-      data: ['最少薪资', '平均薪资', '最多薪资', '岗位数量']
+      data: ['岗位数量'],
+      gridIndex: 0
     },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
+    {
+      type: 'category',
+      data: ['最少薪资', '平均薪资', '最多薪资'],
+      gridIndex: 1
+    }
+  ],
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  series: [
+    {
+      type: 'bar',
+      data: data.value ? [data.value.jobNum] : undefined,
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+      color: '#d08770',
+      label: {
+        show: true,
+        formatter: ({ value }) => `${value}`,
+        color: '#F7FAFF'
       }
     },
-    legend: {},
-    series: [
-      {
-        type: 'bar',
-        data: data.value
-          ? [data.value.minSalary, data.value.avgSalary, data.value.maxSalary, data.value.jobNum]
-          : [],
-        colorBy: 'data'
+    {
+      type: 'bar',
+      data: data.value ? [data.value.minSalary, data.value.avgSalary, data.value.maxSalary] : [],
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      colorBy: 'data',
+      tooltip: {
+        valueFormatter: (value) => `${value}K`
+      },
+      label: {
+        show: true,
+        formatter: ({ value }) => `${value}K`,
+        color: '#F7FAFF'
       }
-    ]
-  }
-})
+    }
+  ]
+}))
 </script>
