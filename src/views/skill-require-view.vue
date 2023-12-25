@@ -44,7 +44,7 @@ import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
 import { fetchCities, fetchJobs } from '../api/mock'
 import { fetchCityTechAnalysis, type TechAnalysisResp } from '../api/data_analysis'
-import { ComposeOption } from 'echarts'
+import { type ComposeOption } from 'echarts'
 import SameCityDiffJobs from '../components/same-city-diff-jobs-top10.vue'
 import SameJobDiffCities from '../components/same-job-diff-cities-top10.vue'
 

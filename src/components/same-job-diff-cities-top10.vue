@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import {
-  TechAnalysisResp,
+  type TechAnalysisResp,
   fetchCityTechAnalysis,
   fetchCountryTechAnalysis
 } from '../api/data_analysis'

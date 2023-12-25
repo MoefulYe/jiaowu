@@ -1,0 +1,1 @@
+import{d as t,e as s,t as n,u as o,o as c}from"./index-96b04baa.js";const a={class:"w-full h-full flex justify-center items-center"},f=t({__name:"welcome-view",setup(r){const e="大学生个性化学习引导和职业规划系统";return(l,i)=>(c(),s("div",a,"欢迎使用"+n(o(e)),1))}});export{f as default};

@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { TechAnalysisResp, fetchCityTechAnalysis } from '../api/data_analysis'
+import { type TechAnalysisResp, fetchCityTechAnalysis } from '../api/data_analysis'
 import { ref, computed } from 'vue'
 import { type SelectOption, NSelect, NButton } from 'naive-ui/lib'
 
