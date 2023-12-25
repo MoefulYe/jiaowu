@@ -134,6 +134,7 @@ export const fetchCountryTechAnalysis = async (
     arr.forEach((entry) => {
       entry.rate /= sum
     })
+    arr.sort().reverse()
     return {
       techRate: arr,
       city: '全国',

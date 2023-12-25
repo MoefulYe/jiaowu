@@ -2,20 +2,24 @@
   <h2 class="text-xl font-bold">同一职位不同城市对比</h2>
   <div class="flex mb-4">
     <NSelect
-      v-model:value="cmpJobs"
-      :options="cmpJobOpts"
+      v-model:value="cmpCites"
+      :options="cmpCityOpts"
       class="w-96 m-2"
       placeholder="对比岗位"
       multiple
     />
     <NButton class="inline m-2" @click="fetchData">确认</NButton>
   </div>
-  <VChart :option="options" :style="`height: ${cmpJobs.length * 2 + 12}rem`" autoresize />
+  <VChart :option="options" :style="`height: ${cmpCites.length * 2 + 12}rem`" autoresize />
 </template>
 
 <script setup lang="ts">
-import { TechAnalysisResp, fetchCityTechAnalysis } from '../api/data_analysis'
-import { ref, computed } from 'vue'
+import {
+  TechAnalysisResp,
+  fetchCityTechAnalysis,
+  fetchCountryTechAnalysis
+} from '../api/data_analysis'
+import { ref, computed, onMounted } from 'vue'
 import { type SelectOption, NSelect, NButton } from 'naive-ui/lib'
 
 import { BarChart } from 'echarts/charts'
@@ -53,29 +57,32 @@ type ChartOpts = ComposeOption<
 >
 
 const props = defineProps<Props>()
-const cmpJobs = ref<string[]>([])
+const cmpCites = ref<string[]>([])
 const cmp = ref<TechAnalysisResp[]>([])
 const SIZE = 10
 
-const cmpJobOpts = computed<SelectOption[]>(() =>
-  props.jobs
-    .filter((job) => job !== props.job)
-    .map((job) => ({
-      value: job,
-      label: job
+const cmpCityOpts = computed<SelectOption[]>(() =>
+  props.cities
+    .filter((city) => city !== props.city)
+    .map((city) => ({
+      value: city,
+      label: city
     }))
 )
 
 const fetchData = async () => {
   if (props.city !== undefined && props.job !== undefined) {
-    cmp.value = await Promise.all(
-      cmpJobs.value.map((job) =>
+    cmp.value = await Promise.all([
+      fetchCountryTechAnalysis({
+        tech: props.job
+      }),
+      ...cmpCites.value.map((city) =>
         fetchCityTechAnalysis({
-          city: props.city!,
-          tech: job
+          city,
+          tech: props.job!
         })
       )
-    )
+    ])
   } else {
     window.$message.warning('未选择职位和城市')
   }
@@ -103,13 +110,13 @@ const options = computed<ChartOpts>(() => {
     series: Array.from({ length: SIZE }).map((_, idx) => ({
       type: 'bar',
       stack: 'total',
-      data: dataSet.map(({ job, techRate }) => {
+      data: dataSet.map(({ city, techRate }) => {
         const { tech, rate } = techRate[idx]
         return {
           name: tech,
-          value: [rate, job],
+          value: [rate, city],
           label: {
-            show: rate > 0.07,
+            show: rate > 0.06,
             formatter: `${tech}`,
             color: '#F7FAFF'
           }
@@ -128,6 +135,8 @@ const options = computed<ChartOpts>(() => {
     }))
   }
 })
+
+onMounted(() => fetchData())
 </script>
 
 <script lang="ts">
