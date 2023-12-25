@@ -86,7 +86,11 @@ const options = computed<ChartOpts>(() => ({
     },
     label: {
       show: true,
-      color: '#4c566a'
+      color: '#4c566a',
+      formatter: ({ name, value }) => `${name} ${((value as number) * 100).toFixed(2)}%`
+    },
+    tooltip: {
+      formatter: ({ name, value }) => `${name} ${((value as number) * 100).toFixed(2)}%`
     },
     data: data.value?.techRate.map(({ tech, rate }) => ({ value: rate, name: tech }))
   }

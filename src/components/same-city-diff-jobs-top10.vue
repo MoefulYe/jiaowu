@@ -10,7 +10,7 @@
     />
     <NButton class="inline m-2" @click="fetchData">确认</NButton>
   </div>
-  <VChart :option="options" :style="`height: ${cmpJobs.length * 3 + 18}rem`" autoresize />
+  <VChart :option="options" :style="`height: ${cmpJobs.length * 2 + 12}rem`" autoresize />
 </template>
 
 <script setup lang="ts">
@@ -86,21 +86,45 @@ const options = computed<ChartOpts>(() => {
   return {
     legend: {},
     xAxis: {
-      type: 'value'
+      type: 'value',
+      axisLabel: {
+        formatter: (value: number) => `${value * 100}%`
+      }
     },
     yAxis: {
       type: 'category'
     },
+    tooltip: {
+      trigger: 'item',
+      axisPointer: {
+        type: 'shadow'
+      }
+    },
     series: Array.from({ length: SIZE }).map((_, idx) => ({
       type: 'bar',
       stack: 'total',
-      data: dataSet.map(({ city, techRate }) => {
+      data: dataSet.map(({ job, techRate }) => {
         const { tech, rate } = techRate[idx]
         return {
           name: tech,
-          value: [rate, city]
+          value: [rate, job],
+          label: {
+            show: rate > 0.07,
+            formatter: `${tech}`,
+            color: '#F7FAFF'
+          }
         }
-      })
+      }),
+      markArea: {
+        itemStyle: {
+          color: '#e5e9f07f'
+        },
+        data: [[{ yAxis: props.job }, { yAxis: props.job }]]
+      },
+      tooltip: {
+        formatter: ({ name, value }) =>
+          `${name}: ${((<[number, string]>value)[0] * 100).toFixed(2)}%`
+      }
     }))
   }
 })

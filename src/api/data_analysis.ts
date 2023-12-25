@@ -65,6 +65,7 @@ export interface RateEntry {
 export interface TechAnalysisResp {
   techRate: RateEntry[]
   city: string
+  job: string
 }
 
 const fetchTechAnalysis = async (params: TechAnalysisReqParams): Promise<_TechAnalysisResp> =>
@@ -108,7 +109,8 @@ export const fetchCityTechAnalysis = async (
     arr.sort().reverse()
     return {
       techRate: arr,
-      city: params.city
+      city: params.city,
+      job: params.tech
     }
   })
 
@@ -134,6 +136,7 @@ export const fetchCountryTechAnalysis = async (
     })
     return {
       techRate: arr,
-      city: '全国'
+      city: '全国',
+      job: params.tech
     }
   })
