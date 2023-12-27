@@ -38,8 +38,7 @@
 import { NButton, NSelect, NTabPane, NTabs, type SelectOption } from 'naive-ui/lib'
 import { ref, computed, onMounted } from 'vue'
 import { type Company, fetchCities, fetchCompanies, fetchJobs } from '../api/mock'
-import { type SalaryAnalysisResp } from '../api/data_analysis'
-import { fetchCitySalaryAnalysis } from '../api/data_analysis'
+import { type SalaryAnalysis, fetchSalaryInitalChoice } from '../api/data_analysis'
 import SameCityDiffJobs from '../components/same-city-diff-jobs-salary.vue'
 import SameJobDiffCities from '../components/same-job-diff-cities-salary.vue'
 import { BarChart } from 'echarts/charts'
@@ -66,7 +65,7 @@ const jobs = ref<string[]>([])
 const city = ref<string | undefined>()
 const cities = ref<string[]>([])
 const companies = ref<Company[]>([])
-const data = ref<SalaryAnalysisResp | undefined>()
+const data = ref<SalaryAnalysis | undefined>()
 
 onMounted(() => {
   fetchCities().then((ret) => (cities.value = ret))
@@ -76,7 +75,7 @@ onMounted(() => {
 
 const fetch = async () => {
   if (job.value !== undefined && city.value !== undefined) {
-    data.value = await fetchCitySalaryAnalysis({
+    data.value = await fetchSalaryInitalChoice({
       city: city.value,
       jobName: job.value
     })

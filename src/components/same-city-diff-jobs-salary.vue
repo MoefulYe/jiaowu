@@ -14,8 +14,8 @@
 </template>
 
 <script setup lang="ts">
-import { type SalaryAnalysisResp, fetchCitySalaryAnalysis } from '../api/data_analysis'
-import { computed, onMounted, ref } from 'vue'
+import { type SalaryAnalysis, fetchSalaryCompareJob } from '../api/data_analysis'
+import { computed, ref } from 'vue'
 import { NSelect, type SelectOption, NButton } from 'naive-ui/lib'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
@@ -57,7 +57,7 @@ type ChartOpts = ComposeOption<
 
 const props = defineProps<Props>()
 const cmpJobs = ref<string[]>([])
-const cmp = ref<SalaryAnalysisResp[]>([])
+const cmp = ref<SalaryAnalysis[]>([])
 const cmpJobOpts = computed<SelectOption[]>(() =>
   props.jobs
     .filter((job) => job !== props.job)
@@ -69,14 +69,11 @@ const cmpJobOpts = computed<SelectOption[]>(() =>
 
 const fetchData = async () => {
   if (props.city !== undefined && props.job !== undefined) {
-    cmp.value = await Promise.all(
-      cmpJobs.value.map((job) =>
-        fetchCitySalaryAnalysis({
-          city: props.city!,
-          jobName: job
-        })
-      )
-    )
+    cmp.value = await fetchSalaryCompareJob({
+      city: props.city!,
+      jobName: props.job!,
+      choiceList: cmpJobs.value
+    })
   } else {
     window.$message.warning('未选择职位和城市')
   }
@@ -261,8 +258,6 @@ const chartOpts = computed<ChartOpts>(() => {
     ]
   }
 })
-
-onMounted(() => fetchData())
 </script>
 
 <script lang="ts">
@@ -271,6 +266,6 @@ interface Props {
   jobs: string[]
   city?: string
   cities: string[]
-  data?: SalaryAnalysisResp
+  data?: SalaryAnalysis
 }
 </script>

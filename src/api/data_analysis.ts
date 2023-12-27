@@ -1,13 +1,6 @@
 import { request } from '@/util/requests'
 
-export interface CitySalaryAnalysisReqParams {
-  /** * 输入的城市名 */
-  city: string
-  /** * 输入的技术类型 */
-  jobName: string
-}
-
-export interface SalaryAnalysisResp {
+export interface SalaryAnalysis {
   region: string
   jobName: string
   jobNum: number
@@ -17,27 +10,58 @@ export interface SalaryAnalysisResp {
   unit: string
 }
 
-export const fetchCitySalaryAnalysis = async (
-  params: CitySalaryAnalysisReqParams
-): Promise<SalaryAnalysisResp> =>
-  request({
-    method: 'GET',
-    params,
-    url: '/data_analysis/city_salary'
-  })
-
-export interface CountrySalaryAnalysisReqParams {
+export interface SalaryInitialChoiceParams {
+  /** * 输入的城市名 */
+  city: string
   /** * 输入的技术类型 */
   jobName: string
 }
 
-export const fetchCountrySalaryAnalysis = async (
-  params: CountrySalaryAnalysisReqParams
-): Promise<SalaryAnalysisResp> =>
+export const fetchSalaryInitalChoice = async (
+  params: SalaryInitialChoiceParams
+): Promise<SalaryAnalysis> =>
   request({
     method: 'GET',
     params,
-    url: '/data_analysis/country_salary'
+    url: '/data_analysis/salary/initial_choice'
+  })
+
+export interface SalaryCompareJobParams {
+  city: string
+  jobName: string
+  choiceList: string[]
+}
+
+export const fetchSalaryCompareJob = async (
+  params: SalaryCompareJobParams
+): Promise<SalaryAnalysis[]> =>
+  request({
+    method: 'GET',
+    params: {
+      city: params.city,
+      jobName: params.jobName,
+      choiceList: params.choiceList.join(',')
+    },
+    url: '/data_analysis/salary/compare_job'
+  })
+
+export interface SalaryCompareRegionParams {
+  city: string
+  jobName: string
+  choiceList: string[]
+}
+
+export const fetchSalaryCompareReigon = async (
+  params: SalaryCompareRegionParams
+): Promise<SalaryAnalysis[]> =>
+  request({
+    method: 'GET',
+    params: {
+      city: params.city,
+      jobName: params.jobName,
+      choiceList: params.choiceList.join(',')
+    },
+    url: '/data_analysis/salary/compare_region'
   })
 
 export interface TechAnalysisReqParams {
