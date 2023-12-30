@@ -51,6 +51,11 @@ const routes: RouteRecordRaw[] = [
         name: 'company',
         path: 'company/:company',
         component: () => import('@/views/user-view/company-view.vue')
+      },
+      {
+        name: 'tech',
+        path: 'tech/:tech',
+        component: () => import('@/views/user-view/tech-view.vue')
       }
     ]
   },
@@ -68,5 +73,9 @@ const router = createRouter({
 // router.beforeEach((to, from, next) => {})
 
 // router.afterEach((to, from, failure) => {})
+export const gotoTechPage = (tech: string) =>
+  window.$router.push({ name: 'tech', params: { tech } })
+
+export const gotoHome = () => window.$router.push({ name: 'welcome' })
 
 export default router

@@ -13,7 +13,7 @@
       <SideMenu @toggle="(toggle) => (isCollapsed = toggle)" />
     </NLayoutSider>
     <NLayout class="grow" content-style="display: flex; flex-direction: column;">
-      <NLayoutHeader class="flex p-2 sm:p-4 sm:h-12 sm:bg-white" id="header">
+      <NLayoutHeader class="flex p-2 sm:p-4 sm:h-12" id="header">
         <NPopover v-if="isMobile().value" trigger="click" class="mr-4">
           <template #trigger>
             <NIcon size="20px">

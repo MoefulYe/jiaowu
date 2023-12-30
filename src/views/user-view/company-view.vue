@@ -1,50 +1,60 @@
 <template>
-  <div v-if="data !== undefined">
-    <h2>企业详情</h2>
-    <div class="flex">
-      <span class="inline">
-        <div class="flex flex-col space-y-4">
-          <div class="flex flex-row space-x-4">
-            <div class="flex flex-col space-y-2">
-              <div class="flex flex-row space-x-2">
-                <span class="font-bold">企业名称：</span>
-                <span>{{ data.name }}</span>
-              </div>
-              <div class="flex flex-row space-x-2">
-                <span class="font-bold">企业网址：</span>
-                <a :href="data.url" class="text-cyan-950 hover:text-cyan-700">{{ data.url }}</a>
-              </div>
-              <div class="flex flex-row space-x-2">
-                <span class="font-bold">招聘网址：</span>
-                <a :href="data.recruitUrl" class="text-cyan-950 hover:text-cyan-700">{{
-                  data.recruitUrl
-                }}</a>
-              </div>
-              <div class="flex flex-row space-x-2">
-                <span class="font-bold">公司简介：</span>
-              </div>
-              <p>{{ data.description }}</p>
-            </div>
+  <div v-if="data !== undefined" class="sm:p-2 grow flex flex-col">
+    <NCard class="bg-white shadow-sm" content-style="display: flex; align-items: center;">
+      <span class="font-bold space-x-2 text-lg">企业详情：</span>
+      <span class="text-lg">{{ data.name }}</span>
+      <span class="grow" />
+      <NStatistic label="岗位数量" :value="data.jobCnt" class="inline-block">
+        <template #prefix>
+          <NIcon>
+            <IdcardOutlined />
+          </NIcon>
+        </template>
+        <template #suffix>
+          <span>个</span>
+        </template>
+      </NStatistic>
+    </NCard>
+    <NCard class="grow bg-white mt-2 shadow-sm">
+      <NTabs>
+        <NTabPane name="基本情况">
+          <h2>企业简介</h2>
+          <p class="whitespace-pre-wrap">
+            {{ data.description }}
+          </p>
+          <h2>工作时间及福利</h2>
+          <div class="px-2">
+            <NIcon class="text-base mr-2"><Clock /></NIcon><span> {{ data.workTime }}</span>
           </div>
-        </div>
-      </span>
-      <span class="ml-24">
-        <NStatistic label="岗位数量" :value="data.jobCnt">
-          <template #prefix>
-            <NIcon>
-              <IdcardOutlined />
-            </NIcon>
-          </template>
-          <template #suffix>
-            <span>个</span>
-          </template>
-        </NStatistic>
-      </span>
-    </div>
-    <div class="flex mt-16">
-      <VChart class="h-72 grow" :option="pieOpts" autoresize />
-      <VChart class="h-72 grow" :option="barOpts" autoresize />
-    </div>
+          <div class="p-2">
+            <NIcon class="text-base mr-2"><Heart16Regular /></NIcon>
+            <NTag v-for="welfare in data.welfare" class="mx-2">{{ welfare }}</NTag>
+          </div>
+          <h2>相关网址</h2>
+          <div>
+            <span>企业官网：</span>
+            <a :href="data.url" class="text-cyan-950 hover:text-cyan-700">{{ data.url }}</a>
+          </div>
+          <div>
+            <span>招聘网址：</span>
+            <a :href="data.recruitUrl" class="text-cyan-950 hover:text-cyan-700">{{
+              data.recruitUrl
+            }}</a>
+          </div>
+        </NTabPane>
+        <NTabPane name="技术需求">
+          <VChart
+            class="h-96"
+            :option="pieOpts"
+            autoresize
+            @mousedown="({ name }) => gotoTechPage(name)"
+          />
+        </NTabPane>
+        <NTabPane name="薪资情况">
+          <VChart class="h-96" :option="barOpts" autoresize />
+        </NTabPane>
+      </NTabs>
+    </NCard>
   </div>
 </template>
 
@@ -52,8 +62,9 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { CompanyInfo, fetchCompanyInfo } from '../../api/company'
-import { NIcon, NStatistic } from 'naive-ui'
+import { NIcon, NStatistic, NCard, NTabs, NTabPane, NTag } from 'naive-ui'
 import { IdcardOutlined } from '@vicons/antd'
+import { gotoTechPage } from '../../router'
 
 import { BarChart, PieChart } from 'echarts/charts'
 import { use } from 'echarts/core'
@@ -71,6 +82,8 @@ import { CanvasRenderer } from 'echarts/renderers'
 import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption, PieSeriesOption } from 'echarts/charts'
 import VChart from 'vue-echarts'
+import { Clock } from '@vicons/tabler'
+import { Heart16Regular } from '@vicons/fluent'
 use([
   GridComponent,
   PieChart,
@@ -124,6 +137,9 @@ const pieOpts = computed<ChartOpts>(() => ({
         show: false,
         position: 'center'
       },
+      tooltip: {
+        formatter: ({ value }) => `${((value as number) * 100).toFixed(2)}%`
+      },
       emphasis: {
         label: {
           show: true,
@@ -172,7 +188,12 @@ const barOpts = computed<ChartOpts>(() => ({
               [data.value.salary.min, '最少'],
               [data.value.salary.avg, '平均'],
               [data.value.salary.max, '最多']
-            ]
+            ],
+      label: {
+        show: true,
+        formatter: ({ value }) => `${(value as [number, string])[0]}K`,
+        color: '#ffffff'
+      }
     }
   ]
 }))

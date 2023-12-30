@@ -10,7 +10,12 @@
     />
     <NButton class="inline m-2" @click="fetchData">确认</NButton>
   </div>
-  <VChart :option="options" :style="`height: ${cmpCites.length * 2 + 12}rem`" autoresize />
+  <VChart
+    :option="options"
+    :style="`height: ${cmpCites.length * 2 + 12}rem`"
+    autoresize
+    @mousedown="({ name }) => gotoTechPage(name)"
+  />
 </template>
 
 <script setup lang="ts">
@@ -21,6 +26,7 @@ import {
 } from '../api/data_analysis'
 import { ref, computed, onMounted } from 'vue'
 import { type SelectOption, NSelect, NButton } from 'naive-ui/lib'
+import { gotoTechPage } from '../router'
 
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
