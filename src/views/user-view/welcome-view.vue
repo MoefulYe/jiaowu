@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-const TITLE = import.meta.env.VITE_TITLE
+import { TITLE } from '../../constants'
 </script>

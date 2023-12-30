@@ -2,14 +2,35 @@ import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-rou
 
 const routes: RouteRecordRaw[] = [
   {
+    path: '/404',
+    name: 'not-found',
+    component: () => import('@/views/error-view/not-found-view.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login-view.vue')
+  },
+  {
     path: '/',
     component: () => import('@/views/user-view/index.vue'),
     children: [
       { path: '', redirect: { name: 'welcome' } },
-      { name: 'login', path: 'login', component: () => import('@/views/login-view.vue') },
-      { name: 'welcome', path: 'welcome', component: () => import('@/views/welcome-view.vue') },
-      { name: 'profile', path: 'profile', component: () => import('@/views/profile-view.vue') },
-      { name: 'academic', path: 'academic', component: () => import('@/views/academic-view.vue') },
+      {
+        name: 'welcome',
+        path: 'welcome',
+        component: () => import('@/views/user-view/welcome-view.vue')
+      },
+      {
+        name: 'profile',
+        path: 'profile',
+        component: () => import('@/views/user-view/profile-view.vue')
+      },
+      {
+        name: 'academic',
+        path: 'academic',
+        component: () => import('@/views/user-view/academic-view.vue')
+      },
       {
         name: 'job',
         path: 'job',
@@ -17,16 +38,25 @@ const routes: RouteRecordRaw[] = [
           {
             name: 'job-market',
             path: 'market',
-            component: () => import('@/views/job-market-view.vue')
+            component: () => import('@/views/user-view/job-view/job-market-view.vue')
           },
           {
             name: 'skill-required',
             path: 'skill',
-            component: () => import('@/views/skill-require-view.vue')
+            component: () => import('@/views/user-view/job-view/skill-require-view.vue')
           }
         ]
+      },
+      {
+        name: 'company',
+        path: 'company/:company',
+        component: () => import('@/views/user-view/company-view.vue')
       }
     ]
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: { name: 'not-found' }
   }
 ]
 

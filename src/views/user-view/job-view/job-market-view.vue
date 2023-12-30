@@ -26,9 +26,11 @@
     </NTabs>
     <h2 class="text-2xl font-bold">相关企业</h2>
     <div>
-      <span v-for="{ name, url } in companies">
-        <a class="text-slate-800 hover:text-sky-900 underline" :href="url">{{ name }}</a
-        >，
+      <span v-for="company in companies">
+        <RouterLink :to="`/company/${company}`" class="text-cyan-950 hover:text-cyan-700">{{
+          company
+        }}</RouterLink>
+        ，
       </span>
     </div>
   </div>
@@ -37,10 +39,10 @@
 <script setup lang="ts">
 import { NButton, NSelect, NTabPane, NTabs, type SelectOption } from 'naive-ui/lib'
 import { ref, computed, onMounted } from 'vue'
-import { type Company, fetchCities, fetchCompanies, fetchJobs } from '../api/mock'
-import { type SalaryAnalysis, fetchSalaryInitalChoice } from '../api/data_analysis'
-import SameCityDiffJobs from '../components/same-city-diff-jobs-salary.vue'
-import SameJobDiffCities from '../components/same-job-diff-cities-salary.vue'
+import { fetchCities, fetchCompanies, fetchJobs } from '../../../api/mock'
+import { type SalaryAnalysis, fetchSalaryInitalChoice } from '../../../api/data_analysis'
+import SameCityDiffJobs from '../../../components/same-city-diff-jobs-salary.vue'
+import SameJobDiffCities from '../../../components/same-job-diff-cities-salary.vue'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
 import {
@@ -55,6 +57,7 @@ import { CanvasRenderer } from 'echarts/renderers'
 import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import VChart from 'vue-echarts'
+import { RouterLink } from 'vue-router'
 use([GridComponent, BarChart, CanvasRenderer, LegendComponent, TooltipComponent])
 type ChartOpts = ComposeOption<
   GridComponentOption | BarSeriesOption | LegendComponentOption | TooltipComponentOption
@@ -64,7 +67,7 @@ const job = ref<string | undefined>()
 const jobs = ref<string[]>([])
 const city = ref<string | undefined>()
 const cities = ref<string[]>([])
-const companies = ref<Company[]>([])
+const companies = ref<string[]>([])
 const data = ref<SalaryAnalysis | undefined>()
 
 onMounted(() => {

@@ -1,4 +1,6 @@
 <template>
+  <NButton class="w-full mt-4" @click="() => emit('login')">登录账号</NButton>
+  <NDivider class="text-[#4c566a] opacity-90">或者</NDivider>
   <NForm ref="formRef" :label-width="80" :model="data" :rules="rules">
     <NFormItem label="用户名" path="username">
       <NInput v-model:value="data.username" placeholder="请输入用户名" />
@@ -11,6 +13,7 @@
     </NFormItem>
     <NButton
       type="primary"
+      class="w-full mt-4"
       @click="
         () => {
           console.log(data)
@@ -22,8 +25,13 @@
 </template>
 
 <script setup lang="ts">
+import { NDivider } from 'naive-ui'
 import { type FormInst, type FormRules, NButton, NForm, NFormItem, NInput } from 'naive-ui/lib'
 import { ref } from 'vue'
+
+const emit = defineEmits<{
+  login: []
+}>()
 
 const data = ref({
   username: '',

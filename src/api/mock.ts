@@ -52,29 +52,68 @@ export const fetchJobs = async (): Promise<string[]> => {
   )
 }
 
-export interface Company {
-  name: string
-  url: string
-}
-
-const companies: Company[] = [
-  { name: '华为', url: 'https://www.huawei.com' },
-  { name: '阿里巴巴', url: 'https://www.alibaba.com' },
-  { name: '腾讯', url: 'https://www.tencent.com' },
-  { name: '字节跳动', url: 'https://www.bytedance.com' },
-  { name: '百度', url: 'https://www.baidu.com' },
-  { name: '京东', url: 'https://www.jd.com' },
-  { name: '美团', url: 'https://www.meituan.com' },
-  { name: '滴滴', url: 'https://www.didiglobal.com' },
-  { name: '小米', url: 'https://www.mi.com' },
-  { name: '网易', url: 'https://www.163.com' },
-  { name: '携程', url: 'https://www.ctrip.com' },
-  { name: '拼多多', url: 'https://www.pinduoduo.com' },
-  { name: '360', url: 'https://www.360.com' },
-  { name: '新浪', url: 'https://www.sina.com.cn' }
+const companies = [
+  '腾讯',
+  '阿里巴巴',
+  '百度',
+  '字节跳动',
+  '美团',
+  '京东',
+  '华为',
+  '网易',
+  '小米',
+  '滴滴',
+  '360',
+  '搜狗',
+  '新浪',
+  '携程',
+  '拼多多',
+  '快手',
+  '微博',
+  '饿了么',
+  '爱奇艺',
+  '蘑菇街',
+  '贝壳',
+  '58同城',
+  '虎牙',
+  '哔哩哔哩',
+  '陌陌',
+  '探探',
+  '猫眼',
+  '大众点评',
+  '去哪儿',
+  '美团点评',
+  '携程',
+  '途牛',
+  '同程',
+  '驴妈妈',
+  '去哪儿网',
+  '飞猪',
+  '艺龙',
+  '携程旅行网',
+  '驴妈妈旅游网',
+  '同程旅游网',
+  '途牛旅游网',
+  '去哪儿旅游网',
+  '飞猪旅行',
+  '艺龙旅行网',
+  '去哪儿网机票',
+  '去哪儿网酒店',
+  '去哪儿网火车票',
+  '去哪儿网旅游',
+  '去哪儿网门票',
+  '去哪儿网度假',
+  '去哪儿网团购',
+  '去哪儿网签证',
+  '去哪儿网租车',
+  '去哪儿网自由行',
+  '去哪儿网邮轮',
+  '去哪儿网旅行攻略',
+  '去哪儿网旅行保险',
+  '去哪儿网旅行社'
 ]
 
-export const fetchCompanies = async (): Promise<Company[]> => {
+export const fetchCompanies = async (): Promise<string[]> => {
   window.$loading.start()
   return new Promise((resolve) =>
     setTimeout(() => {

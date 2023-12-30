@@ -5,12 +5,12 @@
       id="menu"
       collapse-mode="width"
       :collapsed-width="64"
-      :width="240"
+      :width="180"
       :collapsed="isCollapsed"
       @collapse="() => (isCollapsed = true)"
       @expand="() => (isCollapsed = false)"
     >
-      <SideMenu :collapsed="isCollapsed" @toggle="(toggle) => (isCollapsed = toggle)" />
+      <SideMenu @toggle="(toggle) => (isCollapsed = toggle)" />
     </NLayoutSider>
     <NLayout class="grow" content-style="display: flex; flex-direction: column;">
       <NLayoutHeader class="flex p-2 sm:p-4 sm:h-12 sm:bg-white" id="header">
@@ -40,7 +40,7 @@
         class="grow flex flex-col"
         content-style="display: flex; flex-direction: column; flex-grow: 1;"
       >
-        <MainContent />
+        <RouterView />
       </NLayoutContent>
     </NLayout>
   </NLayout>
@@ -60,15 +60,14 @@ import {
   type DropdownOption
 } from 'naive-ui/lib'
 import SideMenu from '../../components/side-menu.vue'
-import MainContent from '../../components/main-content.vue'
 import { isMobile } from '../../util/reponsive'
 import { useTokenStore } from '../../stores/token'
 import { Menu2 } from '@vicons/tabler'
 import { Exit, Settings, UserProfile } from '@vicons/carbon'
 import { renderIcon } from '../../util/render'
+import { TITLE } from '../../constants'
 
 const isCollapsed = ref(true)
-const TITLE = import.meta.env.VITE_TITLE
 const username = useTokenStore().username
 </script>
 

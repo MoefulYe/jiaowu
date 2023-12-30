@@ -1,29 +1,31 @@
-<script setup lang="ts">
-import { NTabs, NTabPane } from 'naive-ui/lib'
-import LoginForm from '../components/login-form.vue'
-import RegisterForm from '../components/register-form.vue'
-
-const TITLE = import.meta.env.VITE_TITLE
-</script>
-
 <template>
-  <h2>欢迎来到 {{ TITLE }}</h2>
-  <div class="w-full h-full flex justify-center items-center -z-10" id="login-container">
-    <NTabs animated class="w-fit h-fit bg-white p-8 shadow-md rounded-md">
-      <NTabPane name="登录">
-        <LoginForm />
-      </NTabPane>
-      <NTabPane name="注册">
-        <RegisterForm />
-      </NTabPane>
-    </NTabs>
+  <div class="w-full h-full flex justify-end items-center">
+    <NCarousel :autoplay="true" :show-dots="false" class="absolute -z-10">
+      <img src="/login-bg/bg_01.jpg" class="w-full h-full" />
+      <img src="/login-bg/bg_02.jpg" class="w-full h-full" />
+      <img src="/login-bg/bg_03.jpg" class="w-full h-full" />
+    </NCarousel>
+    <NCard class="w-fit h-fit m-12 shadow-2xl">
+      <template #header> 欢迎来到{{ TITLE }} </template>
+      <template #default>
+        <LoginForm v-if="state === Popup.Login" @register="() => (state = Popup.Register)" />
+        <RegisterForm v-else-if="state === Popup.Register" @login="() => (state = Popup.Login)" />
+      </template>
+    </NCard>
   </div>
 </template>
 
-<style scoped lang="scss">
-#login-container {
-  background-image: url('/login-background.svg');
-  background-size: cover;
-  background-position: center;
+<script setup lang="ts">
+import { ref } from 'vue'
+import { NCard, NCarousel } from 'naive-ui'
+import LoginForm from '../components/login-form.vue'
+import RegisterForm from '../components/register-form.vue'
+import { TITLE } from '../constants'
+
+enum Popup {
+  Login,
+  Register
 }
-</style>
+
+const state = ref(Popup.Login)
+</script>
