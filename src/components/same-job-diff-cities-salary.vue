@@ -11,14 +11,31 @@
     <NButton class="inline m-2" @click="fetchData">确认</NButton>
   </div>
   <VChart :option="chartOpts" :style="`height: ${cmpCities.length * 3 + 18}rem`" autoresize />
+  <h2 class="text-lg font-bold">这些地区的相关企业:</h2>
+  <div v-for="{ region, companyList } in companies" class="p-2">
+    <span>{{ region }}：</span>
+    <RouterLink
+      v-for="company in companyList"
+      :to="{
+        name: 'company',
+        params: {
+          company
+        }
+      }"
+    >
+      <NTag type="success" :bordered="false" class="mx-1">{{ company }}</NTag>
+    </RouterLink>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { type SalaryAnalysis, fetchSalaryCompareReigon } from '../api/data_analysis'
-import { computed, onMounted, ref } from 'vue'
-import { NSelect, type SelectOption, NButton } from 'naive-ui/lib'
+import { type SalaryAnalysis, fetchSalaryCompareReigon } from '../api/data_analysis/salary'
+import { computed, ref } from 'vue'
+import { NSelect, type SelectOption, NButton, NTag } from 'naive-ui'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
+import { RouterLink } from 'vue-router'
+import { RalateCompanies, fetchRelateRegion } from '../api/data_analysis/company'
 import {
   GridComponent,
   LegendComponent,
@@ -56,6 +73,7 @@ type ChartOpts = ComposeOption<
 const props = defineProps<Props>()
 const cmpCities = ref<string[]>([])
 const cmp = ref<SalaryAnalysis[]>([])
+const companies = ref<RalateCompanies[]>([])
 const cmpCityOpts = computed<SelectOption[]>(() =>
   props.cities
     .filter((city) => city !== props.city)
@@ -65,16 +83,17 @@ const cmpCityOpts = computed<SelectOption[]>(() =>
     }))
 )
 
-const fetchData = async () => {
-  if (props.city !== undefined && props.job !== undefined) {
-    cmp.value = await fetchSalaryCompareReigon({
-      city: props.city!,
-      jobName: props.job!,
-      choiceList: cmpCities.value
-    })
-  } else {
-    window.$message.warning('未选择职位和城市')
-  }
+const fetchData = () => {
+  fetchSalaryCompareReigon({
+    city: props.city!,
+    jobName: props.job!,
+    choiceList: cmpCities.value
+  }).then((ok) => (cmp.value = ok))
+  fetchRelateRegion({
+    city: props.city,
+    jobName: props.job,
+    choiceList: cmpCities.value
+  }).then((ok) => (companies.value = ok))
 }
 
 const chartOpts = computed<ChartOpts>(() => {
@@ -256,17 +275,13 @@ const chartOpts = computed<ChartOpts>(() => {
     ]
   }
 })
-
-onMounted(() => {
-  fetchData()
-})
 </script>
 
 <script lang="ts">
 interface Props {
-  job?: string
+  job: string
   jobs: string[]
-  city?: string
+  city: string
   cities: string[]
   data?: SalaryAnalysis
 }

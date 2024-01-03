@@ -19,12 +19,8 @@
 </template>
 
 <script setup lang="ts">
-import {
-  type TechAnalysisResp,
-  fetchCityTechAnalysis,
-  fetchCountryTechAnalysis
-} from '../api/data_analysis'
-import { ref, computed, onMounted } from 'vue'
+import { type Tech, type Techs, fetchCompareRegion } from '../api/data_analysis/tech'
+import { ref, computed } from 'vue'
 import { type SelectOption, NSelect, NButton } from 'naive-ui/lib'
 import { gotoTechPage } from '../router'
 
@@ -64,7 +60,7 @@ type ChartOpts = ComposeOption<
 
 const props = defineProps<Props>()
 const cmpCites = ref<string[]>([])
-const cmp = ref<TechAnalysisResp[]>([])
+const cmp = ref<Techs>([])
 const SIZE = 10
 
 const cmpCityOpts = computed<SelectOption[]>(() =>
@@ -76,23 +72,12 @@ const cmpCityOpts = computed<SelectOption[]>(() =>
     }))
 )
 
-const fetchData = async () => {
-  if (props.city !== undefined && props.job !== undefined) {
-    cmp.value = await Promise.all([
-      fetchCountryTechAnalysis({
-        tech: props.job
-      }),
-      ...cmpCites.value.map((city) =>
-        fetchCityTechAnalysis({
-          city,
-          tech: props.job!
-        })
-      )
-    ])
-  } else {
-    window.$message.warning('未选择职位和城市')
-  }
-}
+const fetchData = () =>
+  fetchCompareRegion({
+    city: props.city,
+    jobName: props.job,
+    choiceList: cmpCites.value
+  }).then((ok) => (cmp.value = ok))
 
 const options = computed<ChartOpts>(() => {
   const dataSet = props.data ? [props.data, ...cmp.value] : []
@@ -102,7 +87,9 @@ const options = computed<ChartOpts>(() => {
       type: 'value',
       axisLabel: {
         formatter: (value: number) => `${value * 100}%`
-      }
+      },
+      min: 0,
+      max: 1
     },
     yAxis: {
       type: 'category'
@@ -116,14 +103,14 @@ const options = computed<ChartOpts>(() => {
     series: Array.from({ length: SIZE }).map((_, idx) => ({
       type: 'bar',
       stack: 'total',
-      data: dataSet.map(({ city, techRate }) => {
-        const { tech, rate } = techRate[idx]
+      data: dataSet.map(({ region, techRateList }) => {
+        const { techName, rate } = techRateList[idx]
         return {
-          name: tech,
-          value: [rate, city],
+          name: techName,
+          value: [rate, region],
           label: {
             show: rate > 0.06,
-            formatter: `${tech}`,
+            formatter: `${techName}`,
             color: '#F7FAFF'
           }
         }
@@ -141,16 +128,15 @@ const options = computed<ChartOpts>(() => {
     }))
   }
 })
-
-onMounted(() => fetchData())
 </script>
 
 <script lang="ts">
 interface Props {
-  job?: string
+  job: string
   jobs: string[]
-  city?: string
+  city: string
   cities: string[]
-  data?: TechAnalysisResp
+  data?: Tech
 }
 </script>
+../api/salary

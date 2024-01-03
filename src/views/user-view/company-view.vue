@@ -32,14 +32,8 @@
           </div>
           <h2>相关网址</h2>
           <div>
-            <span>企业官网：</span>
-            <a :href="data.url" class="text-cyan-950 hover:text-cyan-700">{{ data.url }}</a>
-          </div>
-          <div>
             <span>招聘网址：</span>
-            <a :href="data.recruitUrl" class="text-cyan-950 hover:text-cyan-700">{{
-              data.recruitUrl
-            }}</a>
+            <a :href="data.url" class="text-cyan-950 hover:text-cyan-700">{{ data.url }}</a>
           </div>
         </NTabPane>
         <NTabPane name="技术需求">
@@ -59,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { type CompanyInfo, fetchCompanyInfo } from '../../api/company'
 import { NIcon, NStatistic, NCard, NTabs, NTabPane, NTag } from 'naive-ui'
@@ -104,7 +98,8 @@ type ChartOpts = ComposeOption<
 
 const company = useRoute().params.company as string
 const data = ref<CompanyInfo>()
-onMounted(() => fetchCompanyInfo(company).then((ret) => (data.value = ret)))
+
+onBeforeMount(() => fetchCompanyInfo(company).then((ret) => (data.value = ret)))
 
 const pieOpts = computed<ChartOpts>(() => ({
   title: {
@@ -138,7 +133,8 @@ const pieOpts = computed<ChartOpts>(() => ({
         position: 'center'
       },
       tooltip: {
-        formatter: ({ value }) => `${((value as number) * 100).toFixed(2)}%`
+        formatter: ({ value, name }) =>
+          `技术: ${name}<br/>占比: ${((value as number) * 100).toFixed(2)}%`
       },
       emphasis: {
         label: {

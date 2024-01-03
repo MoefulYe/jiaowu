@@ -1,5 +1,5 @@
 <template>
-  <h2 class="text-xl font-bold">同一城市不同岗位对比</h2>
+  <h2 class="text-lg font-bold">同一城市不同岗位对比</h2>
   <div class="flex mb-4">
     <NSelect
       v-model:value="cmpJobs"
@@ -11,12 +11,29 @@
     <NButton class="inline m-2" @click="fetchData">确认</NButton>
   </div>
   <VChart :option="chartOpts" :style="`height: ${cmpJobs.length * 3 + 18}rem`" autoresize />
+  <h2 class="text-lg font-bold">这些岗位的相关企业:</h2>
+  <div v-for="{ jobName, companyList } in companies" class="p-2">
+    <span>{{ jobName }}：</span>
+    <RouterView
+      v-for="company in companyList"
+      :to="{
+        name: 'company',
+        params: {
+          company
+        }
+      }"
+    >
+      <NTag type="success" :bordered="false" class="mx-1">{{ company }}</NTag>
+    </RouterView>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { type SalaryAnalysis, fetchSalaryCompareJob } from '../api/data_analysis'
+import { NSelect, type SelectOption, NButton, NTag } from 'naive-ui'
+import { type SalaryAnalysis, fetchSalaryCompareJob } from '../api/data_analysis/salary'
+import { fetchRelateJob, type RalateCompanies } from '../api/data_analysis/company'
+import { RouterView } from 'vue-router'
 import { computed, ref } from 'vue'
-import { NSelect, type SelectOption, NButton } from 'naive-ui/lib'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
 import {
@@ -58,6 +75,7 @@ type ChartOpts = ComposeOption<
 const props = defineProps<Props>()
 const cmpJobs = ref<string[]>([])
 const cmp = ref<SalaryAnalysis[]>([])
+const companies = ref<RalateCompanies[]>([])
 const cmpJobOpts = computed<SelectOption[]>(() =>
   props.jobs
     .filter((job) => job !== props.job)
@@ -67,16 +85,17 @@ const cmpJobOpts = computed<SelectOption[]>(() =>
     }))
 )
 
-const fetchData = async () => {
-  if (props.city !== undefined && props.job !== undefined) {
-    cmp.value = await fetchSalaryCompareJob({
-      city: props.city!,
-      jobName: props.job!,
-      choiceList: cmpJobs.value
-    })
-  } else {
-    window.$message.warning('未选择职位和城市')
-  }
+const fetchData = () => {
+  fetchSalaryCompareJob({
+    city: props.city!,
+    jobName: props.job!,
+    choiceList: cmpJobs.value
+  }).then((ok) => (cmp.value = ok))
+  fetchRelateJob({
+    city: props.city,
+    jobName: props.job,
+    choiceList: cmpJobs.value
+  }).then((ok) => (companies.value = ok))
 }
 
 const chartOpts = computed<ChartOpts>(() => {
@@ -262,9 +281,9 @@ const chartOpts = computed<ChartOpts>(() => {
 
 <script lang="ts">
 interface Props {
-  job?: string
+  job: string
   jobs: string[]
-  city?: string
+  city: string
   cities: string[]
   data?: SalaryAnalysis
 }

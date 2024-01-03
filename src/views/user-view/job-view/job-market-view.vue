@@ -22,6 +22,23 @@
         <div v-if="data !== undefined" class="p-2">
           <VChart :option="chartOpts" style="height: 16rem" autoresize />
         </div>
+        <h2 class="text-2xl font-bold">相关企业</h2>
+        <div>
+          <span v-for="company in companies">
+            <RouterLink
+              :to="{
+                name: 'company',
+                params: {
+                  company
+                }
+              }"
+            >
+              <NTag :bordered="false" type="success" class="mx-2">
+                {{ company }}
+              </NTag>
+            </RouterLink>
+          </span>
+        </div>
         <h2 class="text-xl font-bold">比较</h2>
         <NTabs :default-value="''">
           <NTabPane name="相同职位不同城市">
@@ -31,15 +48,6 @@
             <SameCityDiffJobs :job="job" :jobs="jobs" :city="city" :cities="cities" :data="data" />
           </NTabPane>
         </NTabs>
-        <h2 class="text-2xl font-bold">相关企业</h2>
-        <div>
-          <span v-for="company in companies">
-            <RouterLink :to="`/company/${company}`" class="text-cyan-950 hover:text-cyan-700">{{
-              company
-            }}</RouterLink>
-            ，
-          </span>
-        </div>
       </div>
     </NCard>
   </div>
@@ -47,9 +55,9 @@
 
 <script setup lang="ts">
 import { NButton, NSelect, NTabPane, NTabs, type SelectOption } from 'naive-ui/lib'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
 import { fetchCities, fetchCompanies, fetchJobs } from '../../../api/mock'
-import { type SalaryAnalysis, fetchSalaryInitalChoice } from '../../../api/data_analysis'
+import { type SalaryAnalysis, fetchSalaryInitalChoice } from '../../../api/data_analysis/salary'
 import SameCityDiffJobs from '../../../components/same-city-diff-jobs-salary.vue'
 import SameJobDiffCities from '../../../components/same-job-diff-cities-salary.vue'
 import { BarChart } from 'echarts/charts'
@@ -67,35 +75,31 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import VChart from 'vue-echarts'
 import { RouterLink } from 'vue-router'
-import { NCard } from 'naive-ui'
+import { NCard, NTag } from 'naive-ui'
 use([GridComponent, BarChart, CanvasRenderer, LegendComponent, TooltipComponent])
 type ChartOpts = ComposeOption<
   GridComponentOption | BarSeriesOption | LegendComponentOption | TooltipComponentOption
 >
 
-const job = ref<string | undefined>()
+const job = ref<string>('java')
 const jobs = ref<string[]>([])
-const city = ref<string | undefined>()
+const city = ref<string>('杭州')
 const cities = ref<string[]>([])
 const companies = ref<string[]>([])
-const data = ref<SalaryAnalysis | undefined>()
+const data = ref<SalaryAnalysis>()
 
-onMounted(() => {
+onBeforeMount(() => {
   fetchCities().then((ret) => (cities.value = ret))
   fetchJobs().then((ret) => (jobs.value = ret))
   fetchCompanies().then((ret) => (companies.value = ret))
+  fetch()
 })
 
-const fetch = async () => {
-  if (job.value !== undefined && city.value !== undefined) {
-    data.value = await fetchSalaryInitalChoice({
-      city: city.value,
-      jobName: job.value
-    })
-  } else {
-    window.$message.warning('请选择职位和城市!')
-  }
-}
+const fetch = () =>
+  fetchSalaryInitalChoice({
+    city: city.value,
+    jobName: job.value
+  }).then((ok) => (data.value = ok))
 
 const jobOpts = computed<SelectOption[]>(() =>
   jobs.value.map((job) => ({

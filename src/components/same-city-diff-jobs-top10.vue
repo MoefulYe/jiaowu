@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { type TechAnalysisResp, fetchCityTechAnalysis } from '../api/data_analysis'
+import { type Tech, type Techs, fetchTechCompareJob } from '../api/data_analysis/tech'
 import { ref, computed } from 'vue'
 import { type SelectOption, NSelect, NButton } from 'naive-ui/lib'
 import { gotoTechPage } from '../router'
@@ -60,7 +60,7 @@ type ChartOpts = ComposeOption<
 
 const props = defineProps<Props>()
 const cmpJobs = ref<string[]>([])
-const cmp = ref<TechAnalysisResp[]>([])
+const cmp = ref<Techs>([])
 const SIZE = 10
 
 const cmpJobOpts = computed<SelectOption[]>(() =>
@@ -72,20 +72,12 @@ const cmpJobOpts = computed<SelectOption[]>(() =>
     }))
 )
 
-const fetchData = async () => {
-  if (props.city !== undefined && props.job !== undefined) {
-    cmp.value = await Promise.all(
-      cmpJobs.value.map((job) =>
-        fetchCityTechAnalysis({
-          city: props.city!,
-          tech: job
-        })
-      )
-    )
-  } else {
-    window.$message.warning('未选择职位和城市')
-  }
-}
+const fetchData = () =>
+  fetchTechCompareJob({
+    city: props.city,
+    jobName: props.job,
+    choiceList: cmpJobs.value
+  }).then((ok) => (cmp.value = ok))
 
 const options = computed<ChartOpts>(() => {
   const dataSet = props.data ? [props.data, ...cmp.value] : []
@@ -95,7 +87,9 @@ const options = computed<ChartOpts>(() => {
       type: 'value',
       axisLabel: {
         formatter: (value: number) => `${value * 100}%`
-      }
+      },
+      min: 0,
+      max: 1
     },
     yAxis: {
       type: 'category'
@@ -109,14 +103,14 @@ const options = computed<ChartOpts>(() => {
     series: Array.from({ length: SIZE }).map((_, idx) => ({
       type: 'bar',
       stack: 'total',
-      data: dataSet.map(({ job, techRate }) => {
-        const { tech, rate } = techRate[idx]
+      data: dataSet.map(({ jobName, techRateList }) => {
+        const { techName, rate } = techRateList[idx]
         return {
-          name: tech,
-          value: [rate, job],
+          name: techName,
+          value: [rate, jobName],
           label: {
             show: rate > 0.07,
-            formatter: `${tech}`,
+            formatter: `${techName}`,
             color: '#F7FAFF'
           }
         }
@@ -138,10 +132,10 @@ const options = computed<ChartOpts>(() => {
 
 <script lang="ts">
 interface Props {
-  job?: string
+  job: string
   jobs: string[]
-  city?: string
+  city: string
   cities: string[]
-  data?: TechAnalysisResp
+  data?: Tech
 }
 </script>

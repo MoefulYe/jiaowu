@@ -57,7 +57,7 @@ import {
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
 import { fetchCities, fetchJobs } from '../../../api/mock'
-import { fetchCityTechAnalysis, type TechAnalysisResp } from '../../../api/data_analysis'
+import { fetchTechInitialChoice, type Tech } from '../../../api/data_analysis/tech'
 import { type ComposeOption } from 'echarts'
 import SameCityDiffJobs from '../../../components/same-city-diff-jobs-top10.vue'
 import SameJobDiffCities from '../../../components/same-job-diff-cities-top10.vue'
@@ -70,9 +70,9 @@ type ChartOpts = ComposeOption<
 
 const jobs = ref<string[]>([])
 const cities = ref<string[]>([])
-const job = ref<string | undefined>()
-const city = ref<string | undefined>()
-const data = ref<TechAnalysisResp | undefined>()
+const job = ref<string>('java')
+const city = ref<string>('杭州')
+const data = ref<Tech>()
 
 const cityOpts = computed<SelectOption[]>(() =>
   cities.value.map((city) => ({
@@ -107,24 +107,20 @@ const options = computed<ChartOpts>(() => ({
     tooltip: {
       formatter: ({ name, value }) => `${name} ${((value as number) * 100).toFixed(2)}%`
     },
-    data: data.value?.techRate.map(({ tech, rate }) => ({ value: rate, name: tech }))
+    data: data.value?.techRateList.map(({ techName, rate }) => ({ value: rate, name: techName }))
   }
 }))
 
-const fetchData = async () => {
-  if (city.value !== undefined && job.value !== undefined) {
-    data.value = await fetchCityTechAnalysis({
-      city: city.value,
-      tech: job.value
-    })
-  } else {
-    window.$message.warning('请选择岗位和城市')
-  }
-}
+const fetchData = () =>
+  fetchTechInitialChoice({
+    city: city.value,
+    jobName: job.value
+  }).then((ok) => (data.value = ok))
 
 onMounted(() => {
   fetchCities().then((ret) => (cities.value = ret))
   fetchJobs().then((ret) => (jobs.value = ret))
+  fetchData()
 })
 </script>
 
