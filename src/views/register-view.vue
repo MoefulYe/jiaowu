@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-full flex flex-col items-center justify-center bg-[url('/register-bg.jpg')] bg-center bg-cover"
+    class="w-full h-full flex flex-col items-center justify-center bg-[url('/register-bg.webp')] bg-center bg-cover"
   >
     <NCard v-if="step === Step.Register" class="w-fit h-fit m-12 shadow-sm">
       <template #header> <div class="flex justify-center">注册账号</div> </template>
@@ -11,7 +11,13 @@
     <NCard v-else-if="step === Step.FillBasicInfo" class="w-fit h-fit m-12 shadow-sm">
       <template #header> <div class="flex justify-center">填写基本信息</div> </template>
       <template #default>
-        <RegisterForm @success="() => (step = 1)" />
+        <BasicInfoForm @complete="() => (step = Step.FillAcademicInfo)" />
+      </template>
+    </NCard>
+    <NCard v-else-if="step === Step.FillAcademicInfo" class="w-fit h-fit m-12 shadow-sm">
+      <template #header> <div class="flex justify-center">填写学业信息</div> </template>
+      <template #default>
+        <AcademicInfoForm @complete="() => (step = Step.Ok)" />
       </template>
     </NCard>
     <NCard v-else-if="step === Step.Ok" class="w-fit h-fit m-12 shadow-sm">
@@ -23,7 +29,7 @@
     <NProgress
       class="fixed bottom-0"
       :show-indicator="false"
-      :percentage="34 + step * 33"
+      :percentage="7 + step * 31"
       :height="4"
       :border-radius="0"
     />
@@ -36,21 +42,20 @@ import RegisterForm from '../components/register-form.vue'
 import { NCard, NButton, NProgress } from 'naive-ui'
 import { gotoLogin } from '../router'
 
-const props = defineProps<{
-  step: Step
-}>()
-
-const step = ref(props.step)
+const step = ref(Step.Register)
 </script>
 
 <script lang="tsx">
 import { defineComponent } from 'vue'
 import { gotoHome } from '../router'
+import BasicInfoForm from '../components/basic-info-form.vue'
+import AcademicInfoForm from '../components/academic-info-form.vue'
 
 enum Step {
-  Register = 'register',
-  FillBasicInfo = 'fill-form',
-  Ok = 'ok'
+  Register,
+  FillBasicInfo,
+  FillAcademicInfo,
+  Ok
 }
 
 const GuidetoWelcome = defineComponent({

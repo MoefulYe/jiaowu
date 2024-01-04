@@ -6,10 +6,20 @@
       <NInput v-model:value="data.username" placeholder="请输入用户名" />
     </NFormItem>
     <NFormItem label="密码" path="password">
-      <NInput v-model:value="data.password" placeholder="请输入密码" />
+      <NInput
+        v-model:value="data.password"
+        placeholder="请输入密码"
+        type="password"
+        show-password-on="click"
+      />
     </NFormItem>
     <NFormItem label="确认密码" path="password2">
-      <NInput v-model:value="data.password2" placeholder="请再次输入密码" />
+      <NInput
+        v-model:value="data.password2"
+        placeholder="请再次输入密码"
+        type="password"
+        @keydown.enter="click"
+      />
     </NFormItem>
     <NButton type="primary" class="w-full mt-4" @click="click">注册</NButton>
   </NForm>
@@ -35,13 +45,15 @@ const data = ref({
 const formRef = ref<FormInst | null>(null)
 const click = () => {
   if (formRef.value) {
-    formRef.value.validate((err) => {
-      if (err) {
+    formRef.value
+      .validate((err) => {
+        if (!err) {
+          register()
+        }
+      })
+      .catch(() => {
         window.$message.error('请检查表单!')
-      } else {
-        register()
-      }
-    })
+      })
   } else {
     window.$message.error('找不到表单实例!')
   }
@@ -49,7 +61,7 @@ const click = () => {
 
 const register = () => {
   if (data.value.username === 'wsy' && data.value.password === '123456') {
-    useStateStore().register('asdasdsadfasfadfasdfasdfdasfdasf', data.value.username)
+    useStateStore().login('asdasdsadfasfadfasdfasdfdasfdasf', data.value.username)
     emit('success')
   } else {
     window.$message.error('用户名或密码错误!')

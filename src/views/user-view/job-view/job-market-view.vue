@@ -24,7 +24,7 @@
         </div>
         <h2 class="text-2xl font-bold">相关企业</h2>
         <div>
-          <span v-for="company in companies">
+          <span v-for="company in companies" :key="company">
             <RouterLink
               :to="{
                 name: 'company',

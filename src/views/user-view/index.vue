@@ -27,7 +27,7 @@
         </NPopover>
         <span class="ml-2 sm:ml-0">{{ TITLE }}</span>
         <span class="flex-grow" />
-        <NDropdown :options="avatarDropdownOpts" trigger="click">
+        <NDropdown :options="avatarDropdownOpts" trigger="click" @select="selectDropdown">
           <NAvatar
             size="small"
             class="mr-2"
@@ -63,20 +63,32 @@ import {
 import SideMenu from '../../components/side-menu.vue'
 import { isMobile } from '../../util/reponsive'
 import { Menu2 } from '@vicons/tabler'
-import { Exit, Settings, UserProfile } from '@vicons/carbon'
+import { Exit, UserProfile } from '@vicons/carbon'
 import { renderIcon } from '../../util/render'
 import { TITLE } from '../../constants'
 import { storeToRefs } from 'pinia'
 import { useStateStore } from '../../stores/user-state'
+import { gotoLogin, gotoProfile } from '../../router'
 
 const { username } = storeToRefs(useStateStore())
 const isCollapsed = ref(true)
+
+const selectDropdown = (key: string) => {
+  switch (key) {
+    case 'profile':
+      gotoProfile()
+      break
+    case 'logout':
+      useStateStore().logout()
+      gotoLogin()
+      break
+  }
+}
 </script>
 
 <script lang="tsx">
 const avatarDropdownOpts: DropdownOption[] = [
   { label: '个人信息', key: 'profile', icon: renderIcon(<UserProfile />) },
-  { label: '设置', key: 'setting', icon: renderIcon(<Settings />) },
   { label: '退出登录', key: 'logout', icon: renderIcon(<Exit />) }
 ]
 </script>

@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/login-view.vue')
   },
   {
-    path: '/register/:step',
+    path: '/register',
     name: 'register',
     component: () => import('@/views/register-view.vue')
   },
@@ -86,13 +86,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  const state = useStateStore()
-  if (to.meta.requiresLogin && !state.ok()) {
-    if (state.unlogin()) {
-      gotoLogin()
-    } else {
-      gotoRegister('fill-form')
-    }
+  if (to.meta.requiresLogin && useStateStore().isUnlogin()) {
+    gotoLogin()
   }
 })
 
@@ -102,7 +97,7 @@ export const gotoTechPage = (tech: string) =>
 
 export const gotoHome = () => window.$router.push({ name: 'welcome' })
 export const gotoLogin = () => window.$router.push({ name: 'login' })
-export const gotoRegister = (step?: 'register' | 'fill-form' | 'ok') =>
-  window.$router.push({ name: 'register', params: { step: step ?? 'register' } })
+export const gotoRegister = () => window.$router.push({ name: 'register' })
+export const gotoProfile = () => window.$router.push({ name: 'profile' })
 
 export default router
