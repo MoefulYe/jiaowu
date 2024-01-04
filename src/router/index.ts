@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
+import { useStateStore } from '../stores/user-state'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -12,8 +13,16 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/login-view.vue')
   },
   {
+    path: '/register/:step',
+    name: 'register',
+    component: () => import('@/views/register-view.vue')
+  },
+  {
     path: '/',
     component: () => import('@/views/user-view/index.vue'),
+    meta: {
+      requiresLogin: true
+    },
     children: [
       { path: '', redirect: { name: 'welcome' } },
       {
@@ -50,12 +59,18 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'company',
         path: 'company/:company',
-        component: () => import('@/views/user-view/company-view.vue')
+        component: () => import('@/views/user-view/company-view.vue'),
+        props: (route) => ({
+          company: route.params.company
+        })
       },
       {
         name: 'tech',
         path: 'tech/:tech',
-        component: () => import('@/views/user-view/tech-view.vue')
+        component: () => import('@/views/user-view/tech-view.vue'),
+        props: (route) => ({
+          tech: route.params.tech
+        })
       }
     ]
   },
@@ -70,12 +85,24 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {})
+router.beforeEach((to) => {
+  const state = useStateStore()
+  if (to.meta.requiresLogin && !state.ok()) {
+    if (state.unlogin()) {
+      gotoLogin()
+    } else {
+      gotoRegister('fill-form')
+    }
+  }
+})
 
 // router.afterEach((to, from, failure) => {})
 export const gotoTechPage = (tech: string) =>
   window.$router.push({ name: 'tech', params: { tech } })
 
 export const gotoHome = () => window.$router.push({ name: 'welcome' })
+export const gotoLogin = () => window.$router.push({ name: 'login' })
+export const gotoRegister = (step?: 'register' | 'fill-form' | 'ok') =>
+  window.$router.push({ name: 'register', params: { step: step ?? 'register' } })
 
 export default router

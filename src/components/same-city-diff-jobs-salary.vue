@@ -12,10 +12,11 @@
   </div>
   <VChart :option="chartOpts" :style="`height: ${cmpJobs.length * 3 + 18}rem`" autoresize />
   <h2 class="text-lg font-bold">这些岗位的相关企业:</h2>
-  <div v-for="{ jobName, companyList } in companies" class="p-2">
+  <div v-for="{ jobName, companyList } in companies" :key="jobName" class="p-2">
     <span>{{ jobName }}：</span>
     <RouterView
       v-for="company in companyList"
+      :key="company"
       :to="{
         name: 'company',
         params: {
@@ -137,7 +138,7 @@ const chartOpts = computed<ChartOpts>(() => {
         colorBy: 'data',
         label: {
           show: true,
-          formatter: ({ value }) => `${(<[number, string]>value)[0]}K`,
+          formatter: ({ value }) => `${(value as [number, string])[0]}K`,
           color: '#4c566a',
           position: 'right'
         },
@@ -175,7 +176,7 @@ const chartOpts = computed<ChartOpts>(() => {
         colorBy: 'data',
         label: {
           show: true,
-          formatter: ({ value }) => `${(<[number, string]>value)[0]}K`,
+          formatter: ({ value }) => `${(value as [number, string])[0]}K`,
           color: '#4c566a',
           position: 'right'
         },
@@ -213,7 +214,7 @@ const chartOpts = computed<ChartOpts>(() => {
         colorBy: 'data',
         label: {
           show: true,
-          formatter: ({ value }) => `${(<[number, string]>value)[0]}K`,
+          formatter: ({ value }) => `${(value as [number, string])[0]}K`,
           color: '#4c566a',
           position: 'right'
         },

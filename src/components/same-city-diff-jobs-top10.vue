@@ -123,13 +123,13 @@ const options = computed<ChartOpts>(() => {
       },
       tooltip: {
         formatter: ({ name, value }) =>
-          `${name}: ${((<[number, string]>value)[0] * 100).toFixed(2)}%`
+          `${name}: ${((value as [number, string])[0] * 100).toFixed(2)}%`
       }
     }))
   }
 })
 </script>
-
+<div v-for="{ region, companyList } in companies" class="p-2"></div>
 <script lang="ts">
 interface Props {
   job: string

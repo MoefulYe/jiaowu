@@ -1,5 +1,5 @@
-import axios, { AxiosError, type AxiosRequestConfig } from 'axios'
-import { useTokenStore } from '../stores/token'
+import axios, { type AxiosRequestConfig } from 'axios'
+import { useStateStore } from '../stores/user-state'
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_AXIOS_BASE_URL,
@@ -8,7 +8,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    const token = useTokenStore().token
+    const token = useStateStore().token
     config.headers.Authorization = `Bearer ${token}`
     window.$loading.start()
     return config

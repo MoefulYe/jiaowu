@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <NLayout class="w-full h-full flex" has-sider>
     <NLayoutSider
@@ -61,14 +62,15 @@ import {
 } from 'naive-ui/lib'
 import SideMenu from '../../components/side-menu.vue'
 import { isMobile } from '../../util/reponsive'
-import { useTokenStore } from '../../stores/token'
 import { Menu2 } from '@vicons/tabler'
 import { Exit, Settings, UserProfile } from '@vicons/carbon'
 import { renderIcon } from '../../util/render'
 import { TITLE } from '../../constants'
+import { storeToRefs } from 'pinia'
+import { useStateStore } from '../../stores/user-state'
 
+const { username } = storeToRefs(useStateStore())
 const isCollapsed = ref(true)
-const username = useTokenStore().username
 </script>
 
 <script lang="tsx">

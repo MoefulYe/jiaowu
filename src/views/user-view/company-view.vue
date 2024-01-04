@@ -28,7 +28,7 @@
           </div>
           <div class="p-2">
             <NIcon class="text-base mr-2"><Heart16Regular /></NIcon>
-            <NTag v-for="welfare in data.welfare" class="mx-2">{{ welfare }}</NTag>
+            <NTag v-for="welfare in data.welfare" :key="welfare" class="mx-2">{{ welfare }}</NTag>
           </div>
           <h2>相关网址</h2>
           <div>
@@ -54,7 +54,6 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { type CompanyInfo, fetchCompanyInfo } from '../../api/company'
 import { NIcon, NStatistic, NCard, NTabs, NTabPane, NTag } from 'naive-ui'
 import { IdcardOutlined } from '@vicons/antd'
@@ -96,10 +95,10 @@ type ChartOpts = ComposeOption<
   | TitleComponentOption
 >
 
-const company = useRoute().params.company as string
+const props = defineProps<Props>()
 const data = ref<CompanyInfo>()
 
-onBeforeMount(() => fetchCompanyInfo(company).then((ret) => (data.value = ret)))
+onBeforeMount(() => fetchCompanyInfo(props.company).then((ret) => (data.value = ret)))
 
 const pieOpts = computed<ChartOpts>(() => ({
   title: {
@@ -146,6 +145,7 @@ const pieOpts = computed<ChartOpts>(() => ({
       labelLine: {
         show: false
       },
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       data: data.value?.tech
         .sort(({ rate: rateA }, { rate: rateB }) => rateA - rateB)
         .map((tech) => ({
@@ -193,4 +193,10 @@ const barOpts = computed<ChartOpts>(() => ({
     }
   ]
 }))
+</script>
+
+<script lang="ts">
+interface Props {
+  company: string
+}
 </script>

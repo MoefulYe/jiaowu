@@ -12,10 +12,11 @@
   </div>
   <VChart :option="chartOpts" :style="`height: ${cmpCities.length * 3 + 18}rem`" autoresize />
   <h2 class="text-lg font-bold">这些地区的相关企业:</h2>
-  <div v-for="{ region, companyList } in companies" class="p-2">
+  <div v-for="{ region, companyList } in companies" :key="region" class="p-2">
     <span>{{ region }}：</span>
     <RouterLink
       v-for="company in companyList"
+      :key="company"
       :to="{
         name: 'company',
         params: {
@@ -135,7 +136,7 @@ const chartOpts = computed<ChartOpts>(() => {
         colorBy: 'data',
         label: {
           show: true,
-          formatter: ({ value }) => `${(<[number, string]>value)[0]}K`,
+          formatter: ({ value }) => `${(value as [number, string])[0]}K`,
           color: '#4c566a',
           position: 'right'
         },
@@ -173,7 +174,7 @@ const chartOpts = computed<ChartOpts>(() => {
         colorBy: 'data',
         label: {
           show: true,
-          formatter: ({ value }) => `${(<[number, string]>value)[0]}K`,
+          formatter: ({ value }) => `${(value as [number, string])[0]}K`,
           color: '#4c566a',
           position: 'right'
         },
@@ -211,7 +212,7 @@ const chartOpts = computed<ChartOpts>(() => {
         colorBy: 'data',
         label: {
           show: true,
-          formatter: ({ value }) => `${(<[number, string]>value)[0]}K`,
+          formatter: ({ value }) => `${(value as [number, string])[0]}K`,
           color: '#4c566a',
           position: 'right'
         },

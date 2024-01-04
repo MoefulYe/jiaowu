@@ -11,16 +11,7 @@
     <NFormItem label="确认密码" path="password2">
       <NInput v-model:value="data.password2" placeholder="请再次输入密码" />
     </NFormItem>
-    <NButton
-      type="primary"
-      class="w-full mt-4"
-      @click="
-        () => {
-          console.log(data)
-        }
-      "
-      >注册</NButton
-    >
+    <NButton type="primary" class="w-full mt-4" @click="click">注册</NButton>
   </NForm>
 </template>
 
@@ -28,9 +19,11 @@
 import { NDivider } from 'naive-ui'
 import { type FormInst, type FormRules, NButton, NForm, NFormItem, NInput } from 'naive-ui/lib'
 import { ref } from 'vue'
+import { useStateStore } from '../stores/user-state'
 
 const emit = defineEmits<{
   login: []
+  success: []
 }>()
 
 const data = ref({
@@ -40,6 +33,28 @@ const data = ref({
 })
 
 const formRef = ref<FormInst | null>(null)
+const click = () => {
+  if (formRef.value) {
+    formRef.value.validate((err) => {
+      if (err) {
+        window.$message.error('请检查表单!')
+      } else {
+        register()
+      }
+    })
+  } else {
+    window.$message.error('找不到表单实例!')
+  }
+}
+
+const register = () => {
+  if (data.value.username === 'wsy' && data.value.password === '123456') {
+    useStateStore().register('asdasdsadfasfadfasdfasdfdasfdasf', data.value.username)
+    emit('success')
+  } else {
+    window.$message.error('用户名或密码错误!')
+  }
+}
 
 const rules: FormRules = {
   username: [
