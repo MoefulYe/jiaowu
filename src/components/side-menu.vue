@@ -21,7 +21,8 @@ import {
   Growth,
   ZoomArea,
   Book,
-  FaceSatisfied
+  FaceSatisfied,
+  Carbon
 } from '@vicons/carbon'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@vicons/antd'
 import { isMobile } from '../util/reponsive'
@@ -35,6 +36,7 @@ enum Entry {
   Market, //市场行情
   Job, //职业行情
   SkillNeed, //技能需求
+  Trend,
   Guide, //学习指导
   Plan, //规划
   Recommand, //推荐
@@ -74,12 +76,17 @@ const menuEntries = computed<MenuOption[]>(() => {
         {
           label: renderRouterLink('/job/market', '职业行情'),
           key: Entry.Job,
-          icon: renderIcon(<Growth />)
+          icon: renderIcon(<Carbon />)
         },
         {
           label: renderRouterLink('/job/skill', '技能需求'),
           key: Entry.SkillNeed,
           icon: renderIcon(<FaceCool />)
+        },
+        {
+          label: renderRouterLink('/job/trend', '行业趋势'),
+          key: Entry.Trend,
+          icon: renderIcon(<Growth />)
         }
       ]
     },

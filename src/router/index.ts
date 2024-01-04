@@ -53,6 +53,11 @@ const routes: RouteRecordRaw[] = [
             name: 'skill-required',
             path: 'skill',
             component: () => import('@/views/user-view/job-view/skill-require-view.vue')
+          },
+          {
+            name: 'trend',
+            path: 'trend',
+            component: () => import('@/views/user-view/trend-view.vue')
           }
         ]
       },
