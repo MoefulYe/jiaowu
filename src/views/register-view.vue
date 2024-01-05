@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-full flex flex-col items-center justify-center bg-[url('/register-bg.webp')] bg-center bg-cover"
+    class="w-full h-full flex flex-col items-center justify-center bg-[url('/img/register-bg.webp')] bg-center bg-cover"
   >
     <NCard v-if="step === Step.Register" class="w-fit h-fit m-12 shadow-sm">
       <template #header> <div class="flex justify-center">注册账号</div> </template>

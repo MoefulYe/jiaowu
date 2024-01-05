@@ -29,18 +29,18 @@
 
 <script setup lang="ts">
 import {
-  FormInst,
+  type FormInst,
+  type FormRules,
   NForm,
   NFormItem,
   NInput,
   NRadioGroup,
   NRadio,
   NDatePicker,
-  FormRules,
   NButton
 } from 'naive-ui'
 import { onBeforeMount, ref } from 'vue'
-import { BasicInfo, Gender } from '../api/profile'
+import { type BasicInfo, Gender } from '../api/profile'
 
 const emit = defineEmits<Emits>()
 const props = withDefaults(defineProps<Props>(), {

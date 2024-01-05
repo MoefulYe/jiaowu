@@ -1,9 +1,9 @@
 <template>
   <div class="w-full h-full flex justify-end items-center">
     <NCarousel :autoplay="true" :show-dots="false" class="absolute -z-10">
-      <img src="/login-bg/bg_01.webp" class="w-full h-full" />
-      <img src="/login-bg/bg_02.webp" class="w-full h-full" />
-      <img src="/login-bg/bg_03.webp" class="w-full h-full" />
+      <img src="/img/login-bg/bg_01.webp" class="w-full h-full" />
+      <img src="/img/login-bg/bg_02.webp" class="w-full h-full" />
+      <img src="/img/login-bg/bg_03.webp" class="w-full h-full" />
     </NCarousel>
     <NCard
       class="w-fit h-fit m-12 shadow-2xl"

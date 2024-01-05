@@ -36,7 +36,7 @@ import { NSelect, type SelectOption, NButton, NTag } from 'naive-ui'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
 import { RouterLink } from 'vue-router'
-import { RalateCompanies, fetchRelateRegion } from '../api/data_analysis/company'
+import { type RalateCompanies, fetchRelateRegion } from '../api/data_analysis/company'
 import {
   GridComponent,
   LegendComponent,
