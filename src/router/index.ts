@@ -76,6 +76,32 @@ const routes: RouteRecordRaw[] = [
         props: (route) => ({
           tech: route.params.tech
         })
+      },
+      {
+        name: 'interest',
+        path: 'interest',
+        component: () => import('@/views/user-view/interest-view.vue')
+      },
+      {
+        name: 'skill',
+        path: 'skill',
+        component: () => import('@/views/user-view/skill-view.vue')
+      },
+      {
+        name: 'study',
+        path: 'study',
+        children: [
+          {
+            name: 'study-plan',
+            path: 'plan',
+            component: () => import('@/views/user-view/study-view/study-plan-view.vue')
+          },
+          {
+            name: 'study-material',
+            path: 'material',
+            component: () => import('@/views/user-view/study-view/study-material-view.vue')
+          }
+        ]
       }
     ]
   },

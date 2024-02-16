@@ -2,7 +2,7 @@
 <template>
   <NLayout class="w-full h-full flex" has-sider>
     <NLayoutSider
-      v-if="!isMobile().value"
+      v-if="!isMobile"
       id="menu"
       collapse-mode="width"
       :collapsed-width="64"
@@ -14,12 +14,10 @@
       <SideMenu @toggle="(toggle) => (isCollapsed = toggle)" />
     </NLayoutSider>
     <NLayout class="grow" content-style="display: flex; flex-direction: column;">
-      <NLayoutHeader class="flex p-2 sm:p-4 sm:h-12" id="header">
-        <NPopover v-if="isMobile().value" trigger="click" class="mr-4">
+      <NLayoutHeader class="flex p-2 sm:p-4 sm:h-12 items-center" bordered>
+        <NPopover v-if="isMobile" trigger="click" class="mr-4">
           <template #trigger>
-            <NIcon size="20px">
-              <Menu2 />
-            </NIcon>
+            <span class="icon-[mingcute--menu-line]" />
           </template>
           <template #default>
             <SideMenu :collapsed="false" />
@@ -54,7 +52,6 @@ import {
   NLayoutContent,
   NLayoutSider,
   NLayoutHeader,
-  NIcon,
   NPopover,
   NAvatar,
   NDropdown,
@@ -62,8 +59,6 @@ import {
 } from 'naive-ui/lib'
 import SideMenu from '../../components/side-menu.vue'
 import { isMobile } from '../../util/reponsive'
-import { Menu2 } from '@vicons/tabler'
-import { Exit, UserProfile } from '@vicons/carbon'
 import { renderIcon } from '../../util/render'
 import { TITLE } from '../../constants'
 import { storeToRefs } from 'pinia'
@@ -88,17 +83,21 @@ const selectDropdown = (key: string) => {
 
 <script lang="tsx">
 const avatarDropdownOpts: DropdownOption[] = [
-  { label: '个人信息', key: 'profile', icon: renderIcon(<UserProfile />) },
-  { label: '退出登录', key: 'logout', icon: renderIcon(<Exit />) }
+  {
+    label: '个人信息',
+    key: 'profile',
+    icon: renderIcon(<span class="icon-[iconamoon--profile]" />)
+  },
+  {
+    label: '退出登录',
+    key: 'logout',
+    icon: renderIcon(<span class="icon-[material-symbols--exit-to-app-rounded]" />)
+  }
 ]
 </script>
 
 <style lang="scss" scoped>
 #menu {
-  box-shadow: 2px 0px 10px 0px rgba($color: #000000, $alpha: 0.05);
-}
-
-#header {
-  box-shadow: 0px 2px 10px 0px rgba($color: #000000, $alpha: 0.05);
+  box-shadow: 2px 0px 5px 0px rgba($color: #000000, $alpha: 0.1);
 }
 </style>

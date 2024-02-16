@@ -1,13 +1,11 @@
 {
   "common": {
     "bodyColor": "rgb(248, 249, 251)",
-    "borderRadiusSmall": "4px",
     "baseColor": "#F8F9FBFF",
-    "primaryColor": "#434c5eFF",
-    "borderRadius": "8px",
-    "primaryColorHover": "#434C5EFF",
-    "primaryColorPressed": "#434C5EFF",
-    "primaryColorSuppl": "#434C5EFF",
+    "primaryColor": "#8FBCBBFF",
+    "primaryColorHover": "#8FBCBBFF",
+    "primaryColorPressed": "#8FBCBBFF",
+    "primaryColorSuppl": "#8FBCBBFF",
     "infoColor": "#81a1c1FF",
     "infoColorHover": "#81a1c1FF",
     "infoColorPressed": "#81a1c1FF",
@@ -25,17 +23,17 @@
     "errorColorPressed": "#bf616aFF",
     "errorColorSuppl": "#bf616aFF",
     "textColorBase": "#000000FF",
-    "textColor1": "rgba(76, 86, 106, 1)",
-    "textColor2": "rgba(67, 76, 94, 1)",
-    "textColor3": "rgba(116, 129, 141, 1)",
-    "textColorDisabled": "rgba(116, 129, 141, 0.75)",
-    "placeholderColorDisabled": "rgba(116, 129, 141, 0.5)",
-    "placeholderColor": "rgba(116, 129, 141, 0.6)",
+    "textColor1": "rgba(46, 52, 64, 1)",
+    "textColor2": "rgba(59, 66, 82, 1)",
+    "textColor3": "rgba(59, 66, 82, 0.75)",
+    "textColorDisabled": "rgba(59, 66, 82, 0.5)",
+    "placeholderColorDisabled": "rgba(59, 66, 82, 0.4)",
+    "placeholderColor": "rgba(59, 66, 82, 0.5)",
     "iconColor": "rgba(102, 112, 131, 1)",
     "iconColorPressed": "rgba(102, 112, 131, 1)",
     "iconColorHover": "rgba(102, 112, 131, 1)",
     "iconColorDisabled": "rgba(115, 125, 142, 0.5)",
-    "dividerColor": "rgba(216, 222, 233, 0.25)",
+    "dividerColor": "rgb(239, 239, 245)",
     "borderColor": "rgb(224, 224, 230)",
     "closeIconColor": "rgba(102, 102, 102, 1)",
     "closeIconColorHover": "rgba(102, 102, 102, 1)",
@@ -48,7 +46,10 @@
     "tagColor": "#eceff4FF",
     "avatarColor": "rgba(229, 233, 240, 1)",
     "codeColor": "rgba(251, 251, 252, 1)",
-    "tableHeaderColor": "rgba(236, 239, 244, 0.2)"
+    "tableHeaderColor": "rgba(236, 239, 244, 0.2)",
+    "borderRadiusSmall": "2px",
+    "borderRadius": "5px",
+    "hoverColor": "rgba(229, 231, 239, 0.3)"
   },
   "Rate": {
     "itemColorActive": "#ebcb8bFF"
@@ -128,16 +129,17 @@
     "colorHover": "rgba(46, 52, 64, 0.9)"
   },
   "Anchor": {
-    "railColorActive": "#8fbcbbFF",
+    "railColorActive": "#434C5EC2",
     "linkTextColorActive": "#434c5eFF",
-    "railColor": "rgba(143, 188, 187, 0.25)",
-    "linkColor": "rgba(143, 188, 187, 0.15)"
+    "railColor": "rgba(67, 76, 94, 0.5)",
+    "linkColor": "rgba(67, 76, 94, 0)",
+    "borderRadius": "2px"
   },
   "DataTable": {
-    "thIconColorActive": "#8fbcbbFF"
+    "thIconColorActive": "#8FBCBBFF"
   },
   "DatePicker": {
-    "itemColorActive": "#8fbcbbFF"
+    "itemColorActive": "#596682FF"
   },
   "Dropdown": {
     "optionColorActiveInverted": "#434c5eFF",
@@ -147,8 +149,16 @@
     "optionColorHover": "rgba(129, 161, 193, 0.2)"
   },
   "Pagination": {
-    "itemColorActiveHover": "#0000",
-    "itemColorActive": "#0000"
+    "itemColorActiveHover": "#8FBCBBFF",
+    "itemColorActive": "#8FBCBBFF",
+    "buttonColorHover": "#0000",
+    "buttonColorPressed": "#0000",
+    "itemColorPressed": "#8FBCBBFF",
+    "itemTextColorPressed": "#FFFFFFFF",
+    "itemTextColorActive": "#FFFFFFFF",
+    "itemTextColorHover": "#434C5EFF",
+    "itemColorHover": "#0000",
+    "buttonIconColorHover": "rgba(59, 66, 82, 1)"
   },
   "Switch": {
     "railColorActive": "#8fbcbbFF"
@@ -159,5 +169,20 @@
   "Slider": {
     "fillColor": "#8fbcbbFF",
     "fillColorHover": "#8fbcbbFF"
-  }
+  },
+  "Input": {
+    "boxShadowFocus": "0 0 0 1px rgb(136,192,208)",
+    "borderFocus": "1px solid rgb(136,192,208)",
+    "borderHover": "1px solid rgb(136,192,208)"
+  },
+  "Button": {
+    "borderPressed": "1px solid #88C0D0FF",
+    "borderHover": "1px solid #88C0D0FF",
+    "borderFocus": "1px solid #88C0D0FF",
+    "rippleColor": "#8FBCBB7F",
+    "textColorHover": "#8FBCBBFF",
+    "textColorPressed": "#8FBCBBFF",
+    "textColorFocus": "#8FBCBBFF"
+  },
+  "Select": {}
 }

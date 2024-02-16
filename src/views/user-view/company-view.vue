@@ -23,14 +23,18 @@
             {{ data.description }}
           </p>
           <h2>工作时间及福利</h2>
-          <div class="px-2">
-            <NIcon class="text-base mr-2"><Clock /></NIcon><span> {{ data.workTime }}</span>
+          <div class="px-2 flex flex-col gap-2">
+            <div class="flex items-center gap-4">
+              <span class="icon-[ri--time-line]" /> {{ data.workTime }}
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="icon-[uil--favorite]" />
+              <NTag v-for="welfare in data.welfare" :key="welfare" type="primary">{{
+                welfare
+              }}</NTag>
+            </div>
           </div>
-          <div class="p-2">
-            <NIcon class="text-base mr-2"><Heart16Regular /></NIcon>
-            <NTag v-for="welfare in data.welfare" :key="welfare" class="mx-2">{{ welfare }}</NTag>
-          </div>
-          <h2>相关网址</h2>
+          <h2>相关连接</h2>
           <div>
             <span>招聘网址：</span>
             <a :href="data.url" class="text-cyan-950 hover:text-cyan-700">{{ data.url }}</a>
@@ -56,7 +60,6 @@
 import { computed, onBeforeMount, ref } from 'vue'
 import { type CompanyInfo, fetchCompanyInfo } from '../../api/company'
 import { NIcon, NStatistic, NCard, NTabs, NTabPane, NTag } from 'naive-ui'
-import { IdcardOutlined } from '@vicons/antd'
 import { gotoTechPage } from '../../router'
 
 import { BarChart, PieChart } from 'echarts/charts'
@@ -75,8 +78,6 @@ import { CanvasRenderer } from 'echarts/renderers'
 import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption, PieSeriesOption } from 'echarts/charts'
 import VChart from 'vue-echarts'
-import { Clock } from '@vicons/tabler'
-import { Heart16Regular } from '@vicons/fluent'
 use([
   GridComponent,
   PieChart,
