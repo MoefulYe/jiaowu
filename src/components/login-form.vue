@@ -30,7 +30,7 @@ import {
 import { ref, shallowRef } from 'vue'
 import { useStateStore } from '../stores/user-state'
 import { gotoHome } from '../router'
-import { LoginData, login } from '../api/user/account'
+import { type LoginData, login } from '../api/user/account'
 
 const emit = defineEmits<{
   register: []
