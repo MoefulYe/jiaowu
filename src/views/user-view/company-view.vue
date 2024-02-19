@@ -201,3 +201,4 @@ interface Props {
   company: string
 }
 </script>
+../../api/recommand

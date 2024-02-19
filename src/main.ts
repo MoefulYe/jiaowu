@@ -8,6 +8,7 @@ import App from '@/App.vue'
 
 const entry = async () => {
   const pinia = createPinia().use(piniaPluginPersistedstate)
-  createApp(App).use(pinia).use(router).mount('#app')
+  const app = createApp(App).use(pinia).use(router)
+  app.mount('#app')
 }
 entry()

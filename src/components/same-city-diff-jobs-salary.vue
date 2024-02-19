@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { NSelect, type SelectOption, NButton, NTag } from 'naive-ui'
 import { type SalaryAnalysis, fetchSalaryCompareJob } from '../api/data_analysis/salary'
-import { fetchRelateJob, type RalateCompanies } from '../api/data_analysis/company'
+import { fetchRelateJob, type RalateCompanies } from '../api/recommand/company'
 import { RouterView } from 'vue-router'
 import { computed, ref } from 'vue'
 import { BarChart } from 'echarts/charts'

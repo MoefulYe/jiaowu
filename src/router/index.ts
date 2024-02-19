@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/',
-    component: () => import('@/views/user-view/index.vue'),
+    component: () => import('@/views/user-view/user-view.vue'),
     meta: {
       requiresLogin: true
     },
@@ -57,7 +57,7 @@ const routes: RouteRecordRaw[] = [
           {
             name: 'trend',
             path: 'trend',
-            component: () => import('@/views/user-view/trend-view.vue')
+            component: () => import('@/views/user-view/job-view/trend-view.vue')
           }
         ]
       },

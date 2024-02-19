@@ -9,18 +9,44 @@
       </template>
     </NCard>
     <NCard v-else-if="step === Step.FillBasicInfo" class="w-fit h-fit m-12 shadow-sm">
-      <template #header> <div class="flex justify-center">填写基本信息</div> </template>
+      <template #header>
+        <div class="flex relative items-center">
+          <span class="flex grow justify-center">填写基本信息</span>
+          <NTooltip>
+            <template #trigger>
+              <span
+                class="icon-[material-symbols--skip-next-rounded] absolute right-2 hover:text-[#81a1c1] text-[#434c5e]"
+                @click="step = Step.FillAcademicInfo"
+              />
+            </template>
+            <template #default> 不想填写？ 点此跳过 </template>
+          </NTooltip>
+        </div></template
+      >
       <template #default>
         <BasicInfoForm @complete="() => (step = Step.FillAcademicInfo)" />
       </template>
     </NCard>
     <NCard v-else-if="step === Step.FillAcademicInfo" class="w-fit h-fit m-12 shadow-sm">
-      <template #header> <div class="flex justify-center">填写学业信息</div> </template>
+      <template #header>
+        <div class="flex relative items-center">
+          <span class="flex justify-center">填写学业信息</span>
+          <NTooltip>
+            <template #trigger>
+              <span
+                class="icon-[material-symbols--skip-next-rounded] absolute right-2 hover:text-[#81a1c1] text-[#434c5e]"
+                @click="step = Step.Complete"
+              />
+            </template>
+            <template #default> 不想填写？ 点此跳过 </template>
+          </NTooltip>
+        </div>
+      </template>
       <template #default>
-        <AcademicInfoForm @complete="() => (step = Step.Ok)" />
+        <AcademicInfoForm @complete="() => (step = Step.Complete)" />
       </template>
     </NCard>
-    <NCard v-else-if="step === Step.Ok" class="w-fit h-fit m-12 shadow-sm">
+    <NCard v-else-if="step === Step.Complete" class="w-fit h-fit m-12 shadow-sm">
       <template #header> <div class="flex justify-center">注册成功</div> </template>
       <template #default>
         <GuidetoWelcome />
@@ -39,7 +65,7 @@
 <script setup lang="tsx">
 import { ref } from 'vue'
 import RegisterForm from '../components/register-form.vue'
-import { NCard, NButton, NProgress } from 'naive-ui'
+import { NCard, NButton, NProgress, NTooltip } from 'naive-ui'
 import { gotoLogin } from '../router'
 
 const step = ref(Step.Register)
@@ -55,7 +81,7 @@ enum Step {
   Register,
   FillBasicInfo,
   FillAcademicInfo,
-  Ok
+  Complete
 }
 
 const GuidetoWelcome = defineComponent({

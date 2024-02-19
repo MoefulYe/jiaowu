@@ -1,5 +1,3 @@
-import { request } from '@/util/requests'
-
 export interface CompanyInfo {
   name: string
   description: string

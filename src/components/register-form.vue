@@ -2,8 +2,8 @@
   <NButton class="w-full mt-4" @click="() => emit('login')">登录账号</NButton>
   <NDivider class="text-[#4c566a] opacity-90">或者</NDivider>
   <NForm ref="formRef" :label-width="80" :model="data" :rules="rules">
-    <NFormItem label="用户名" path="username">
-      <NInput v-model:value="data.username" placeholder="请输入用户名" />
+    <NFormItem label="手机" path="phone">
+      <NInput v-model:value="data.phone" placeholder="请输入手机" />
     </NFormItem>
     <NFormItem label="密码" path="password">
       <NInput
@@ -28,8 +28,9 @@
 <script setup lang="ts">
 import { NDivider } from 'naive-ui'
 import { type FormInst, type FormRules, NButton, NForm, NFormItem, NInput } from 'naive-ui/lib'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { useStateStore } from '../stores/user-state'
+import { register } from '../api/user/account'
 
 const emit = defineEmits<{
   login: []
@@ -37,41 +38,36 @@ const emit = defineEmits<{
 }>()
 
 const data = ref({
-  username: '',
+  phone: '',
   password: '',
   password2: ''
 })
 
-const formRef = ref<FormInst | null>(null)
-const click = () => {
-  if (formRef.value) {
-    formRef.value
-      .validate((err) => {
-        if (!err) {
-          register()
-        }
-      })
-      .catch(() => {
-        window.$message.error('请检查表单!')
-      })
-  } else {
-    window.$message.error('找不到表单实例!')
-  }
-}
-
-const register = () => {
-  if (data.value.username === 'wsy' && data.value.password === '123456') {
-    useStateStore().login('asdasdsadfasfadfasdfasdfdasfdasf', data.value.username)
+const formRef = shallowRef<FormInst>()
+const click = async () => {
+  try {
+    await formRef.value!.validate()
+    const token = await register(data.value)
+    const state = useStateStore()
+    state.username = `用户${data.value.phone}`
+    state.token = token
     emit('success')
-  } else {
-    window.$message.error('用户名或密码错误!')
+  } catch {
+    // do nothing
   }
 }
 
 const rules: FormRules = {
-  username: [
-    { required: true, message: '请输入用户名' },
-    { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+  phone: [
+    { required: true, message: '请输入手机号码' },
+    {
+      message: '手机号码不合法',
+      trigger: 'blur',
+      validator: (_, val: string) => {
+        if (val !== '' && !/^\d{11}$/.test(val)) return new Error('手机号码必须是 11 位数字')
+        return true
+      }
+    }
   ],
   password: [
     { required: true, message: '请输入密码' },

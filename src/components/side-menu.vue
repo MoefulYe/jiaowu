@@ -13,6 +13,8 @@ import { type MenuOption, NMenu } from 'naive-ui/lib'
 import { ref, computed } from 'vue'
 import { isMobile } from '../util/reponsive'
 import { renderIcon, renderRouterLink } from '../util/render'
+import { useStateStore } from '../stores/user-state'
+import { gotoLogin } from '../router'
 
 enum Entry {
   Toggle,
@@ -27,7 +29,8 @@ enum Entry {
   Plan, //规划
   Material, //推荐
   Interest, //兴趣评估
-  Skill //技能评估
+  Skill, //技能评估
+  Logout
 }
 
 const emit = defineEmits<{
@@ -77,7 +80,7 @@ const menuEntries = computed<MenuOption[]>(() => [
         icon: renderIcon(<span class="icon-[carbon--intent-request-active]" />)
       },
       {
-        label: renderRouterLink('/job/trend', '行业趋势'),
+        label: renderRouterLink('/job/trend', '趋势分析'),
         key: Entry.Trend,
         icon: renderIcon(<span class="icon-[ph--trend-up]" />)
       }
@@ -109,6 +112,11 @@ const menuEntries = computed<MenuOption[]>(() => [
     label: renderRouterLink('/skill', '技能评估'),
     key: Entry.Skill,
     icon: renderIcon(<span class="icon-[ph--exam] text-2xl" />)
+  },
+  {
+    label: '退出登录',
+    key: Entry.Logout,
+    icon: renderIcon(<span class="icon-[iconamoon--exit-light] text-2xl" />)
   }
 ])
 
@@ -117,6 +125,10 @@ const handleClick = async (entry: Entry) => {
     case Entry.Toggle:
       isCollapsed.value = !isCollapsed.value
       emit('toggle', isCollapsed.value)
+      break
+    case Entry.Logout:
+      useStateStore().logout()
+      gotoLogin()
       break
   }
 }

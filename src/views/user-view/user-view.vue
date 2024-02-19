@@ -26,14 +26,11 @@
         <span class="ml-2 sm:ml-0">{{ TITLE }}</span>
         <span class="flex-grow" />
         <NDropdown :options="avatarDropdownOpts" trigger="click" @select="selectDropdown">
-          <NAvatar
-            size="small"
-            class="mr-2"
-            src="https://avatars.githubusercontent.com/u/32326912?v=4"
-            round
-          />
+          <NAvatar size="small" class="mr-2" round>
+            {{ username.slice(0, 1) }}
+          </NAvatar>
         </NDropdown>
-        <span>{{ username }}</span>
+        <span class="flex items-center"> 你好, <ShowOrEdit v-model:value="username" /> </span>
       </NLayoutHeader>
       <NLayoutContent
         class="grow flex flex-col"
@@ -46,7 +43,7 @@
 </template>
 
 <script setup lang="tsx">
-import { ref } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import {
   NLayout,
   NLayoutContent,
@@ -57,14 +54,15 @@ import {
   NDropdown,
   type DropdownOption
 } from 'naive-ui/lib'
-import SideMenu from '../../components/side-menu.vue'
 import { isMobile } from '../../util/reponsive'
 import { renderIcon } from '../../util/render'
 import { TITLE } from '../../constants'
 import { storeToRefs } from 'pinia'
 import { useStateStore } from '../../stores/user-state'
 import { gotoLogin, gotoProfile } from '../../router'
+import ShowOrEdit from '../../components/show-or-edit.vue'
 
+const SideMenu = defineAsyncComponent(() => import('../../components/side-menu.vue'))
 const { username } = storeToRefs(useStateStore())
 const isCollapsed = ref(true)
 

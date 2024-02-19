@@ -49,31 +49,23 @@ import {
   NGrid,
   NFormItemGi
 } from 'naive-ui'
-import { onBeforeMount, ref } from 'vue'
-import { type AcademicInfo, StudentType } from '../api/profile'
+import { onBeforeMount, ref, shallowRef } from 'vue'
+import { type AcademicInfo, StudentType } from '../api/user/profile'
 
 const emit = defineEmits<Emits>()
 const props = withDefaults(defineProps<Props>(), {
   fetchProfile: false
 })
-const formRef = ref<FormInst | null>()
-const data = ref<OptionalInfo>({})
+const formRef = shallowRef<FormInst>()
+const data = ref<AcademicInfo>({})
 
 const fetch = () => {}
-const click = () => {
-  if (formRef.value) {
-    formRef.value
-      .validate((err) => {
-        if (!err) {
-          //发起请求
-          emit('complete')
-        }
-      })
-      .catch((_) => {
-        window.$message.error('请检查表单')
-      })
-  } else {
-    window.$message.error('找不到表单实例')
+const click = async () => {
+  try {
+    await formRef.value!.validate()
+    emit('complete')
+  } catch {
+    // do nothing
   }
 }
 
@@ -93,16 +85,5 @@ interface Props {
   fetchProfile?: boolean
 }
 
-type OptionalInfo = Partial<AcademicInfo>
-
-const rules: FormRules = {
-  studentType: [{ required: true, message: '请选择学生类别' }],
-  duration: [{ required: true, message: '请输入学制' }],
-  enrollmentDate: [{ required: true, message: '请选择入学日期' }],
-  graduationDate: [{ required: true, message: '请选择毕业日期' }],
-  school: [{ required: true, message: '请输入学校' }],
-  college: [{ required: true, message: '请输入学院' }],
-  major: [{ required: true, message: '请输入专业' }],
-  class: [{ required: true, message: '请输入班级' }]
-}
+const rules: FormRules = {}
 </script>

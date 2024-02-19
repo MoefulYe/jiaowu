@@ -13,7 +13,7 @@
   <VChart :option="chartOpts" :style="`height: ${cmpCities.length * 3 + 18}rem`" autoresize />
   <h2 class="text-lg font-bold">这些地区的相关企业:</h2>
   <div v-for="{ region, companyList } in companies" :key="region" class="p-2">
-    <span>{{ region }}：</span>
+    <span>{{ region }}:</span>
     <RouterLink
       v-for="company in companyList"
       :key="company"
@@ -36,7 +36,7 @@ import { NSelect, type SelectOption, NButton, NTag } from 'naive-ui'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
 import { RouterLink } from 'vue-router'
-import { type RalateCompanies, fetchRelateRegion } from '../api/data_analysis/company'
+import { type RalateCompanies, fetchRelateRegion } from '../api/recommand/company'
 import {
   GridComponent,
   LegendComponent,

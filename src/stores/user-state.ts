@@ -4,20 +4,11 @@ import { defineStore } from 'pinia'
 export const useStateStore = defineStore(
   'State',
   () => {
-    const _token = ref('')
-    const _username = ref('')
-
-    const login = (token: string, username: string) => {
-      _token.value = token
-      _username.value = username
-    }
-
-    const logout = () => {
-      _token.value = ''
-      _username.value = ''
-    }
-
-    const isUnlogin = (): boolean => _token.value.length === 0
+    const _token = ref<string>()
+    const _username = ref('mono')
+    const login = (token: string) => _token.value = token
+    const logout = () => _token.value = undefined
+    const isUnlogin = (): boolean => _token.value === undefined
 
     return {
       token: _token,

@@ -10,35 +10,35 @@ export enum StudentType {
 
 export interface BasicInfo {
   //学号
-  code: string
+  code?: string
   //姓名
-  name: string
+  name?: string
   //性别
-  gender: Gender
+  gender?: Gender
   //出生日期
-  birthday: string
+  birthday?: string
   //手机
-  phone: string
+  phone?: string
   //邮箱
-  email: string
+  email?: string
 }
 
 //学业信息
 export interface AcademicInfo {
   //学生类别 本科生？研究生？
-  studentType: string
+  studentType?: StudentType
   //入学日期
-  enrollmentDate: string
+  enrollmentDate?: string
   //学制
-  duration: number
+  duration?: number
   //毕业日期
-  graduationDate: string
+  graduationDate?: string
   //学校
-  school: string
+  school?: string
   //学院
-  college: string
+  college?: string
   //专业
-  major: string
+  major?: string
   //班级
-  class: string
+  class?: string
 }
