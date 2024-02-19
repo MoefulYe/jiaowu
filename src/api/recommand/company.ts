@@ -22,20 +22,12 @@ export const fetchRelateJob = (params: RelateJobParams): Promise<RalateCompanies
   request({
     method: 'GET',
     url: '/data_analysis/company/relate_job',
-    params: {
-      city: params.city,
-      jobName: params.jobName,
-      choiceList: params.choiceList.join(',')
-    }
+    params
   })
 
 export const fetchRelateRegion = (params: RelateRegionParams): Promise<RalateCompanies[]> =>
   request({
     method: 'GET',
     url: '/data_analysis/company/relate_region',
-    params: {
-      city: params.city,
-      jobName: params.jobName,
-      choiceList: params.choiceList.join(',')
-    }
+    params
   })

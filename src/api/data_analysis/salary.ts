@@ -37,11 +37,7 @@ export const fetchSalaryCompareJob = async (
 ): Promise<SalaryAnalysis[]> =>
   request({
     method: 'GET',
-    params: {
-      city: params.city,
-      jobName: params.jobName,
-      choiceList: params.choiceList.join(',')
-    },
+    params,
     url: '/data_analysis/salary/compare_job'
   })
 
@@ -56,11 +52,7 @@ export const fetchSalaryCompareReigon = async (
 ): Promise<SalaryAnalysis[]> =>
   request({
     method: 'GET',
-    params: {
-      city: params.city,
-      jobName: params.jobName,
-      choiceList: params.choiceList.join(',')
-    },
+    params,
     url: '/data_analysis/salary/compare_region'
   })
 

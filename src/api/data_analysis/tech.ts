@@ -46,11 +46,7 @@ export const fetchTechCompareJob = (params: TechCompareJobParams): Promise<Techs
   request({
     method: 'GET',
     url: '/data_analysis/tech/compare_job',
-    params: {
-      city: params.city,
-      jobName: params.jobName,
-      choiceList: params.choiceList.join(',')
-    }
+    params
   }).then((ok) => normalize_techs(<Techs>ok))
 
 export interface TechCompareRegionParams {
@@ -62,9 +58,5 @@ export const fetchCompareRegion = (params: TechCompareRegionParams): Promise<Tec
   request({
     method: 'GET',
     url: '/data_analysis/tech/compare_region',
-    params: {
-      city: params.city,
-      jobName: params.jobName,
-      choiceList: params.choiceList.join(',')
-    }
+    params
   }).then((ok) => normalize_techs(<Techs>ok))
