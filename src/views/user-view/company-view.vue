@@ -1,21 +1,20 @@
 <template>
   <div v-if="data !== undefined" class="sm:p-2 grow flex flex-col">
-    <NCard class="bg-white shadow-sm" content-style="display: flex; align-items: center;">
-      <span class="font-bold space-x-2 text-lg">企业详情：</span>
+    <NCard
+      class="bg-white shadow-sm"
+      content-style="display: flex; align-items: center; gap: 0.25rem;"
+    >
+      <span class="font-bold text-lg">企业详情：</span>
+      <NAvatar :src="data.logo" round size="small" />
       <span class="text-lg">{{ data.name }}</span>
       <span class="grow" />
       <NStatistic label="岗位数量" :value="data.jobCnt" class="inline-block">
-        <template #prefix>
-          <NIcon>
-            <IdcardOutlined />
-          </NIcon>
-        </template>
         <template #suffix>
           <span>个</span>
         </template>
       </NStatistic>
     </NCard>
-    <NCard class="grow bg-white mt-2 shadow-sm">
+    <NCard class="grow bg-white mt-2 shadow-sm relative">
       <NTabs>
         <NTabPane name="基本情况">
           <h2>企业简介</h2>
@@ -52,6 +51,7 @@
           <VChart class="h-96" :option="barOpts" autoresize />
         </NTabPane>
       </NTabs>
+      <span class="absolute left-4 bottom-2 text-gray-400"> 更新时间{{ data.updateTime }}</span>
     </NCard>
   </div>
 </template>
@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
 import { type CompanyInfo, fetchCompanyInfo } from '../../api/recommand/company_info'
-import { NIcon, NStatistic, NCard, NTabs, NTabPane, NTag } from 'naive-ui'
+import { NStatistic, NCard, NTabs, NTabPane, NTag, NAvatar } from 'naive-ui'
 import { gotoTechPage } from '../../router'
 
 import { BarChart, PieChart } from 'echarts/charts'

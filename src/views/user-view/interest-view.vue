@@ -1,6 +1,3 @@
-<template>
-    兴趣
-</template>
+<template>兴趣</template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>

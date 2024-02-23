@@ -18,7 +18,9 @@ export interface CompanyInfo {
   //工作时间
   workTime: string
   //福利
-  welfare: string[]
+  welfare: string[],
+  updateTime: string,
+  logo: string
 }
 
 // export const fetchCompanyInfo = async (company: string): Promise<CompanyInfo> =>
@@ -58,7 +60,9 @@ export const fetchCompanyInfo = async (company: string): Promise<CompanyInfo> =>
         },
         jobCnt: 100,
         workTime: '上午09:00 - 下午05:30',
-        welfare: ['五险一金', '年终奖', '带薪年假']
+        welfare: ['五险一金', '年终奖', '带薪年假'],
+        updateTime: '2021-07-01',
+        logo: 'https://img.bosszhipin.com/beijin/mcs/bar/20200430/4204e9c9f200b00b77fb59d093acd281be1bd4a3bd2a63f070bdbdada9aad826.jpg?x-oss-process=image/resize,w_120,limit_0'
       })
     }, 100)
   )

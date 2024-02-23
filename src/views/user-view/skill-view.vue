@@ -1,3 +1,1 @@
-<template>
-    技能评估
-</template>
+<template>技能评估</template>

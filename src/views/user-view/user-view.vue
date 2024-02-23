@@ -61,19 +61,22 @@ import { storeToRefs } from 'pinia'
 import { useStateStore } from '../../stores/user-state'
 import { gotoLogin, gotoProfile } from '../../router'
 import ShowOrEdit from '../../components/show-or-edit.vue'
+import confirm from '../../components/confirm'
 
 const SideMenu = defineAsyncComponent(() => import('../../components/side-menu.vue'))
 const { username } = storeToRefs(useStateStore())
 const isCollapsed = ref(true)
 
-const selectDropdown = (key: string) => {
+const selectDropdown = async (key: string) => {
   switch (key) {
     case 'profile':
       gotoProfile()
       break
     case 'logout':
-      useStateStore().logout()
-      gotoLogin()
+      if (await confirm('注销', '确定要注销吗?')) {
+        useStateStore().logout()
+        gotoLogin()
+      }
       break
   }
 }

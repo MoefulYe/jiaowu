@@ -1,10 +1,12 @@
 <template>
   <NConfigProvider :theme-overrides="theme">
-    <NMessageProvider>
-      <NLoadingBarProvider>
-        <TopEntry class="w-screen h-screen" />
-      </NLoadingBarProvider>
-    </NMessageProvider>
+    <NDialogProvider>
+      <NMessageProvider>
+        <NLoadingBarProvider>
+          <TopEntry class="w-screen h-screen" />
+        </NLoadingBarProvider>
+      </NMessageProvider>
+    </NDialogProvider>
   </NConfigProvider>
 </template>
 
@@ -16,6 +18,7 @@ import { registerTheme } from 'echarts/core'
 import echartTheme from './assets/nord.echarts.json'
 import { provide } from 'vue'
 import { THEME_KEY } from 'vue-echarts'
+import { NDialogProvider } from 'naive-ui'
 registerTheme('nord', echartTheme)
 provide(THEME_KEY, 'nord')
 </script>

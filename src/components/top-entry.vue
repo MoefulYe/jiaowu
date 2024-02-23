@@ -3,13 +3,16 @@
 </template>
 
 <script setup lang="tsx">
-import { onMounted } from 'vue'
+import { onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
-import { useLoadingBar, useMessage } from 'naive-ui'
+import { useDialog, useLoadingBar, useMessage } from 'naive-ui'
+import { useStateStore } from '../stores/user-state'
 
-onMounted(async () => {
+onBeforeMount(async () => {
   window.$loading = useLoadingBar()
   window.$message = useMessage()
   window.$router = useRouter()
+  window.$state = useStateStore()
+  window.$dialog = useDialog()
 })
 </script>

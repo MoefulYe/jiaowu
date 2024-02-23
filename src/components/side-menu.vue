@@ -15,9 +15,11 @@ import { isMobile } from '../util/reponsive'
 import { renderIcon, renderRouterLink } from '../util/render'
 import { useStateStore } from '../stores/user-state'
 import { gotoLogin } from '../router'
+import confirm from './confirm'
 
 enum Entry {
   Toggle,
+  Home,
   Person,
   Profile, //个人信息
   Education, //学业情况
@@ -28,9 +30,11 @@ enum Entry {
   Guide, //学习指导
   Plan, //规划
   Material, //推荐
+  Evaluation,
   Interest, //兴趣评估
   Skill, //技能评估
-  Logout
+  Logout,
+  Recommand
 }
 
 const emit = defineEmits<{
@@ -48,6 +52,11 @@ const menuEntries = computed<MenuOption[]>(() => [
       : renderIcon(<span class="icon-[ant-design--menu-fold-outlined] text-2xl" />)
   },
   {
+    label: renderRouterLink('/welcome', '首页'),
+    key: Entry.Home,
+    icon: renderIcon(<span class="icon-[ant-design--home-outlined] text-2xl" />)
+  },
+  {
     label: '个人中心',
     key: Entry.Person,
     icon: renderIcon(<span class="icon-[ph--person-simple] text-2xl" />),
@@ -55,7 +64,7 @@ const menuEntries = computed<MenuOption[]>(() => [
       {
         label: renderRouterLink('/profile', '基本信息'),
         key: Entry.Profile,
-        icon: renderIcon(<span class="icon-[material-symbols--identity-platform]" />)
+        icon: renderIcon(<span class="icon-[ant-design--idcard-outlined]" />)
       },
       {
         label: renderRouterLink('/academic', '学业信息'),
@@ -87,6 +96,28 @@ const menuEntries = computed<MenuOption[]>(() => [
     ]
   },
   {
+    label: '职业评估',
+    key: Entry.Evaluation,
+    icon: renderIcon(<span class="icon-[ph--exam] text-2xl" />),
+    children: [
+      {
+        label: renderRouterLink('/interest', '兴趣方向'),
+        key: Entry.Interest,
+        icon: renderIcon(<span class="icon-[ph--heart]" />)
+      },
+      {
+        label: renderRouterLink('/skill', '技能评估'),
+        key: Entry.Skill,
+        icon: renderIcon(<span class="icon-[la--tools]" />)
+      },
+      {
+        label: renderRouterLink('/recommand', '职业推荐'),
+        key: Entry.Recommand,
+        icon: renderIcon(<span class="icon-[ph--lightbulb]" />)
+      }
+    ]
+  },
+  {
     label: '学习指导',
     key: Entry.Guide,
     icon: renderIcon(<span class="icon-[ep--guide] text-2xl" />),
@@ -94,24 +125,14 @@ const menuEntries = computed<MenuOption[]>(() => [
       {
         label: renderRouterLink('/study/plan', '学习规划'),
         key: Entry.Plan,
-        icon: renderIcon(<span class="icon-[ph--paper-plane-tilt-light]" />)
+        icon: renderIcon(<span class="icon-[ph--paper-plane-tilt]" />)
       },
       {
         label: renderRouterLink('/study/material', '资源推荐'),
         key: Entry.Material,
-        icon: renderIcon(<span class="icon-[lets-icons--materials-light]" />)
+        icon: renderIcon(<span class="icon-[lets-icons--materials]" />)
       }
     ]
-  },
-  {
-    label: renderRouterLink('/interest', '兴趣评估'),
-    key: Entry.Interest,
-    icon: renderIcon(<span class="icon-[solar--heart-linear] text-2xl" />)
-  },
-  {
-    label: renderRouterLink('/skill', '技能评估'),
-    key: Entry.Skill,
-    icon: renderIcon(<span class="icon-[ph--exam] text-2xl" />)
   },
   {
     label: '退出登录',
@@ -127,8 +148,10 @@ const handleClick = async (entry: Entry) => {
       emit('toggle', isCollapsed.value)
       break
     case Entry.Logout:
-      useStateStore().logout()
-      gotoLogin()
+      if (await confirm('注销', '确定要注销吗？')) {
+        useStateStore().logout()
+        gotoLogin()
+      }
       break
   }
 }

@@ -3,14 +3,14 @@ import { useStateStore } from '../stores/user-state'
 import qs from 'qs'
 
 const service = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_AXIOS_BASE_URL,
   timeout: 30000,
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'comma' })
 })
 
 service.interceptors.request.use(
   (config) => {
-    config.headers['token']= useStateStore().token
+    config.headers['token'] = useStateStore().token
     window.$loading.start()
     return config
   },
@@ -23,8 +23,8 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (resp) => {
-    if (resp.data.code as number !== 0) {
-      window.$loading.error() 
+    if ((resp.data.code as number) !== 0) {
+      window.$loading.error()
       window.$message.error(`${resp.data.message} (${resp.data.code})`)
       throw new Error(resp.data.message)
     }
@@ -54,4 +54,3 @@ service.interceptors.response.use(
 
 export default service
 export const request = <T, R>(config: AxiosRequestConfig<T>): Promise<R> => service(config)
-

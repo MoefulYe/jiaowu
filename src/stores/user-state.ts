@@ -6,8 +6,8 @@ export const useStateStore = defineStore(
   () => {
     const _token = ref<string>()
     const _username = ref('mono')
-    const login = (token: string) => _token.value = token
-    const logout = () => _token.value = undefined
+    const login = (token: string) => (_token.value = token)
+    const logout = () => (_token.value = undefined)
     const isUnlogin = (): boolean => _token.value === undefined
 
     return {
