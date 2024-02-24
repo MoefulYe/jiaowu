@@ -1,5 +1,5 @@
 export default (title: string, content: string): Promise<boolean> => new Promise((resolve) => {
-    window.$dialog.info({
+    window.$dialog.warning({
         title,
         content,
         positiveText: '确定',

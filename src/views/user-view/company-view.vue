@@ -5,7 +5,18 @@
       content-style="display: flex; align-items: center; gap: 0.25rem;"
     >
       <span class="font-bold text-lg">企业详情：</span>
-      <NAvatar :src="data.logo" round size="small" />
+      <NAvatar :src="data.logo" round size="small">
+        <template #placeholder>
+          <NSpin />
+        </template>
+        <template #fallback>
+          <div class="flex justify-center items-center w-full h-full">
+            <span class="text-sm">
+              {{ data.name.slice(0, 1) }}
+            </span>
+          </div>
+        </template>
+      </NAvatar>
       <span class="text-lg">{{ data.name }}</span>
       <span class="grow" />
       <NStatistic label="岗位数量" :value="data.jobCnt" class="inline-block">
@@ -51,7 +62,6 @@
           <VChart class="h-96" :option="barOpts" autoresize />
         </NTabPane>
       </NTabs>
-      <span class="absolute left-4 bottom-2 text-gray-400"> 更新时间{{ data.updateTime }}</span>
     </NCard>
   </div>
 </template>
@@ -59,7 +69,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
 import { type CompanyInfo, fetchCompanyInfo } from '../../api/recommand/company_info'
-import { NStatistic, NCard, NTabs, NTabPane, NTag, NAvatar } from 'naive-ui'
+import { NStatistic, NCard, NTabs, NTabPane, NTag, NAvatar, NSpin } from 'naive-ui'
 import { gotoTechPage } from '../../router'
 
 import { BarChart, PieChart } from 'echarts/charts'

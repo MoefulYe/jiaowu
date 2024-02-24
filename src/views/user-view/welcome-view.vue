@@ -1,30 +1,38 @@
 <template>
-  <div class="sm:p-2 grow flex flex-col">
-    <NCard
-      class="grow shadow-lg rounded-none sm:rounded-md"
-      content-style=" display: flex; flex-direction: column; align-items: center; gap: 2rem;"
-    >
-      <span class="mt-4 text-2xl"> 欢迎来到{{ TITLE }}! </span>
-      <NDivider>应用导航</NDivider>
-      <div
-        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-[60px] gap-y-[48px]"
+  <div
+    class="w-full h-full flex flex-col items-center bg-[url('/img/home-bg.avif')] bg-center bg-cover"
+  >
+    <span class="mt-16 text-2xl text-white"> 欢迎来到{{ TITLE }}! </span>
+    <div class="flex flex-col justify-center items-center w-full h-full">
+      <NCard
+        class="shadow-lg rounded-lg h-fit w-fit"
+        content-style="display: flex; flex-direction: column; align-items: center; gap: 2rem;"
       >
-        <div
-          v-for="{ title, to, icon } in items"
-          :key="to"
-          @click="() => $router.push({ name: to })"
-          class="nav-item flex flex-col items-center justify-around"
-        >
-          <div :class="['text-[120px]', icon]" />
-          <span class="text-base md:text-lg">{{ title }}</span>
+        <template #header>
+          <span class="flex justify-center">
+            <span class="flex items-center gap-2"
+              ><span class="icon-[ph--navigation-arrow]" /> 应用导航</span
+            >
+          </span>
+        </template>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-[40px] gap-y-[24px]">
+          <div
+            v-for="{ title, to, icon } in items"
+            :key="to"
+            @click="() => $router.push({ name: to })"
+            class="nav-item flex flex-col items-center justify-around w-[80px] h-[80px]"
+          >
+            <div :class="['text-[60px]', icon]" />
+            <span class="text-base">{{ title }}</span>
+          </div>
         </div>
-      </div>
-    </NCard>
+      </NCard>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NCard, NDivider } from 'naive-ui'
+import { NCard } from 'naive-ui'
 import { TITLE } from '../../constants'
 
 interface NavItem {

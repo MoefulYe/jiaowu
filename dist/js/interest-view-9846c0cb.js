@@ -1,0 +1,1 @@
+import{d as e,Y as o,a as s,u as n,o as a,a0 as t}from"./index-b37a15c6.js";const r={class:"sm:p-2 grow flex flex-col"},m=e({__name:"interest-view",setup(c){return(l,d)=>(a(),o("div",r,[s(n(t),{class:"grow shadow-lg rounded-none sm:rounded-md","content-style":" display: flex; flex-direction: column; align-items: center; gap: 2rem;"})]))}});export{m as default};
