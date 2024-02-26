@@ -1,8 +1,8 @@
 <template>
   <div
-    class="w-full h-full flex flex-col items-center bg-[url('/img/home-bg.avif')] bg-center bg-cover"
+    class="w-full h-full flex flex-col items-center bg-[url('/img/home-bg.avif')] bg-center bg-cover font-serif"
   >
-    <span class="mt-16 text-2xl text-white"> 欢迎来到{{ TITLE }}! </span>
+    <span class="mt-8 text-2xl text-white"> 欢迎来到{{ TITLE }}! </span>
     <div class="flex flex-col justify-center items-center w-full h-full">
       <NCard
         class="shadow-lg rounded-lg h-fit w-fit"
@@ -15,12 +15,12 @@
             >
           </span>
         </template>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-[40px] gap-y-[24px]">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-[40px] gap-y-[24px] p-4">
           <div
             v-for="{ title, to, icon } in items"
             :key="to"
             @click="() => $router.push({ name: to })"
-            class="nav-item flex flex-col items-center justify-around w-[80px] h-[80px]"
+            class="nav-item flex flex-col items-center justify-around w-[80px] h-[80px] transition-colors cursor-pointer ease-in-out delay-150 p-2 rounded-3xl"
           >
             <div :class="['text-[60px]', icon]" />
             <span class="text-base">{{ title }}</span>
@@ -56,15 +56,8 @@ const items: NavItem[] = [
 </script>
 
 <style lang="scss" scoped>
-.nav-item {
-  border-radius: 1.5rem;
-  padding: 1rem;
-}
-
-@media (hover: hover) {
-  .nav-item:hover {
-    background-color: rgba(129, 161, 193, 0.2);
-    color: rgb(94, 129, 172);
-  }
+.nav-item:hover {
+  background-color: rgba(129, 161, 193, 0.2);
+  color: rgb(94, 129, 172);
 }
 </style>

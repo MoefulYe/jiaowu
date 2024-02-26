@@ -4,10 +4,14 @@
       class="grow shadow-lg rounded-none sm:rounded-md"
       content-style=" display: flex; flex-direction: column; align-items: center; gap: 2rem;"
     >
+      <EmojiRadio v-model="data" />
     </NCard>
   </div>
 </template>
 
 <script setup lang="ts">
 import { NCard } from 'naive-ui'
+import { ref } from 'vue'
+import EmojiRadio, { EmojiOption } from '../../components/emoji-radio.vue'
+const data = ref<EmojiOption>()
 </script>

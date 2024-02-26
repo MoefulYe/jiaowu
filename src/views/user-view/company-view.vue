@@ -7,7 +7,7 @@
       <span class="font-bold text-lg">企业详情：</span>
       <NAvatar :src="data.logo" round size="small">
         <template #placeholder>
-          <NSpin />
+          <span class="icon-[eos-icons--bubble-loading]" />
         </template>
         <template #fallback>
           <div class="flex justify-center items-center w-full h-full">
@@ -69,7 +69,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
 import { type CompanyInfo, fetchCompanyInfo } from '../../api/recommand/company_info'
-import { NStatistic, NCard, NTabs, NTabPane, NTag, NAvatar, NSpin } from 'naive-ui'
+import { NStatistic, NCard, NTabs, NTabPane, NTag, NAvatar } from 'naive-ui'
 import { gotoTechPage } from '../../router'
 
 import { BarChart, PieChart } from 'echarts/charts'
@@ -211,4 +211,3 @@ interface Props {
   company: string
 }
 </script>
-../../api/recommand

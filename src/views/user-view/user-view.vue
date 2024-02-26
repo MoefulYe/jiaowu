@@ -23,7 +23,7 @@
             <SideMenu :collapsed="false" />
           </template>
         </NPopover>
-        <span class="ml-2 sm:ml-0">{{ TITLE }}</span>
+        <span class="ml-2 sm:ml-0" @click="$router.push({ name: 'welcome' })">{{ TITLE }}</span>
         <span class="flex-grow" />
         <NDropdown :options="avatarDropdownOpts" trigger="click" @select="selectDropdown">
           <NAvatar size="small" class="mr-2" round>
@@ -36,7 +36,16 @@
         class="grow flex flex-col"
         content-style="display: flex; flex-direction: column; flex-grow: 1;"
       >
-        <RouterView />
+        <RouterView v-slot="{ Component }">
+          <Transition
+            enter-from-class="opacity-0"
+            leave-to-class="opacity-0"
+            enter-active-class="transition-opacity duration-300 ease-in-out"
+            leave-active-class="transition-opacity duration-300 ease-in-out"
+          >
+            <component :is="Component" />
+          </Transition>
+        </RouterView>
       </NLayoutContent>
     </NLayout>
   </NLayout>
