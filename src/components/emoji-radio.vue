@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <NTooltip v-for="i in [0, 1, 2, 3, 4]" :key="i" trigger="hover" placement="bottom">
+  <div class="flex items-center gap-2">
+    <NTooltip v-for="i in [1, 2, 3, 4, 5]" :key="i" trigger="hover" placement="bottom">
       <template #trigger>
         <span
           :class="[
-            i === model ? `text-[#FFCC4D] ${emojiFill(i)}` : emoji(i),
+            i === model ? `text-yellow-400 ${emojiFill(i)}` : emoji(i),
             'hover:-translate-y-2 hover:scale-125 transition-transform delay-150 ease-in-out cursor-pointer',
             emojiClass
           ]"
@@ -29,27 +29,22 @@
 <script setup lang="ts">
 import { NTooltip } from 'naive-ui'
 
-const model = defineModel<EmojiOption>()
-withDefaults(
+const model = defineModel<number>()
+const props = withDefaults(
   defineProps<{
     emojiClass?: string
+    tips?: string[]
   }>(),
   {
-    emojiClass: 'text-2xl m-2'
+    emojiClass: 'text-2xl',
+    tips: () => ['讨厌', '不喜欢', '一般', '喜欢', '非常喜欢']
   }
 )
+
+const tip = (option: number) => props.tips[option - 1]
 </script>
 
 <script lang="ts">
-export enum EmojiOption {
-  Hate,
-  Unlike,
-  Normal,
-  Like,
-  Love
-}
-const tips = ['讨厌', '不喜欢', '一般', '喜欢', '非常喜欢']
-const tip = (option: EmojiOption) => tips[option]
 const emojis = [
   'icon-[bi--emoji-frown]',
   'icon-[bi--emoji-astonished]',
@@ -64,6 +59,6 @@ const emojisFill = [
   'icon-[bi--emoji-smile-fill]',
   'icon-[bi--emoji-laughing-fill]'
 ]
-const emoji = (option: EmojiOption) => emojis[option]
-const emojiFill = (option: EmojiOption) => emojisFill[option]
+const emoji = (option: number) => emojis[option - 1]
+const emojiFill = (option: number) => emojisFill[option - 1]
 </script>

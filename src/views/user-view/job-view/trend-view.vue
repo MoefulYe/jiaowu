@@ -39,8 +39,8 @@
 
 <script setup lang="ts">
 import { NCard, type SelectOption, NSelect, NButton } from 'naive-ui'
-import { computed, onBeforeMount, ref } from 'vue'
-import { fetchCities, fetchJobs } from '../../../api/mock'
+import { computed, ref } from 'vue'
+import { cities, jobs } from '../../../api/mock'
 
 import { use } from 'echarts/core'
 import { LineChart } from 'echarts/charts'
@@ -88,15 +88,11 @@ type ChartOpts = ComposeOption<
 
 const job = ref('java')
 const city = ref('杭州')
-const jobs = ref<string[]>([])
-const cities = ref<string[]>([])
 const unit = ref(Unit.Month)
 
-const jobOpts = computed<SelectOption[]>(() =>
-  jobs.value.map((job) => ({ label: job, value: job }))
-)
+const jobOpts = computed<SelectOption[]>(() => jobs.map((job) => ({ label: job, value: job })))
 const cityOpts = computed<SelectOption[]>(() =>
-  cities.value.map((city) => ({ label: city, value: city }))
+  cities.map((city) => ({ label: city, value: city }))
 )
 
 const chartOpts1 = computed<ChartOpts>(() => ({
@@ -234,11 +230,6 @@ const chartOpts2 = computed<ChartOpts>(() => ({
     ]
   }))
 }))
-
-onBeforeMount(() => {
-  fetchCities().then((ok) => (cities.value = ok))
-  fetchJobs().then((ok) => (jobs.value = ok))
-})
 </script>
 
 <script lang="ts">

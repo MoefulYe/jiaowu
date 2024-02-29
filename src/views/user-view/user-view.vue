@@ -36,16 +36,7 @@
         class="grow flex flex-col"
         content-style="display: flex; flex-direction: column; flex-grow: 1;"
       >
-        <RouterView v-slot="{ Component }">
-          <Transition
-            enter-from-class="opacity-0"
-            leave-to-class="opacity-0"
-            enter-active-class="transition-opacity duration-300 ease-in-out"
-            leave-active-class="transition-opacity duration-300 ease-in-out"
-          >
-            <component :is="Component" />
-          </Transition>
-        </RouterView>
+        <RouterView />
       </NLayoutContent>
     </NLayout>
   </NLayout>
@@ -96,12 +87,12 @@ const avatarDropdownOpts: DropdownOption[] = [
   {
     label: '个人信息',
     key: 'profile',
-    icon: renderIcon(<span class="icon-[iconamoon--profile]" />)
+    icon: renderIcon(<span class="icon-[carbon--user-avatar]" />)
   },
   {
     label: '退出登录',
     key: 'logout',
-    icon: renderIcon(<span class="icon-[material-symbols--exit-to-app-rounded]" />)
+    icon: renderIcon(<span class="icon-[carbon--logout]" />)
   }
 ]
 </script>

@@ -47,8 +47,8 @@ const items: NavItem[] = [
   { icon: 'icon-[ph--chart-bar-horizontal-thin]', to: 'job-market', title: '职业行情' },
   { icon: 'icon-[ph--chart-pie-slice-thin]', to: 'skill-required', title: '技能需求' },
   { icon: 'icon-[ph--chart-line-up-thin]', to: 'trend', title: '趋势分析' },
+  { icon: 'icon-[ph--exam-thin]', to: 'assessment', title: '职业测评' },
   { icon: 'icon-[ph--heart-thin]', to: 'interest', title: '兴趣方向' },
-  { icon: 'icon-[et--tools-2]', to: 'skill', title: '技能评估' },
   { icon: 'icon-[ph--lightbulb-thin]', to: 'recommand', title: '方向推荐' },
   { icon: 'icon-[ph--paper-plane-tilt-thin]', to: 'study-plan', title: '学习规划' },
   { icon: 'icon-[lets-icons--materials-light]', to: 'study-material', title: '资源推荐' }

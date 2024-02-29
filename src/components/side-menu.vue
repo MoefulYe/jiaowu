@@ -31,8 +31,8 @@ enum Entry {
   Plan, //规划
   Material, //推荐
   Evaluation,
-  Interest, //兴趣评估
-  Skill, //技能评估
+  Assessment, //兴趣评估
+  Interest, //技能评估
   Logout,
   Recommand
 }
@@ -59,7 +59,7 @@ const menuEntries = computed<MenuOption[]>(() => [
   {
     label: '个人中心',
     key: Entry.Person,
-    icon: renderIcon(<span class="icon-[ph--person-simple] text-2xl" />),
+    icon: renderIcon(<span class="icon-[ph--person] text-2xl" />),
     children: [
       {
         label: renderRouterLink('/profile', '基本信息'),
@@ -76,7 +76,7 @@ const menuEntries = computed<MenuOption[]>(() => [
   {
     label: '市场行情',
     key: Entry.Market,
-    icon: renderIcon(<span class="icon-[clarity--world-line] text-2xl" />),
+    icon: renderIcon(<span class="icon-[solar--global-outline] text-2xl" />),
     children: [
       {
         label: renderRouterLink('/job/market', '职业行情'),
@@ -98,17 +98,17 @@ const menuEntries = computed<MenuOption[]>(() => [
   {
     label: '职业评估',
     key: Entry.Evaluation,
-    icon: renderIcon(<span class="icon-[ph--exam] text-2xl" />),
+    icon: renderIcon(<span class="icon-[carbon--cube] text-2xl" />),
     children: [
+      {
+        label: renderRouterLink('/assessment', '职业测评'),
+        key: Entry.Assessment,
+        icon: renderIcon(<span class="icon-[ph--exam]" />)
+      },
       {
         label: renderRouterLink('/interest', '兴趣方向'),
         key: Entry.Interest,
         icon: renderIcon(<span class="icon-[ph--heart]" />)
-      },
-      {
-        label: renderRouterLink('/skill', '技能评估'),
-        key: Entry.Skill,
-        icon: renderIcon(<span class="icon-[la--tools]" />)
       },
       {
         label: renderRouterLink('/recommand', '职业推荐'),

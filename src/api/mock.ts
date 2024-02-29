@@ -1,4 +1,4 @@
-const jobs = [
+export const jobs = [
   '后端',
   '前端',
   '全栈',
@@ -16,7 +16,7 @@ const jobs = [
 
 
 
-const cities = [
+export const cities = [
   '北京',
   '上海',
   // '广州',
@@ -36,16 +36,6 @@ export const fetchCities = async (): Promise<string[]> => {
     setTimeout(() => {
       window.$loading.finish()
       resolve(cities)
-    }, 50)
-  )
-}
-
-export const fetchJobs = async (): Promise<string[]> => {
-  window.$loading.start()
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      window.$loading.finish()
-      resolve(jobs)
     }, 50)
   )
 }

@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { NButton, NSelect, NTabPane, NTabs, type SelectOption } from 'naive-ui/lib'
 import { ref, computed, onBeforeMount } from 'vue'
-import { fetchCities, fetchCompanies, fetchJobs } from '../../../api/mock'
+import { cities, fetchCompanies, jobs } from '../../../api/mock'
 import { type SalaryAnalysis, fetchSalaryInitalChoice } from '../../../api/data_analysis/salary'
 import SameCityDiffJobs from '../../../components/same-city-diff-jobs-salary.vue'
 import SameJobDiffCities from '../../../components/same-job-diff-cities-salary.vue'
@@ -82,15 +82,11 @@ type ChartOpts = ComposeOption<
 >
 
 const job = ref<string>('java')
-const jobs = ref<string[]>([])
 const city = ref<string>('杭州')
-const cities = ref<string[]>([])
 const companies = ref<string[]>([])
 const data = ref<SalaryAnalysis>()
 
 onBeforeMount(() => {
-  fetchCities().then((ret) => (cities.value = ret))
-  fetchJobs().then((ret) => (jobs.value = ret))
   fetchCompanies().then((ret) => (companies.value = ret))
   fetch()
 })
@@ -102,14 +98,14 @@ const fetch = () =>
   }).then((ok) => (data.value = ok))
 
 const jobOpts = computed<SelectOption[]>(() =>
-  jobs.value.map((job) => ({
+  jobs.map((job) => ({
     label: job,
     value: job
   }))
 )
 
 const cityOpts = computed<SelectOption[]>(() =>
-  cities.value.map((city) => ({
+  cities.map((city) => ({
     label: city,
     value: city
   }))

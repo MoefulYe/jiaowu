@@ -56,7 +56,7 @@ import {
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
-import { fetchCities, fetchJobs } from '../../../api/mock'
+import { cities, jobs } from '../../../api/mock'
 import { fetchTechInitialChoice, type Tech } from '../../../api/data_analysis/tech'
 import { type ComposeOption } from 'echarts'
 import SameCityDiffJobs from '../../../components/same-city-diff-jobs-top10.vue'
@@ -68,20 +68,18 @@ type ChartOpts = ComposeOption<
   PieSeriesOption | TitleComponentOption | TooltipComponentOption | LegendComponentOption
 >
 
-const jobs = ref<string[]>([])
-const cities = ref<string[]>([])
 const job = ref<string>('java')
 const city = ref<string>('杭州')
 const data = ref<Tech>()
 
 const cityOpts = computed<SelectOption[]>(() =>
-  cities.value.map((city) => ({
+  cities.map((city) => ({
     label: city,
     value: city
   }))
 )
 const jobOpts = computed<SelectOption[]>(() =>
-  jobs.value.map((job) => ({
+  jobs.map((job) => ({
     label: job,
     value: job
   }))
@@ -118,8 +116,6 @@ const fetchData = () =>
   }).then((ok) => (data.value = ok))
 
 onMounted(() => {
-  fetchCities().then((ret) => (cities.value = ret))
-  fetchJobs().then((ret) => (jobs.value = ret))
   fetchData()
 })
 </script>
