@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 import {
-  FormRules,
+  type FormRules,
   NButton,
   NCard,
   NDatePicker,
@@ -100,12 +100,12 @@ import {
   NInput,
   NTooltip
 } from 'naive-ui'
-import { shallowRef } from 'vue'
+import { ref } from 'vue'
 import confirm from '../../../components/confirm'
-import { FormInst } from 'naive-ui'
+import { type FormInst } from 'naive-ui'
 
 const data = defineModel<OptionalInternship[]>({ required: true })
-const formRefs = shallowRef<FormInst[]>([])
+const formRefs = ref<FormInst[]>([])
 
 const rules = (i: number): FormRules => ({
   company: {

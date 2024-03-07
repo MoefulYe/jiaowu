@@ -56,48 +56,74 @@
         >
           <ResumeProjectsView v-model="data.projects" ref="projRef" />
         </NFormItem>
+        <NFormItem
+          label="竞赛经历"
+          path="competitions"
+          label-style="font-size: 1.125rem;line-height: 1.75rem;"
+        >
+          <ResumeCompetitionsView v-model="data.competitions" ref="competitionsRef" />
+        </NFormItem>
+        <NFormItem
+          label="自我评价"
+          path="selfEvaluation"
+          label-style="font-size: 1.125rem;line-height: 1.75rem;"
+        >
+          <NInput
+            type="textarea"
+            maxlength="256"
+            minlength="32"
+            v-model:value="data.selfEvaluation"
+          />
+        </NFormItem>
       </NForm>
+      <NButton @click="submit">ss</NButton>
     </NCard>
-    <NButton @click="formRef?.validate()" />
   </div>
 </template>
 
 <script setup lang="ts">
 import {
-  FormInst,
-  FormRules,
+  type FormInst,
+  type FormRules,
   NButton,
   NCard,
   NDynamicTags,
   NForm,
   NFormItem,
+  NInput,
   NSelect,
   NUpload,
   NUploadDragger,
-  UploadFileInfo
+  type UploadFileInfo
 } from 'naive-ui'
-import { Ref, ref, shallowRef } from 'vue'
+import { type Ref, ref, shallowRef } from 'vue'
 import type { OptionalInternship } from './resume-interships-view.vue'
 import ResumeIntershipsView from './resume-interships-view.vue'
 import { jobs } from '../../../api/mock'
-import ResumeProjectsView, { OptionalProject } from './resume-projects-view.vue'
+import ResumeProjectsView, { type OptionalProject } from './resume-projects-view.vue'
+import ResumeCompetitionsView, { type OptionalCompetition } from './resume-competitions-view.vue'
+import service from '../../../util/requests'
 
 const formRef = shallowRef<FormInst>()
 const resumeRef = shallowRef<InstanceType<typeof ResumeIntershipsView>>()
 const projRef = shallowRef<InstanceType<typeof ResumeProjectsView>>()
+const competitionsRef = shallowRef<InstanceType<typeof ResumeCompetitionsView>>()
 const rules: FormRules = {
   doc: {
-    required: true,
-    trigger: ['change', 'blur'],
-    type: 'array',
-    min: 1,
-    message: '未上传简历'
+    trigger: 'blur',
+    validator: () => {
+      if (data.value.doc.length === 0) {
+        return Promise.reject(new Error('请上传个人简历'))
+      }
+    }
   },
   directions: {
-    type: 'array',
     trigger: 'blur',
-    min: 1,
-    message: '至少选择一个投递方向'
+    validator: () => {
+      if (data.value.directions.length === 0) {
+        return Promise.reject(new Error('至少选择一个投递方向'))
+      }
+    }
   },
   internships: {
     trigger: 'blur',
@@ -108,9 +134,40 @@ const rules: FormRules = {
     trigger: 'blur',
     asyncValidator: () =>
       Promise.all(projRef.value!.formRefs.map((form) => form.validate())).then(() => {})
+  },
+  competitions: {
+    trigger: 'blur',
+    asyncValidator: () =>
+      Promise.all(competitionsRef.value!.formRefs.map((form) => form.validate())).then(() => {})
   }
 }
 const data = defaultResume()
+const submit = async () => {
+  try {
+    await formRef.value?.validate()
+    const {
+      doc: [doc],
+      ...rst
+    } = data.value
+    if (doc.status !== 'pending') {
+      return
+    }
+    await service.post(
+      '/resume',
+      {
+        data: JSON.stringify(rst),
+        resume: doc.file
+      },
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+  } catch {
+    return
+  }
+}
 </script>
 
 <script lang="ts">
@@ -120,37 +177,9 @@ export interface Resume {
   skills: string[]
   internships: OptionalInternship[]
   projects: OptionalProject[]
-  competitions: {
-    name: string
-    price: string
-    description?: string
-  }[]
-  creds: {
-    name: string
-    description?: string
-  }[]
-  languages: {
-    name: Language
-    proficiency: Proficiency
-  }[]
+  competitions: OptionalCompetition[]
   selfEvaluation: string
 }
-
-export enum Language {
-  English = '英语',
-  Japanese = '日语',
-  French = '法语',
-  German = '德语',
-  Spanish = '西班牙语',
-  Russian = '俄语',
-  Korean = '韩语',
-  Arabic = '阿拉伯语',
-  Portuguese = '葡萄牙语',
-  Italian = '意大利语',
-  Dutch = '荷兰语'
-}
-
-export type Proficiency = 1 | 2 | 3 | 4 | 5
 
 const defaultResume = (): Ref<Resume> =>
   ref({
@@ -160,9 +189,7 @@ const defaultResume = (): Ref<Resume> =>
     selfEvaluation: '',
     internships: [],
     projects: [],
-    competitions: [],
-    creds: [],
-    languages: []
+    competitions: []
   })
 
 const checkDocMimeType = (type?: string | null) => {
@@ -182,7 +209,8 @@ const checkDocMimeType = (type?: string | null) => {
     !type.includes('png') &&
     !type.includes('jpg') &&
     !type.includes('jpeg') &&
-    !type.includes('html')
+    !type.includes('html') &&
+    !type.includes('text')
   ) {
     window.$message.error('文件类型不支持')
     return false

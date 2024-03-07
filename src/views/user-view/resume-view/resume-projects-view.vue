@@ -82,8 +82,8 @@
 
 <script setup lang="ts">
 import {
-  FormInst,
-  FormRules,
+  type FormInst,
+  type FormRules,
   NButton,
   NCard,
   NDatePicker,
@@ -143,7 +143,7 @@ export interface Project {
   start: string
   end: string
   link?: string
-  description?: string
+  description: string
 }
 
 export type OptionalProject = Partial<Project>
