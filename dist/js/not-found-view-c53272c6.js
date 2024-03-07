@@ -1,1 +1,0 @@
-import{d as o,c as a,w as t,u as e,o as s,a as n,b as c,g as r,N as l,l as u}from"./index-655e7691.js";const d=o({__name:"not-found-view",setup(_){return(i,f)=>(s(),a(e(u.NResult),{status:"404",title:"404 页面不存在",class:"p-8"},{footer:t(()=>[n(e(l),{onClick:e(r)},{default:t(()=>[c(" 返回首页 ")]),_:1},8,["onClick"])]),_:1}))}});export{d as default};
