@@ -22,11 +22,8 @@
       <NFormItemGi label="学院" path="college" :span="12">
         <NInput v-model:value="data.college" placeholder="输入学院" />
       </NFormItemGi>
-      <NFormItemGi label="专业" path="major" :span="12">
-        <NInput v-model:value="data.major" placeholder="输入专业" />
-      </NFormItemGi>
-      <NFormItemGi label="班级" path="class" :span="12">
-        <NInput v-model:value="data.class" placeholder="输入班级" />
+      <NFormItemGi label="班级" path="classNumber" :span="12">
+        <NInput v-model:value="data.classNumber" placeholder="输入班级" />
       </NFormItemGi>
     </NGrid>
   </NForm>
@@ -50,7 +47,12 @@ import {
   NFormItemGi
 } from 'naive-ui'
 import { onBeforeMount, ref, shallowRef } from 'vue'
-import { type AcademicInfo, StudentType } from '../api/user/profile'
+import {
+  type AcademicInfo,
+  StudentType,
+  fetchAcademicInfo,
+  modifyAcademicInfo
+} from '../api/user/profile'
 
 const emit = defineEmits<Emits>()
 const props = withDefaults(defineProps<Props>(), {
@@ -59,10 +61,13 @@ const props = withDefaults(defineProps<Props>(), {
 const formRef = shallowRef<FormInst>()
 const data = ref<AcademicInfo>({})
 
-const fetch = () => {}
 const click = async () => {
   try {
     await formRef.value!.validate()
+    await modifyAcademicInfo(data.value)
+    if (props.fetchProfile) {
+      window.$message.success('修改成功')
+    }
     emit('complete')
   } catch {
     // do nothing
@@ -71,7 +76,7 @@ const click = async () => {
 
 onBeforeMount(() => {
   if (props.fetchProfile) {
-    fetch()
+    fetchAcademicInfo().then((ok) => (data.value = ok))
   }
 })
 </script>

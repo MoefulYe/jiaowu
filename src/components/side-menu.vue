@@ -34,7 +34,8 @@ enum Entry {
   Assessment, //兴趣评估
   Interest, //技能评估
   Logout,
-  Recommand
+  Recommand,
+  Resume
 }
 
 const emit = defineEmits<{
@@ -70,6 +71,11 @@ const menuEntries = computed<MenuOption[]>(() => [
         label: renderRouterLink('/academic', '学业信息'),
         key: Entry.Education,
         icon: renderIcon(<span class="icon-[fluent-mdl2--education]" />)
+      },
+      {
+        label: renderRouterLink('/resume', '简历管理'),
+        key: Entry.Resume,
+        icon: renderIcon(<span class="icon-[ph--read-cv-logo]" />)
       }
     ]
   },

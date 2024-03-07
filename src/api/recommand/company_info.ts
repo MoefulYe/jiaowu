@@ -18,16 +18,18 @@ export interface CompanyInfo {
   //工作时间
   workTime: string
   //福利
-  welfare: string[],
-  updateTime: string,
+  welfare: string[]
+  updateTime: string
   logo: string
 }
 
-// export const fetchCompanyInfo = async (company: string): Promise<CompanyInfo> =>
-//   request({
-//     method: 'GET',
-//     url: `/company/${company}`
-//   })
+// export const fetchCompanyInfo = async (company: string): Promise<CompanyInfo> => service({
+//   method:'GET',
+//   url:`/company`,
+//   params: {
+//     company
+//   }
+// })
 
 export const fetchCompanyInfo = async (company: string): Promise<CompanyInfo> => {
   window.$loading.start()

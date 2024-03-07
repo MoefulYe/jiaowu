@@ -44,6 +44,7 @@ interface NavItem {
 const items: NavItem[] = [
   { icon: 'icon-[ph--identification-card-thin]', to: 'profile', title: '基本信息' },
   { icon: 'icon-[ph--student-thin]', to: 'academic', title: '学业信息' },
+  { icon: 'icon-[ph--read-cv-logo-thin]', to: 'resume', title: '简历管理' },
   { icon: 'icon-[ph--chart-bar-horizontal-thin]', to: 'job-market', title: '职业行情' },
   { icon: 'icon-[ph--chart-pie-slice-thin]', to: 'skill-required', title: '技能需求' },
   { icon: 'icon-[ph--chart-line-up-thin]', to: 'trend', title: '趋势分析' },

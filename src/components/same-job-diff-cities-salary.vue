@@ -36,7 +36,7 @@ import { NSelect, type SelectOption, NButton, NTag } from 'naive-ui'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
 import { RouterLink } from 'vue-router'
-import { type RalateCompanies, fetchRelateRegion } from '../api/recommand/company'
+import { type RelateCompanies, fetchRelateRegion } from '../api/recommand/company'
 import {
   GridComponent,
   LegendComponent,
@@ -74,7 +74,7 @@ type ChartOpts = ComposeOption<
 const props = defineProps<Props>()
 const cmpCities = ref<string[]>([])
 const cmp = ref<SalaryAnalysis[]>([])
-const companies = ref<RalateCompanies[]>([])
+const companies = ref<RelateCompanies[]>([])
 const cmpCityOpts = computed<SelectOption[]>(() =>
   props.cities
     .filter((city) => city !== props.city)

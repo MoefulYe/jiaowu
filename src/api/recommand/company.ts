@@ -12,22 +12,34 @@ export interface RelateRegionParams {
   choiceList: string[]
 }
 
-export interface RalateCompanies {
+export interface InitialChoiceParams {
+  city: string
+  jobName: string
+}
+
+export interface RelateCompanies {
   region: string
   jobName: string
   companyList: string[]
 }
 
-export const fetchRelateJob = (params: RelateJobParams): Promise<RalateCompanies[]> =>
+export const fetchRelateJob = (params: RelateJobParams): Promise<RelateCompanies[]> =>
   request({
     method: 'GET',
-    url: '/data_analysis/company/relate_job',
+    url: '/recommend/company/relate_job',
     params
   })
 
-export const fetchRelateRegion = (params: RelateRegionParams): Promise<RalateCompanies[]> =>
+export const fetchRelateRegion = (params: RelateRegionParams): Promise<RelateCompanies[]> =>
   request({
     method: 'GET',
-    url: '/data_analysis/company/relate_region',
+    url: '/recommend/company/relate_region',
+    params
+  })
+
+export const fetchInitialChoice = (params: InitialChoiceParams): Promise<RelateCompanies> =>
+  request({
+    method: 'GET',
+    url: '/recommend/company/initial_choice',
     params
   })

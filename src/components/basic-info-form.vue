@@ -37,7 +37,7 @@ import {
   NButton
 } from 'naive-ui'
 import { onBeforeMount, ref, shallowRef } from 'vue'
-import { type BasicInfo, Gender } from '../api/user/profile'
+import { type BasicInfo, Gender, fetchBasicInfo, modifyBasicInfo } from '../api/user/profile'
 
 const emit = defineEmits<Emits>()
 const props = withDefaults(defineProps<Props>(), {
@@ -46,10 +46,13 @@ const props = withDefaults(defineProps<Props>(), {
 const formRef = shallowRef<FormInst>()
 const data = ref<BasicInfo>({})
 
-const fetch = () => {}
 const click = async () => {
   try {
     await formRef.value!.validate()
+    await modifyBasicInfo(data.value)
+    if (props.fetchProfile) {
+      window.$message.success('修改成功')
+    }
     emit('complete')
   } catch {
     // do nothing
@@ -58,7 +61,7 @@ const click = async () => {
 
 onBeforeMount(() => {
   if (props.fetchProfile) {
-    fetch()
+    fetchBasicInfo().then((ok) => (data.value = ok))
   }
 })
 </script>

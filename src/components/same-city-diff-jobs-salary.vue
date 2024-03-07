@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { NSelect, type SelectOption, NButton, NTag } from 'naive-ui'
 import { type SalaryAnalysis, fetchSalaryCompareJob } from '../api/data_analysis/salary'
-import { fetchRelateJob, type RalateCompanies } from '../api/recommand/company'
+import { fetchRelateJob, type RelateCompanies } from '../api/recommand/company'
 import { RouterView } from 'vue-router'
 import { computed, ref } from 'vue'
 import { BarChart } from 'echarts/charts'
@@ -76,7 +76,7 @@ type ChartOpts = ComposeOption<
 const props = defineProps<Props>()
 const cmpJobs = ref<string[]>([])
 const cmp = ref<SalaryAnalysis[]>([])
-const companies = ref<RalateCompanies[]>([])
+const companies = ref<RelateCompanies[]>([])
 const cmpJobOpts = computed<SelectOption[]>(() =>
   props.jobs
     .filter((job) => job !== props.job)

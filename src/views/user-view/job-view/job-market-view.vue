@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { NButton, NSelect, NTabPane, NTabs, type SelectOption } from 'naive-ui/lib'
 import { ref, computed, onBeforeMount } from 'vue'
-import { cities, fetchCompanies, jobs } from '../../../api/mock'
+import { cities, jobs } from '../../../api/mock'
 import { type SalaryAnalysis, fetchSalaryInitalChoice } from '../../../api/data_analysis/salary'
 import SameCityDiffJobs from '../../../components/same-city-diff-jobs-salary.vue'
 import SameJobDiffCities from '../../../components/same-job-diff-cities-salary.vue'
@@ -76,6 +76,7 @@ import type { BarSeriesOption } from 'echarts/charts'
 import VChart from 'vue-echarts'
 import { RouterLink } from 'vue-router'
 import { NCard, NTag } from 'naive-ui'
+import { fetchInitialChoice } from '../../../api/recommand/company'
 use([GridComponent, BarChart, CanvasRenderer, LegendComponent, TooltipComponent])
 type ChartOpts = ComposeOption<
   GridComponentOption | BarSeriesOption | LegendComponentOption | TooltipComponentOption
@@ -87,7 +88,10 @@ const companies = ref<string[]>([])
 const data = ref<SalaryAnalysis>()
 
 onBeforeMount(() => {
-  fetchCompanies().then((ret) => (companies.value = ret))
+  fetchInitialChoice({
+    jobName: job.value,
+    city: city.value
+  }).then((ok) => (companies.value = ok.companyList))
   fetch()
 })
 

@@ -30,7 +30,7 @@
             {{ username.slice(0, 1) }}
           </NAvatar>
         </NDropdown>
-        <span class="flex items-center"> 你好, <ShowOrEdit v-model:value="username" /> </span>
+        <span class="flex items-center"> 你好，<ShowOrEdit v-model:value="username" /> </span>
       </NLayoutHeader>
       <NLayoutContent
         class="grow flex flex-col"

@@ -1,3 +1,5 @@
+import service from '@/util/requests'
+
 export enum Gender {
   Female = '女',
   Male = '男'
@@ -37,8 +39,32 @@ export interface AcademicInfo {
   school?: string
   //学院
   college?: string
-  //专业
-  major?: string
   //班级
-  class?: string
+  classNumber?: string
 }
+
+export const fetchBasicInfo = (): Promise<BasicInfo> =>
+  service({
+    method: 'GET',
+    url: '/user/profile/basic'
+  })
+
+export const modifyBasicInfo = (data: BasicInfo): Promise<void> =>
+  service({
+    method: 'POST',
+    url: '/user/profile/basic',
+    data
+  })
+
+export const fetchAcademicInfo = (): Promise<AcademicInfo> =>
+  service({
+    method: 'GET',
+    url: '/user/profile/education'
+  })
+
+export const modifyAcademicInfo = (data: AcademicInfo): Promise<void> =>
+  service({
+    method: 'POST',
+    url: '/user/profile/education',
+    data
+  })

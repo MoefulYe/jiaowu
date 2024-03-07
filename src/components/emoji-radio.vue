@@ -60,5 +60,5 @@ const emojisFill = [
   'icon-[bi--emoji-laughing-fill]'
 ]
 const emoji = (option: number) => emojis[option - 1]
-const emojiFill = (option: number) => emojisFill[option - 1]
+export const emojiFill = (option: number) => emojisFill[option - 1]
 </script>

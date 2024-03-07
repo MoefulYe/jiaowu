@@ -11,10 +11,8 @@ export const jobs = [
   'java',
   'python',
   'dl',
-  'ml',
+  'ml'
 ]
-
-
 
 export const cities = [
   '北京',
@@ -40,25 +38,15 @@ export const fetchCities = async (): Promise<string[]> => {
   )
 }
 
-const companies = [
-  '腾讯',
-  '阿里巴巴',
-  '百度',
-  '字节跳动',
-  '美团',
-  '京东',
-  '华为',
-  '网易',
-  '小米',
-  '滴滴'
-]
-
-export const fetchCompanies = async (): Promise<string[]> => {
-  window.$loading.start()
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      window.$loading.finish()
-      resolve(companies)
-    }, 50)
-  )
-}
+// const companies = [
+//   '腾讯',
+//   '阿里巴巴',
+//   '百度',
+//   '字节跳动',
+//   '美团',
+//   '京东',
+//   '华为',
+//   '网易',
+//   '小米',
+//   '滴滴'
+// ]
