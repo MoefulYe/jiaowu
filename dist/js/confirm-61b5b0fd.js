@@ -1,1 +1,0 @@
-const o=(i,n,t)=>new Promise(e=>{window.$dialog.create({title:i,content:n,positiveText:"确定",negativeText:"取消",type:t??"warning",closeOnEsc:!0,onPositiveClick:()=>e(!0),onNegativeClick:()=>e(!1),onMaskClick:()=>e(!1),onClose:()=>e(!1)})});export{o as c};

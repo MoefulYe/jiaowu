@@ -1,1 +1,0 @@
-import{d as s,Y as o,a as t,w as r,u as c,o as n,b as d,a8 as l,a0 as p}from"./index-a8223b55.js";const i={class:"sm:p-2 grow flex flex-col"},f=s({__name:"tech-view",props:{tech:{}},setup(e){const a=e;return(m,u)=>(n(),o("div",i,[t(c(p),{class:"grow shadow-lg rounded-none sm:rounded-md"},{default:r(()=>[d(l(a.tech),1)]),_:1})]))}});export{f as default};
