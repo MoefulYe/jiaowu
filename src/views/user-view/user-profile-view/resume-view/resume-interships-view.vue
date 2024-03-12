@@ -101,8 +101,9 @@ import {
   NTooltip
 } from 'naive-ui'
 import { shallowRef } from 'vue'
-import confirm from '../../../components/confirm'
+import confirm from '../../../../components/confirm'
 import { type FormInst } from 'naive-ui'
+import { OptionalInternship } from '../../../../api/user/resume'
 
 const data = defineModel<OptionalInternship[]>({ required: true })
 const formRefs = shallowRef<FormInst[]>([])
@@ -157,16 +158,4 @@ const rules = (idx: number): FormRules => ({
 })
 
 defineExpose({ formRefs })
-</script>
-
-<script lang="ts">
-export interface Internship {
-  company: string
-  position: string
-  start: string
-  end: string
-  description: string
-}
-
-export type OptionalInternship = Partial<Internship>
 </script>

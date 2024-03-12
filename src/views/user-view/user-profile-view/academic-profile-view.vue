@@ -18,5 +18,5 @@
 
 <script setup lang="ts">
 import { NCard, NTabPane, NTabs } from 'naive-ui'
-import AcademicInfoForm from '../../components/academic-info-form.vue'
+import AcademicInfoForm from '../../../components/academic-info-form.vue'
 </script>

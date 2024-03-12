@@ -7,24 +7,34 @@
         <div class="flex">
           <NSelect
             v-model:value="job"
-            :options="jobOpts"
+            :options="JOB_OPTS"
             class="inline w-24 p-2"
             placeholder="职位"
           />
           <NSelect
             v-model:value="city"
-            :options="cityOpts"
+            :options="CITY_OPTS"
             class="inline w-24 p-2"
             placeholder="城市"
           />
-          <NButton class="inline m-2" @click="fetch">确认</NButton>
+          <NButton
+            class="inline m-2"
+            @click="
+              () => {
+                companies = undefined
+                salaries = undefined
+                fetch()
+              }
+            "
+            >确认</NButton
+          >
         </div>
-        <div v-if="data !== undefined" class="p-2">
-          <VChart :option="chartOpts" style="height: 16rem" autoresize />
-        </div>
+        <NSkeleton v-if="salaries === undefined" class="h-64 rounded-md" />
+        <VChart v-else :option="chartOpts" class="h-64" autoresize />
         <h2 class="text-2xl font-bold">相关企业</h2>
-        <div>
-          <span v-for="company in companies" :key="company">
+        <NSkeleton v-if="companies === undefined" class="rounded-sm h-6" text />
+        <div v-else>
+          <span v-for="company of companies" :key="company">
             <RouterLink
               :to="{
                 name: 'company',
@@ -42,10 +52,10 @@
         <h2 class="text-xl font-bold">比较</h2>
         <NTabs :default-value="''">
           <NTabPane name="相同职位不同城市">
-            <SameJobDiffCities :job="job" :jobs="jobs" :city="city" :cities="cities" :data="data" />
+            <SameJobDiffCities :job="job" :city="city" :salaries="salaries" />
           </NTabPane>
           <NTabPane name="相同城市不同职位">
-            <SameCityDiffJobs :job="job" :jobs="jobs" :city="city" :cities="cities" :data="data" />
+            <SameCityDiffJobs :job="job" :city="city" :salaries="salaries" />
           </NTabPane>
         </NTabs>
       </div>
@@ -54,9 +64,10 @@
 </template>
 
 <script setup lang="ts">
-import { NButton, NSelect, NTabPane, NTabs, type SelectOption } from 'naive-ui/lib'
+import { NButton, NSelect, NTabPane, NTabs } from 'naive-ui/lib'
 import { ref, computed, onBeforeMount } from 'vue'
-import { cities, jobs } from '../../../api/mock'
+import { CITY_OPTS, DEFAULT_CITY } from '../../../api/city'
+import { JOB_OPTS, DEFAULT_JOB } from '../../../api/jobs'
 import { type SalaryAnalysis, fetchSalaryInitalChoice } from '../../../api/data_analysis/salary'
 import SameCityDiffJobs from '../../../components/same-city-diff-jobs-salary.vue'
 import SameJobDiffCities from '../../../components/same-job-diff-cities-salary.vue'
@@ -75,45 +86,30 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import VChart from 'vue-echarts'
 import { RouterLink } from 'vue-router'
-import { NCard, NTag } from 'naive-ui'
-import { fetchInitialChoice } from '../../../api/recommand/company'
+import { NCard, NSkeleton, NTag } from 'naive-ui'
+import { fetchInitialChoice as fetchCompanyInitialChoice } from '../../../api/recommand/company'
 use([GridComponent, BarChart, CanvasRenderer, LegendComponent, TooltipComponent])
 type ChartOpts = ComposeOption<
   GridComponentOption | BarSeriesOption | LegendComponentOption | TooltipComponentOption
 >
 
-const job = ref<string>('java')
-const city = ref<string>('杭州')
-const companies = ref<string[]>([])
-const data = ref<SalaryAnalysis>()
+const job = ref(DEFAULT_JOB)
+const city = ref(DEFAULT_CITY)
+const companies = ref<string[]>()
+const salaries = ref<SalaryAnalysis>()
 
-onBeforeMount(() => {
-  fetchInitialChoice({
+const fetch = () => {
+  fetchCompanyInitialChoice({
     jobName: job.value,
     city: city.value
   }).then((ok) => (companies.value = ok.companyList))
-  fetch()
-})
-
-const fetch = () =>
   fetchSalaryInitalChoice({
     city: city.value,
     jobName: job.value
-  }).then((ok) => (data.value = ok))
+  }).then((ok) => (salaries.value = ok))
+}
 
-const jobOpts = computed<SelectOption[]>(() =>
-  jobs.map((job) => ({
-    label: job,
-    value: job
-  }))
-)
-
-const cityOpts = computed<SelectOption[]>(() =>
-  cities.map((city) => ({
-    label: city,
-    value: city
-  }))
-)
+onBeforeMount(fetch)
 
 const chartOpts = computed<ChartOpts>(() => ({
   grid: [
@@ -174,7 +170,7 @@ const chartOpts = computed<ChartOpts>(() => ({
   series: [
     {
       type: 'bar',
-      data: data.value ? [data.value.jobNum] : undefined,
+      data: salaries.value ? [salaries.value.jobNum] : undefined,
       xAxisIndex: 0,
       yAxisIndex: 0,
       color: '#d08770',
@@ -186,7 +182,9 @@ const chartOpts = computed<ChartOpts>(() => ({
     },
     {
       type: 'bar',
-      data: data.value ? [data.value.minSalary, data.value.avgSalary, data.value.maxSalary] : [],
+      data: salaries.value
+        ? [salaries.value.minSalary, salaries.value.avgSalary, salaries.value.maxSalary]
+        : [],
       xAxisIndex: 1,
       yAxisIndex: 1,
       colorBy: 'data',

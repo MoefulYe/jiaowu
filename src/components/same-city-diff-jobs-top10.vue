@@ -1,21 +1,26 @@
 <template>
   <h2 class="text-xl font-bold">同一城市不同岗位对比</h2>
-  <div class="flex mb-4">
-    <NSelect
-      v-model:value="cmpJobs"
-      :options="cmpJobOpts"
-      class="w-96 m-2"
-      placeholder="对比岗位"
-      multiple
+  <div v-if="rate !== undefined">
+    <div class="flex mb-4">
+      <NSelect
+        v-model:value="cmpJobs"
+        :options="cmpJobOpts"
+        class="w-96 m-2"
+        placeholder="对比岗位"
+        multiple
+      />
+      <NButton class="inline m-2" @click="fetchData">确认</NButton>
+    </div>
+    <VChart
+      v-if="!loading"
+      :option="options"
+      :style="`height: ${cmpJobs.length * 2 + 12}rem`"
+      autoresize
+      @mousedown="({ name }) => gotoTechPage(name)"
     />
-    <NButton class="inline m-2" @click="fetchData">确认</NButton>
+    <NSkeleton v-else :style="`height: ${cmpJobs.length * 2 + 12}rem`" class="rounded-sm" />
   </div>
-  <VChart
-    :option="options"
-    :style="`height: ${cmpJobs.length * 2 + 12}rem`"
-    autoresize
-    @mousedown="({ name }) => gotoTechPage(name)"
-  />
+  <NSkeleton v-else class="h-48 rounded-md" />
 </template>
 
 <script setup lang="ts">
@@ -41,6 +46,8 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import type { GridComponentOption } from 'echarts/components'
 import VChart from 'vue-echarts'
+import { JOB_OPTS } from '../api/jobs'
+import { NSkeleton } from 'naive-ui'
 use([
   BarChart,
   CanvasRenderer,
@@ -61,26 +68,25 @@ type ChartOpts = ComposeOption<
 const props = defineProps<Props>()
 const cmpJobs = ref<string[]>([])
 const cmp = ref<Techs>([])
+const loading = ref(false)
 const SIZE = 10
 
 const cmpJobOpts = computed<SelectOption[]>(() =>
-  props.jobs
-    .filter((job) => job !== props.job)
-    .map((job) => ({
-      value: job,
-      label: job
-    }))
+  JOB_OPTS.filter(({ value }) => value !== props.job)
 )
 
-const fetchData = () =>
-  fetchTechCompareJob({
+const fetchData = async () => {
+  loading.value = true
+  cmp.value = await fetchTechCompareJob({
     city: props.city,
     jobName: props.job,
     choiceList: cmpJobs.value
-  }).then((ok) => (cmp.value = ok))
+  })
+  loading.value = false
+}
 
 const options = computed<ChartOpts>(() => {
-  const dataSet = props.data ? [props.data, ...cmp.value] : []
+  const dataSet = props.rate ? [props.rate, ...cmp.value] : []
   return {
     legend: {},
     xAxis: {
@@ -129,13 +135,10 @@ const options = computed<ChartOpts>(() => {
   }
 })
 </script>
-<div v-for="{ region, companyList } in companies" class="p-2"></div>
 <script lang="ts">
 interface Props {
   job: string
-  jobs: string[]
   city: string
-  cities: string[]
-  data?: Tech
+  rate?: Tech
 }
 </script>

@@ -33,17 +33,24 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'profile',
         path: 'profile',
-        component: () => import('@/views/user-view/profile-view.vue')
-      },
-      {
-        name: 'academic',
-        path: 'academic',
-        component: () => import('@/views/user-view/academic-view.vue')
-      },
-      {
-        name: 'resume',
-        path: 'resume',
-        component: () => import('@/views/user-view/resume-view/resume-view.vue')
+        children: [
+          {
+            name: 'basic-profile',
+            path: 'basic',
+            component: () => import('@/views/user-view/user-profile-view/basic-profile-view.vue')
+          },
+          {
+            name: 'academic-profile',
+            path: 'academic',
+            component: () => import('@/views/user-view/user-profile-view/academic-profile-view.vue')
+          },
+          {
+            name: 'resume-profile',
+            path: 'resume',
+            component: () =>
+              import('@/views/user-view/user-profile-view/resume-view/resume-view.vue')
+          }
+        ]
       },
       {
         name: 'job',
@@ -139,6 +146,6 @@ export const gotoTechPage = (tech: string) =>
 export const gotoHome = () => window.$router.push({ name: 'welcome' })
 export const gotoLogin = () => window.$router.push({ name: 'login' })
 export const gotoRegister = () => window.$router.push({ name: 'register' })
-export const gotoProfile = () => window.$router.push({ name: 'profile' })
+export const gotoBaicProfile = () => window.$router.push({ name: 'basic-profile' })
 
 export default router

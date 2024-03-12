@@ -63,17 +63,17 @@ const menuEntries = computed<MenuOption[]>(() => [
     icon: renderIcon(<span class="icon-[ph--person] text-2xl" />),
     children: [
       {
-        label: renderRouterLink('/profile', '基本信息'),
+        label: renderRouterLink('/profile/basic', '基本信息'),
         key: Entry.Profile,
         icon: renderIcon(<span class="icon-[ant-design--idcard-outlined]" />)
       },
       {
-        label: renderRouterLink('/academic', '学业信息'),
+        label: renderRouterLink('/profile/academic', '学业信息'),
         key: Entry.Education,
         icon: renderIcon(<span class="icon-[fluent-mdl2--education]" />)
       },
       {
-        label: renderRouterLink('/resume', '简历管理'),
+        label: renderRouterLink('/profile/resume', '简历管理'),
         key: Entry.Resume,
         icon: renderIcon(<span class="icon-[ph--read-cv-logo]" />)
       }

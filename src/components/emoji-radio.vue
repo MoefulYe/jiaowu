@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center gap-2">
-    <NTooltip v-for="i in [1, 2, 3, 4, 5]" :key="i" trigger="hover" placement="bottom">
+    <NTooltip v-for="i of 5" :key="i" trigger="hover" placement="bottom">
       <template #trigger>
         <span
           :class="[
@@ -61,4 +61,5 @@ const emojisFill = [
 ]
 const emoji = (option: number) => emojis[option - 1]
 export const emojiFill = (option: number) => emojisFill[option - 1]
+export type Score = 1 | 2 | 3 | 4 | 5
 </script>

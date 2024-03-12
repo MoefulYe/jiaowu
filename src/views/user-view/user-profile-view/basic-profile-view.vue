@@ -8,5 +8,5 @@
 
 <script setup lang="ts">
 import { NCard } from 'naive-ui'
-import BasicInfoForm from '../../components/basic-info-form.vue'
+import BasicInfoForm from '../../../components/basic-info-form.vue'
 </script>

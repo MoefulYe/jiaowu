@@ -20,9 +20,9 @@
             v-for="{ title, to, icon } in items"
             :key="to"
             @click="() => $router.push({ name: to })"
-            class="nav-item flex flex-col items-center justify-around w-[80px] h-[80px] transition-colors cursor-pointer ease-in-out delay-150 p-2 rounded-3xl"
+            class="nav-item flex flex-col items-center justify-around w-[80px] h-[80px] transition-colors cursor-pointer ease-in-out delay-150 p-2 rounded-xl"
           >
-            <div :class="['text-[60px]', icon]" />
+            <div :class="['text-[60px] hover:scale-125 transition-transform ease-in-out', icon]" />
             <span class="text-base">{{ title }}</span>
           </div>
         </div>
@@ -42,9 +42,9 @@ interface NavItem {
 }
 
 const items: NavItem[] = [
-  { icon: 'icon-[ph--identification-card-thin]', to: 'profile', title: '基本信息' },
-  { icon: 'icon-[ph--student-thin]', to: 'academic', title: '学业信息' },
-  { icon: 'icon-[ph--read-cv-logo-thin]', to: 'resume', title: '简历管理' },
+  { icon: 'icon-[ph--identification-card-thin]', to: 'basic-profile', title: '基本信息' },
+  { icon: 'icon-[ph--student-thin]', to: 'academic-profile', title: '学业信息' },
+  { icon: 'icon-[ph--read-cv-logo-thin]', to: 'resume-profile', title: '简历管理' },
   { icon: 'icon-[ph--chart-bar-horizontal-thin]', to: 'job-market', title: '职业行情' },
   { icon: 'icon-[ph--chart-pie-slice-thin]', to: 'skill-required', title: '技能需求' },
   { icon: 'icon-[ph--chart-line-up-thin]', to: 'trend', title: '趋势分析' },

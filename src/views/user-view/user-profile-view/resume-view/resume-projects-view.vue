@@ -94,7 +94,8 @@ import {
   NTooltip
 } from 'naive-ui'
 import { shallowRef } from 'vue'
-import confirm from '../../../components/confirm'
+import confirm from '../../../../components/confirm'
+import { OptionalProject } from '../../../../api/user/resume'
 
 const data = defineModel<OptionalProject[]>({ required: true })
 const formRefs = shallowRef<FormInst[]>([])
@@ -141,17 +142,4 @@ const rules = (idx: number): FormRules => ({
 })
 
 defineExpose({ formRefs })
-</script>
-
-<script lang="ts">
-export interface Project {
-  name: string
-  role?: string
-  start: string
-  end: string
-  link?: string
-  description: string
-}
-
-export type OptionalProject = Partial<Project>
 </script>

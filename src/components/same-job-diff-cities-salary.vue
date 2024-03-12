@@ -1,38 +1,52 @@
 <template>
   <h2 class="text-xl font-bold">相同职位不同城市对比</h2>
-  <div class="flex mb-4">
-    <NSelect
-      v-model:value="cmpCities"
-      :options="cmpCityOpts"
-      class="w-96 m-2"
-      placeholder="对比城市"
-      multiple
+  <div v-if="salaries !== undefined">
+    <div class="flex mb-4">
+      <NSelect
+        v-model:value="cmpCities"
+        :options="cmpCityOpts"
+        class="w-96 m-2"
+        placeholder="对比城市"
+        multiple
+      />
+      <NButton class="inline m-2" @click="fetchData">确认</NButton>
+    </div>
+    <NSkeleton
+      v-if="loading"
+      :style="`height: ${cmpCities.length * 3 + 18}rem`"
+      class="rounded-md"
     />
-    <NButton class="inline m-2" @click="fetchData">确认</NButton>
+    <VChart
+      v-else
+      :option="chartOpts"
+      :style="`height: ${cmpCities.length * 3 + 18}rem`"
+      autoresize
+    />
+    <h2 class="text-lg font-bold">这些地区的相关企业:</h2>
+    <NSkeleton v-if="loading" :style="`height: ${cmpCities.length * 2.5}rem`" class="rounded-sm" />
+    <div v-else v-for="{ region, companyList } of companies" :key="region" class="p-2">
+      <span>{{ region }}:</span>
+      <RouterLink
+        v-for="company of companyList"
+        :key="company"
+        :to="{
+          name: 'company',
+          params: {
+            company
+          }
+        }"
+      >
+        <NTag type="success" :bordered="false" class="mx-1">{{ company }}</NTag>
+      </RouterLink>
+    </div>
   </div>
-  <VChart :option="chartOpts" :style="`height: ${cmpCities.length * 3 + 18}rem`" autoresize />
-  <h2 class="text-lg font-bold">这些地区的相关企业:</h2>
-  <div v-for="{ region, companyList } in companies" :key="region" class="p-2">
-    <span>{{ region }}:</span>
-    <RouterLink
-      v-for="company in companyList"
-      :key="company"
-      :to="{
-        name: 'company',
-        params: {
-          company
-        }
-      }"
-    >
-      <NTag type="success" :bordered="false" class="mx-1">{{ company }}</NTag>
-    </RouterLink>
-  </div>
+  <NSkeleton v-else class="h-48 rounded-sm" />
 </template>
 
 <script setup lang="ts">
 import { type SalaryAnalysis, fetchSalaryCompareReigon } from '../api/data_analysis/salary'
 import { computed, ref } from 'vue'
-import { NSelect, type SelectOption, NButton, NTag } from 'naive-ui'
+import { NSelect, type SelectOption, NButton, NTag, NSkeleton } from 'naive-ui'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
 import { RouterLink } from 'vue-router'
@@ -53,6 +67,7 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import type { GridComponentOption } from 'echarts/components'
 import VChart from 'vue-echarts'
+import { CITY_OPTS } from '../api/city'
 use([
   GridComponent,
   BarChart,
@@ -76,29 +91,31 @@ const cmpCities = ref<string[]>([])
 const cmp = ref<SalaryAnalysis[]>([])
 const companies = ref<RelateCompanies[]>([])
 const cmpCityOpts = computed<SelectOption[]>(() =>
-  props.cities
-    .filter((city) => city !== props.city)
-    .map((city) => ({
-      value: city,
-      label: city
-    }))
+  CITY_OPTS.filter((city) => city.value !== props.city)
 )
+const loading = ref(false)
 
-const fetchData = () => {
-  fetchSalaryCompareReigon({
-    city: props.city!,
-    jobName: props.job!,
-    choiceList: cmpCities.value
-  }).then((ok) => (cmp.value = ok))
-  fetchRelateRegion({
-    city: props.city,
-    jobName: props.job,
-    choiceList: cmpCities.value
-  }).then((ok) => (companies.value = ok))
+const fetchData = async () => {
+  loading.value = true
+  const res = await Promise.all([
+    fetchSalaryCompareReigon({
+      city: props.city!,
+      jobName: props.job!,
+      choiceList: cmpCities.value
+    }),
+    fetchRelateRegion({
+      city: props.city,
+      jobName: props.job,
+      choiceList: cmpCities.value
+    })
+  ])
+  cmp.value = res[0]
+  companies.value = res[1]
+  loading.value = false
 }
 
 const chartOpts = computed<ChartOpts>(() => {
-  const data = props.data ? [props.data, ...cmp.value] : []
+  const data = props.salaries ? [props.salaries, ...cmp.value] : []
   return {
     grid: [
       { left: '7%', top: '11%', width: '38%', height: '30%' },
@@ -281,9 +298,7 @@ const chartOpts = computed<ChartOpts>(() => {
 <script lang="ts">
 interface Props {
   job: string
-  jobs: string[]
   city: string
-  cities: string[]
-  data?: SalaryAnalysis
+  salaries?: SalaryAnalysis
 }
 </script>

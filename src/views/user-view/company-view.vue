@@ -1,67 +1,75 @@
 <template>
-  <div v-if="data !== undefined" class="sm:p-2 grow flex flex-col">
+  <div class="sm:p-2 grow flex flex-col">
     <NCard
-      class="bg-white shadow-sm"
-      content-style="display: flex; align-items: center; gap: 0.25rem;"
+      class="bg-white shadow-sm h-24 justify-center"
+      content-style="display: flex; align-items: center; gap: 0.25rem; justify-content: center;"
     >
-      <span class="font-bold text-lg">企业详情：</span>
-      <NAvatar :src="data.logo" round size="small">
-        <template #placeholder>
-          <span class="icon-[eos-icons--bubble-loading]" />
-        </template>
-        <template #fallback>
-          <div class="flex justify-center items-center w-full h-full">
-            <span class="text-sm">
-              {{ data.name.slice(0, 1) }}
-            </span>
-          </div>
-        </template>
-      </NAvatar>
-      <span class="text-lg">{{ data.name }}</span>
-      <span class="grow" />
-      <NStatistic label="岗位数量" :value="data.jobCnt" class="inline-block">
-        <template #suffix>
-          <span>个</span>
-        </template>
-      </NStatistic>
+      <div v-if="data !== undefined" class="w-full flex items-center">
+        <span class="font-bold text-lg">企业详情：</span>
+        <NAvatar :src="data.logo" round size="small">
+          <template #placeholder>
+            <span class="icon-[eos-icons--bubble-loading]" />
+          </template>
+          <template #fallback>
+            <div class="flex justify-center items-center w-full h-full">
+              <span class="text-sm">
+                {{ data.name.slice(0, 1) }}
+              </span>
+            </div>
+          </template>
+        </NAvatar>
+        <span class="text-lg">{{ data.name }}</span>
+        <span class="grow" />
+        <NStatistic label="岗位数量" :value="data.jobCnt" class="inline-block">
+          <template #suffix>
+            <span>个</span>
+          </template>
+        </NStatistic>
+      </div>
+      <span v-else class="icon-[eos-icons--bubble-loading] text-4xl" />
     </NCard>
     <NCard class="grow bg-white mt-2 shadow-sm relative">
-      <NTabs>
-        <NTabPane name="基本情况">
-          <h2>企业简介</h2>
-          <p class="whitespace-pre-wrap">
-            {{ data.description }}
-          </p>
-          <h2>工作时间及福利</h2>
-          <div class="px-2 flex flex-col gap-2">
-            <div class="flex items-center gap-4">
-              <span class="icon-[ri--time-line]" /> {{ data.workTime }}
+      <div v-if="data !== undefined">
+        <NTabs>
+          <NTabPane name="基本情况">
+            <h2>企业简介</h2>
+            <p class="whitespace-pre-wrap">
+              {{ data.description }}
+            </p>
+            <h2>工作时间及福利</h2>
+            <div class="px-2 flex flex-col gap-2">
+              <div class="flex items-center gap-4">
+                <span class="icon-[ri--time-line]" /> {{ data.workTime }}
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="icon-[uil--favorite]" />
+                <NTag v-for="welfare of data.welfare" :key="welfare" type="primary">{{
+                  welfare
+                }}</NTag>
+              </div>
             </div>
-            <div class="flex items-center gap-4">
-              <span class="icon-[uil--favorite]" />
-              <NTag v-for="welfare in data.welfare" :key="welfare" type="primary">{{
-                welfare
-              }}</NTag>
+            <h2>相关连接</h2>
+            <div>
+              <span>招聘网址：</span>
+              <a :href="data.url" class="text-cyan-950 hover:text-cyan-700">{{ data.url }}</a>
             </div>
-          </div>
-          <h2>相关连接</h2>
-          <div>
-            <span>招聘网址：</span>
-            <a :href="data.url" class="text-cyan-950 hover:text-cyan-700">{{ data.url }}</a>
-          </div>
-        </NTabPane>
-        <NTabPane name="技术需求">
-          <VChart
-            class="h-96"
-            :option="pieOpts"
-            autoresize
-            @mousedown="({ name }) => gotoTechPage(name)"
-          />
-        </NTabPane>
-        <NTabPane name="薪资情况">
-          <VChart class="h-96" :option="barOpts" autoresize />
-        </NTabPane>
-      </NTabs>
+          </NTabPane>
+          <NTabPane name="技术需求">
+            <VChart
+              class="h-96"
+              :option="pieOpts"
+              autoresize
+              @mousedown="({ name }) => gotoTechPage(name)"
+            />
+          </NTabPane>
+          <NTabPane name="薪资情况">
+            <VChart class="h-96" :option="barOpts" autoresize />
+          </NTabPane>
+        </NTabs>
+      </div>
+      <div v-else class="w-full h-full flex justify-center items-center">
+        <span class="icon-[eos-icons--bubble-loading] text-4xl" />
+      </div>
     </NCard>
   </div>
 </template>

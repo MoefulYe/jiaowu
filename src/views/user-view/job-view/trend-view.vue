@@ -11,13 +11,13 @@
           <div class="flex">
             <NSelect
               v-model:value="job"
-              :options="jobOpts"
+              :options="JOB_OPTS"
               class="inline w-24 p-2"
               placeholder="职位"
             />
             <NSelect
               v-model:value="city"
-              :options="cityOpts"
+              :options="CITY_OPTS"
               class="inline w-24 p-2"
               placeholder="城市"
             />
@@ -40,7 +40,8 @@
 <script setup lang="ts">
 import { NCard, type SelectOption, NSelect, NButton } from 'naive-ui'
 import { computed, ref } from 'vue'
-import { cities, jobs } from '../../../api/mock'
+import { DEFAULT_JOB, JOB_OPTS } from '../../../api/jobs'
+import { CITY_OPTS, DEFAULT_CITY } from '../../../api/city'
 
 import { use } from 'echarts/core'
 import { LineChart } from 'echarts/charts'
@@ -86,14 +87,9 @@ type ChartOpts = ComposeOption<
   | TitleComponentOption
 >
 
-const job = ref('java')
-const city = ref('杭州')
+const job = ref(DEFAULT_JOB)
+const city = ref(DEFAULT_CITY)
 const unit = ref(Unit.Month)
-
-const jobOpts = computed<SelectOption[]>(() => jobs.map((job) => ({ label: job, value: job })))
-const cityOpts = computed<SelectOption[]>(() =>
-  cities.map((city) => ({ label: city, value: city }))
-)
 
 const chartOpts1 = computed<ChartOpts>(() => ({
   tooltip: {

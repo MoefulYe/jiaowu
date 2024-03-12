@@ -31,12 +31,7 @@
             multiple
             filterable
             placeholder="请选择求职方向"
-            :options="
-              jobs.map((job) => ({
-                value: job,
-                label: job
-              }))
-            "
+            :options="JOB_OPTS"
           />
         </NFormItem>
         <NFormItem label="技能" label-style="font-size: 1.125rem;line-height: 1.75rem;">
@@ -76,7 +71,7 @@
           />
         </NFormItem>
       </NForm>
-      <NButton @click="submit">ss</NButton>
+      <NButton @click="submit">提交</NButton>
     </NCard>
   </div>
 </template>
@@ -96,13 +91,12 @@ import {
   NUploadDragger,
   type UploadFileInfo
 } from 'naive-ui'
-import { type Ref, ref, shallowRef } from 'vue'
-import type { OptionalInternship } from './resume-interships-view.vue'
+import { shallowRef } from 'vue'
 import ResumeIntershipsView from './resume-interships-view.vue'
-import { jobs } from '../../../api/mock'
-import ResumeProjectsView, { type OptionalProject } from './resume-projects-view.vue'
-import ResumeCompetitionsView, { type OptionalCompetition } from './resume-competitions-view.vue'
-import service from '../../../util/requests'
+import ResumeProjectsView from './resume-projects-view.vue'
+import ResumeCompetitionsView from './resume-competitions-view.vue'
+import { JOB_OPTS } from '../../../../api/jobs'
+import { defaultResumeProfile, submitResume } from '../../../../api/user/resume'
 
 const formRef = shallowRef<FormInst>()
 const resumeRef = shallowRef<InstanceType<typeof ResumeIntershipsView>>()
@@ -141,29 +135,11 @@ const rules: FormRules = {
       Promise.all(competitionsRef.value!.formRefs.map((form) => form.validate())).then(() => {})
   }
 }
-const data = defaultResume()
+const data = defaultResumeProfile()
 const submit = async () => {
   try {
     await formRef.value?.validate()
-    const {
-      doc: [doc],
-      ...rst
-    } = data.value
-    if (doc.status !== 'pending') {
-      return
-    }
-    await service.post(
-      '/resume',
-      {
-        data: JSON.stringify(rst),
-        resume: doc.file
-      },
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    )
+    await submitResume(data.value)
   } catch {
     return
   }
@@ -171,27 +147,6 @@ const submit = async () => {
 </script>
 
 <script lang="ts">
-export interface Resume {
-  doc: UploadFileInfo[]
-  directions: string[]
-  skills: string[]
-  internships: OptionalInternship[]
-  projects: OptionalProject[]
-  competitions: OptionalCompetition[]
-  selfEvaluation: string
-}
-
-const defaultResume = (): Ref<Resume> =>
-  ref({
-    doc: [],
-    directions: [],
-    skills: [],
-    selfEvaluation: '',
-    internships: [{}],
-    projects: [{}],
-    competitions: [{}]
-  })
-
 const checkDocMimeType = (type?: string | null) => {
   //支持pdf, doc, docx, ppt, pptx, png, jpg, jpeg, html
   if (type === null) {

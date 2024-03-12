@@ -7,18 +7,15 @@
       <h2 class="text-2xl mb-8">{{ questions[step].title }}</h2>
       <div class="flex flex-col gap-4 items-center">
         <div
-          v-for="[i, content] of questions[step].content.map((content, idx): [number, string] => [
-            idx,
-            content
-          ])"
-          :key="i"
-          :id="`${i}`"
+          v-for="(content, idx) in questions[step].content"
+          :key="idx"
+          :id="`${idx}`"
           class="flex flex-col items-center gap-2"
         >
           <div>
-            {{ `${step * 10 + i + 1}. ${content}` }}
+            {{ `${step * 10 + idx + 1}. ${content}` }}
           </div>
-          <EmojiRadio v-model="answers[step * 10 + i]" :tips="tips" />
+          <EmojiRadio v-model="answers[step * 10 + idx]" :tips="tips" />
         </div>
       </div>
       <div class="flex gap-2">
@@ -40,10 +37,7 @@
     >
       <h2 class="text-4xl">答题情况</h2>
       <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-8">
-        <NTooltip
-          v-for="[idx, answer] in answers.map((val, idx): [number, Answer] => [idx, val])"
-          :key="idx"
-        >
+        <NTooltip v-for="(answer, idx) in answers" :key="idx">
           <template #trigger>
             <span
               :class="[
@@ -65,7 +59,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import EmojiRadio, { emojiFill } from '../../../components/emoji-radio.vue'
+import EmojiRadio, { Score, emojiFill } from '../../../components/emoji-radio.vue'
 import { NButton, NSelect, NTooltip } from 'naive-ui'
 import confirm from '../../../components/confirm'
 import { jobs } from '../../../api/mock'
@@ -108,23 +102,8 @@ const scores = (answers: number[]): number[] => {
 </script>
 
 <script lang="ts">
-type Answer = number | undefined
+type Answer = Score | undefined
 
-enum Direction {
-  '后端',
-  '前端',
-  '全栈',
-  '测试',
-  '运维',
-  '产品',
-  'UI',
-  '运营',
-  '销售',
-  'java',
-  'python',
-  'dl',
-  'ml'
-}
 type 检查页 = 13
 const questions = [
   {

@@ -41,8 +41,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { jobs } from '../../api/mock'
 import { NBreadcrumb, NBreadcrumbItem, NCard } from 'naive-ui'
+import { JOBS } from '../../api/jobs'
 
-const data = ref(jobs.slice(0, 4))
+const data = ref(JOBS.slice(0, 4))
 </script>

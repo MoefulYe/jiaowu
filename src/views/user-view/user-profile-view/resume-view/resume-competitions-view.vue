@@ -77,11 +77,13 @@ import {
   NInput,
   NTooltip,
   NRadioGroup,
-  NRadioButton
+  NRadioButton,
+  SelectOption
 } from 'naive-ui'
 import type { FormInst } from 'naive-ui/lib'
 import { ref } from 'vue'
-import confirm from '../../../components/confirm'
+import confirm from '../../../../components/confirm'
+import { OptionalCompetition } from '../../../../api/user/resume'
 const data = defineModel<OptionalCompetition[]>({ required: true })
 const formRefs = ref<FormInst[]>([])
 const rules = (idx: number): FormRules => ({
@@ -107,11 +109,7 @@ defineExpose({ formRefs })
 </script>
 
 <script lang="ts">
-export interface Competition {
-  name: string
-  prize: number
-}
-const prizes = [
+const prizes: SelectOption[] = [
   {
     value: 0,
     label: '未获奖'
@@ -137,5 +135,4 @@ const prizes = [
     label: '世界级'
   }
 ]
-export type OptionalCompetition = Partial<Competition>
 </script>
