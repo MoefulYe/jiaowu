@@ -56,7 +56,6 @@ import {
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
-import { cities, jobs } from '../../../api/mock'
 import { fetchTechInitialChoice, type Tech } from '../../../api/data_analysis/tech'
 import { type ComposeOption } from 'echarts'
 import SameCityDiffJobs from '../../../components/same-city-diff-jobs-top10.vue'
