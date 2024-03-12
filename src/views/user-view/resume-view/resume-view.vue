@@ -40,7 +40,7 @@
           />
         </NFormItem>
         <NFormItem label="技能" label-style="font-size: 1.125rem;line-height: 1.75rem;">
-          <NDynamicTags v-model:value="data.skills" />
+          <NDynamicTags v-model:value="data.skills" type="primary" />
         </NFormItem>
         <NFormItem
           label="实习经历"
@@ -187,9 +187,9 @@ const defaultResume = (): Ref<Resume> =>
     directions: [],
     skills: [],
     selfEvaluation: '',
-    internships: [],
-    projects: [],
-    competitions: []
+    internships: [{}],
+    projects: [{}],
+    competitions: [{}]
   })
 
 const checkDocMimeType = (type?: string | null) => {

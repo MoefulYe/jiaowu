@@ -66,26 +66,17 @@ const option = computed<EChartsOption>(() => ({
   ]
 }))
 
+const recommanded = computed(
+  () =>
+    props.scores
+      ?.map((v, i) => ({ v, i }))
+      .filter(({ v }) => v > 25)
+      .sort(({ v: v0 }, { v: v1 }) => v1 - v0)
+      .slice(0, 3)
+)
+
 const share = async () => {
-  try {
-    const url = chartRef.value!.getDataURL({
-      type: 'png',
-      pixelRatio: 1.5,
-      backgroundColor: '#fff'
-    })
-    const data = await fetch(url).then((res) => res.blob())
-    const item = new ClipboardItem({
-      [data.type]: data
-    })
-    console.log(item)
-    await navigator.clipboard.write([item])
-    window.$message.success('已复制到剪贴板')
-  } catch (err) {
-    if (err instanceof Error) {
-      window.$message.error(`粘贴失败 (${err.message})`)
-    } else {
-      window.$message.error('粘贴失败')
-    }
-  }
+  await navigator.clipboard.writeText('sss')
+  window.$message.success('粘贴成功')
 }
 </script>

@@ -61,8 +61,8 @@ import AssessmentStatement from './assessment-statement.vue'
 import AssessmentContent from './assessment-content.vue'
 import AssessmentResult from './assessment-result.vue'
 const progress = ref(9)
-const status = ref(Status.未开始)
-const scores = ref<number[]>()
+const status = ref(Status.结果页)
+const scores = ref<number[]>(Array.from({ length: 13 }).map((_, i) => i + 20))
 </script>
 
 <script lang="ts">

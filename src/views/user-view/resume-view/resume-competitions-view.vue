@@ -7,12 +7,21 @@
           :key="idx"
           class="flex justify-between items-center"
         >
-          <NForm :rules="rules" v-model="data[idx]" ref="formRefs" inline>
+          <NForm :rules="rules(idx)" v-model="data[idx]" ref="formRefs" inline>
             <NFormItem required label="比赛名" path="name">
               <NInput v-model:value="competition.name" />
             </NFormItem>
             <NFormItem required label="奖项" path="prize">
-              <NInput v-model:value="competition.prize" />
+              <NRadioGroup v-model:value="competition.prize">
+                <NRadioButton
+                  v-for="{ label, value } of prizes"
+                  :key="value"
+                  :value="value"
+                  size="small"
+                >
+                  {{ label }}</NRadioButton
+                >
+              </NRadioGroup>
             </NFormItem>
             <NFormItem>
               <NTooltip>
@@ -59,16 +68,40 @@
 </template>
 
 <script setup lang="ts">
-import { type FormRules, NButton, NCard, NForm, NFormItem, NInput, NTooltip } from 'naive-ui'
+import {
+  type FormRules,
+  NButton,
+  NCard,
+  NForm,
+  NFormItem,
+  NInput,
+  NTooltip,
+  NRadioGroup,
+  NRadioButton
+} from 'naive-ui'
 import type { FormInst } from 'naive-ui/lib'
 import { ref } from 'vue'
 import confirm from '../../../components/confirm'
 const data = defineModel<OptionalCompetition[]>({ required: true })
 const formRefs = ref<FormInst[]>([])
-const rules: FormRules = {
-  name: { required: true, trigger: 'blur', message: '请输入比赛名' },
-  prize: { required: true, trigger: 'blur', message: '请输入奖项' }
-}
+const rules = (idx: number): FormRules => ({
+  name: {
+    trigger: 'blur',
+    validator: () => {
+      if (data.value[idx].name === undefined) {
+        return Error('比赛名不能为空')
+      }
+    }
+  },
+  prize: {
+    trigger: 'blur',
+    validator: () => {
+      if (data.value[idx].prize === undefined) {
+        return Error('奖项不能为空')
+      }
+    }
+  }
+})
 
 defineExpose({ formRefs })
 </script>
@@ -76,8 +109,33 @@ defineExpose({ formRefs })
 <script lang="ts">
 export interface Competition {
   name: string
-  prize: string
+  prize: number
 }
-
+const prizes = [
+  {
+    value: 0,
+    label: '未获奖'
+  },
+  {
+    value: 1,
+    label: '院级'
+  },
+  {
+    value: 2,
+    label: '校级'
+  },
+  {
+    value: 3,
+    label: '省级'
+  },
+  {
+    value: 4,
+    label: '国家级'
+  },
+  {
+    value: 5,
+    label: '世界级'
+  }
+]
 export type OptionalCompetition = Partial<Competition>
 </script>

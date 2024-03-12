@@ -100,55 +100,57 @@ import {
   NInput,
   NTooltip
 } from 'naive-ui'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import confirm from '../../../components/confirm'
 import { type FormInst } from 'naive-ui'
 
 const data = defineModel<OptionalInternship[]>({ required: true })
-const formRefs = ref<FormInst[]>([])
+const formRefs = shallowRef<FormInst[]>([])
 
-const rules = (i: number): FormRules => ({
+const rules = (idx: number): FormRules => ({
   company: {
-    required: true,
-    message: '公司不能为空',
-    trigger: 'blur'
-  },
-  position: {
-    required: true,
-    message: '职位不能为空',
-    trigger: 'blur'
-  },
-  start: [
-    {
-      required: true,
-      message: '开始时间不能为空',
-      trigger: 'blur'
-    }
-  ],
-  end: [
-    {
-      required: true,
-      message: '结束时间不能为空',
-      trigger: 'blur'
-    },
-    {
-      message: '结束时间不能早于开始时间',
-      validator: () => {
-        const { start, end } = data.value[i]
-        if (start !== undefined && end !== undefined && start > end) {
-          return new Error('结束时间不能早于开始时间')
-        }
-      },
-      trigger: 'blur'
-    }
-  ],
-  description: {
-    message: '描述不能超过128个字符',
     trigger: 'blur',
     validator: () => {
-      const description = data.value[i].description
-      if (description !== undefined && description.length > 128) {
-        return new Error('描述不能超过128个字符')
+      if (data.value[idx].company === undefined) {
+        return Error('公司不能为空')
+      }
+    }
+  },
+  position: {
+    trigger: 'blur',
+    validator: () => {
+      if (data.value[idx].position === undefined) {
+        return Error('职位不能为空')
+      }
+    }
+  },
+  start: {
+    trigger: 'blur',
+    validator: () => {
+      if (data.value[idx].start === undefined) {
+        return Error('开始时间不能为空')
+      }
+    }
+  },
+  end: {
+    validator: () => {
+      const { start, end } = data.value[idx]
+      if (end === undefined) {
+        return Error('结束时间不得唯恐')
+      } else if (start !== undefined && start > end) {
+        return Error('结束时间不得早于开始时间')
+      }
+    },
+    trigger: 'blur'
+  },
+  description: {
+    trigger: 'blur',
+    validator: () => {
+      const description = data.value[idx].description
+      if (description === undefined) {
+        return Error('描述不得为空')
+      } else if (description.length > 128) {
+        return Error('描述不得超过128字')
       }
     }
   }

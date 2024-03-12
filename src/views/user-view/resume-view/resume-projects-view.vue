@@ -93,41 +93,48 @@ import {
   NInput,
   NTooltip
 } from 'naive-ui'
-import { shallowRef, ref } from 'vue'
+import { shallowRef } from 'vue'
 import confirm from '../../../components/confirm'
 
-const data = ref<OptionalProject[]>([])
+const data = defineModel<OptionalProject[]>({ required: true })
 const formRefs = shallowRef<FormInst[]>([])
 
 const rules = (idx: number): FormRules => ({
+  name: {
+    trigger: 'blur',
+    validator: () => {
+      if (data.value[idx].name === undefined) {
+        return Error('名称不能为空')
+      }
+    }
+  },
   start: {
-    required: true,
-    message: '开始时间不能为空',
+    trigger: 'blur',
+    validator: () => {
+      if (data.value[idx].start === undefined) {
+        return Error('开始时间不能为空')
+      }
+    }
+  },
+  end: {
+    validator: () => {
+      const { start, end } = data.value[idx]
+      if (end === undefined) {
+        return Error('结束时间不得唯恐')
+      } else if (start !== undefined && start > end) {
+        return Error('结束时间不得早于开始时间')
+      }
+    },
     trigger: 'blur'
   },
-  end: [
-    {
-      required: true,
-      message: '结束时间不能为空',
-      trigger: 'blur'
-    },
-    {
-      validator: () => {
-        const { start, end } = data.value[idx]
-        if (start !== undefined && end !== undefined && start > end) {
-          return new Error('开始时间不得早于结束时间')
-        }
-      },
-      trigger: 'blur'
-    }
-  ],
   description: {
-    message: '描述内容不得超过128个字符',
     trigger: 'blur',
     validator: () => {
       const description = data.value[idx].description
-      if (description !== undefined && description.length > 128) {
-        return new Error('描述不能超过128个字符')
+      if (description === undefined) {
+        return Error('描述不得为空')
+      } else if (description.length > 128) {
+        return Error('描述不得超过128字')
       }
     }
   }

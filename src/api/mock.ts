@@ -28,15 +28,15 @@ export const cities = [
   // '西安'
 ]
 
-export const fetchCities = async (): Promise<string[]> => {
-  window.$loading.start()
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      window.$loading.finish()
-      resolve(cities)
-    }, 50)
-  )
-}
+// export const fetchCities = async (): Promise<string[]> => {
+//   window.$loading.start()
+//   return new Promise((resolve) =>
+//     setTimeout(() => {
+//       window.$loading.finish()
+//       resolve(cities)
+//     }, 50)
+//   )
+// }
 
 // const companies = [
 //   '腾讯',

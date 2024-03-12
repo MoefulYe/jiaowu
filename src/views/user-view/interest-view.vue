@@ -29,7 +29,7 @@
       </div>
       <template #footer>
         <div class="flex gap-4">
-          <NButton type="primary">保存</NButton>
+          <NButton type="primary" @click="submit">保存</NButton>
           <NButton
             type="info"
             @click="
@@ -79,6 +79,7 @@ type EChartsOption = ComposeOption<
 >
 type Score = number | undefined
 const data = ref<Score[]>(jobs.map(() => undefined))
+const _data = computed(() => data.value.map((val) => val ?? 0))
 const option = computed<EChartsOption>(() => ({
   graphic: [
     {
@@ -93,11 +94,14 @@ const option = computed<EChartsOption>(() => ({
       type: 'radar',
       data: [
         {
-          value: data.value.map((val) => val ?? 0),
+          value: _data.value,
           symbol: 'none'
         }
       ]
     }
   ]
 }))
+const submit = async () => {
+  // TODO: submit data
+}
 </script>

@@ -93,6 +93,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/user-view/interest-view.vue')
       },
       {
+        name: 'recommand',
+        path: 'recommand',
+        component: () => import('@/views/user-view/recommand-view.vue')
+      },
+      {
         name: 'study',
         path: 'study',
         children: [
