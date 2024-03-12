@@ -34,14 +34,14 @@ export default defineConfig({
   build: {
     rollupOptions: {
       plugins: [
-        viteCompression({
-          verbose: true,
-          disable: false,
-          threshold: 10240,
-          algorithm: 'gzip',
-          ext: '.gz',
-          deleteOriginFile: true
-        }),
+        // viteCompression({
+        //   verbose: true,
+        //   disable: false,
+        //   threshold: 10240,
+        //   algorithm: 'gzip',
+        //   ext: '.gz',
+        //   deleteOriginFile: true
+        // }),
         viteImagemin({
           verbose: true,
           svgo: {
