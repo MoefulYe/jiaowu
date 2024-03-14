@@ -102,7 +102,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'recommand',
         path: 'recommand',
-        component: () => import('@/views/user-view/recommand-view.vue')
+        component: () => import('@/views/user-view/recommend-view/recommand-view.vue')
       },
       {
         name: 'study',

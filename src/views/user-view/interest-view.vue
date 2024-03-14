@@ -60,7 +60,7 @@ import type {
   RadarComponentOption
 } from 'echarts/components'
 import VChart from 'vue-echarts'
-import EmojiRadio, { Score } from '../../components/emoji-radio.vue'
+import EmojiRadio, { type Score } from '../../components/emoji-radio.vue'
 import confirm from '../../components/confirm'
 import { JOBS } from '../../api/jobs'
 import { saveInterest } from '../../api/assessment/interest'

@@ -103,7 +103,7 @@ import {
 import { shallowRef } from 'vue'
 import confirm from '../../../../components/confirm'
 import { type FormInst } from 'naive-ui'
-import { OptionalInternship } from '../../../../api/user/resume'
+import { type OptionalInternship } from '../../../../api/user/resume'
 
 const data = defineModel<OptionalInternship[]>({ required: true })
 const formRefs = shallowRef<FormInst[]>([])
