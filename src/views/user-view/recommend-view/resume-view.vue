@@ -28,8 +28,8 @@
 </template>
 
 <script setup lang="tsx">
-import { PropType, computed, defineComponent, ref } from 'vue'
-import { Rate, ResumeResult } from '../../../api/recommand/resume_result'
+import { type PropType, computed, defineComponent, ref } from 'vue'
+import { type Rate, type ResumeResult } from '../../../api/recommand/resume_result'
 import { NButton } from 'naive-ui'
 import JobIntro from '../../../components/job-intro.vue'
 // import { JOBS } from '../../../api/jobs'

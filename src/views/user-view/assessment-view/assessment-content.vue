@@ -101,9 +101,14 @@ const tooltip = (score?: number) => (score !== undefined ? tips[score - 1] : '�
 const QUESTIONS_PER_JOB = 5
 const TOTAL = JOBS.length * QUESTIONS_PER_JOB
 const tips = ['很不符合', '不符合', '一般', '符合', '很符合']
-const SELECT_OPTS = JOBS.map((job, idx) => ({
-  value: idx,
-  label: job
-})).concat({ value: JOBS.length, label: '检查' })
+const SELECT_OPTS = (JOBS as string[])
+  .map((job, idx) => ({
+    value: idx,
+    label: job
+  }))
+  .concat({
+    value: JOBS.length,
+    label: '检查'
+  })
 const QUESTIONS: Record<string, string[]> = questions
 </script>

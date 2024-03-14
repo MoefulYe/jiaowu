@@ -31,7 +31,7 @@
 
 <script setup lang="tsx">
 import { defineComponent, ref } from 'vue'
-import { DropdownOption, NBreadcrumb, NBreadcrumbItem, NCard, NDropdown } from 'naive-ui'
+import { type DropdownOption, NBreadcrumb, NBreadcrumbItem, NCard, NDropdown } from 'naive-ui'
 import ResumeView from './resume-view.vue'
 import InterestView from './interest-view.vue'
 
