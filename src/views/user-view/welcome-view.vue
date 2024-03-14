@@ -20,9 +20,9 @@
             v-for="{ title, to, icon } in items"
             :key="to"
             @click="() => $router.push({ name: to })"
-            class="nav-item flex flex-col items-center justify-around w-[80px] h-[80px] transition-colors cursor-pointer ease-in-out delay-150 p-2 rounded-xl"
+            class="nav-item flex flex-col items-center justify-around w-[80px] h-[80px] hover:scale-125 hover:shadow-lg ease-in-out transition-all cursor-pointer delay-150 p-2 rounded-xl"
           >
-            <div :class="['text-[60px] hover:scale-125 transition-transform ease-in-out', icon]" />
+            <div :class="['text-[60px] ', icon]" />
             <span class="text-base">{{ title }}</span>
           </div>
         </div>

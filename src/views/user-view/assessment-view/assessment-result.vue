@@ -1,20 +1,29 @@
 <template>
-  <div class="flex flex-col items-center gap-4">
-    <h2>测试结果</h2>
-    <VChart :option="option" class="h-96 w-96" autoresize ref="chartRef" />
-    <NTooltip placement="bottom">
-      <template #trigger>
-        <NButton type="primary">
-          <span class="icon-[ph--share]" @click="share" />
-        </NButton>
-      </template>
-      <template #default> 分享结果 </template>
-    </NTooltip>
+  <div class="flex flex-col w-full">
+    <div class="flex flex-col items-center gap-4">
+      <h2>测试结果</h2>
+      <VChart :option="option" class="h-96 w-96" autoresize ref="chartRef" />
+      <NTooltip placement="bottom">
+        <template #trigger>
+          <NButton type="primary" @click="share">
+            <span class="icon-[ph--share]" />
+          </NButton>
+        </template>
+        <template #default> 分享结果 </template>
+      </NTooltip>
+    </div>
+    <NDivider />
+    <div class="flex flex-col gap-12 items-center w-full">
+      <div class="text-xl">职位推荐</div>
+      <div class="w-full" v-for="job in recommended" :key="job">
+        <JobIntro :job="job" class="w-full" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
+import { computed } from 'vue'
 
 import { use } from 'echarts/core'
 import { RadarChart } from 'echarts/charts'
@@ -29,8 +38,10 @@ import type {
   RadarComponentOption
 } from 'echarts/components'
 import VChart from 'vue-echarts'
-import { jobs } from '../../../api/mock'
-import { NButton, NTooltip } from 'naive-ui'
+import { NButton, NDivider, NTooltip } from 'naive-ui'
+import { JOBS } from '../../../api/jobs'
+import JobIntro from '../../../components/job-intro.vue'
+import { useStateStore } from '../../../stores/user-state'
 use([TitleComponent, LegendComponent, RadarChart, CanvasRenderer, GraphicComponent])
 
 type EChartsOption = ComposeOption<
@@ -40,10 +51,14 @@ type EChartsOption = ComposeOption<
   | GraphicComponentOption
   | RadarComponentOption
 >
-const props = defineProps<{
-  scores?: number[]
-}>()
-const chartRef = shallowRef<InstanceType<typeof VChart>>()
+const props = withDefaults(
+  defineProps<{
+    scores?: number[]
+  }>(),
+  {
+    scores: () => []
+  }
+)
 const option = computed<EChartsOption>(() => ({
   graphic: [
     {
@@ -51,7 +66,7 @@ const option = computed<EChartsOption>(() => ({
     }
   ],
   radar: {
-    indicator: jobs.map((job) => ({ name: job, max: 50, min: 0 }))
+    indicator: JOBS.map((job) => ({ name: job, max: 25, min: 0 }))
   },
   series: [
     {
@@ -65,18 +80,17 @@ const option = computed<EChartsOption>(() => ({
     }
   ]
 }))
-
-const recommanded = computed(
-  () =>
-    props.scores
-      ?.map((v, i) => ({ v, i }))
-      .filter(({ v }) => v > 25)
-      .sort(({ v: v0 }, { v: v1 }) => v1 - v0)
-      .slice(0, 3)
+const recommended = computed(() =>
+  props.scores
+    .map((score, idx) => ({ score, job: JOBS[idx] }))
+    .filter(({ score }) => score > 15)
+    .sort(({ score: a }, { score: b }) => b - a)
+    .map(({ job }) => job)
+    .slice(0, 3)
 )
 
-const share = async () => {
-  await navigator.clipboard.writeText('sss')
-  window.$message.success('粘贴成功')
-}
+const share = () =>
+  navigator.clipboard
+    .writeText(`${useStateStore().username}适合当${recommended.value.join(',')}`)
+    .then(() => window.$message.success('复制成功'))
 </script>

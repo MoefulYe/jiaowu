@@ -32,6 +32,9 @@ dependencies:
   vue-router:
     specifier: ^4.2.4
     version: 4.2.4(vue@3.3.4)
+  vue3-typed-ts:
+    specifier: ^1.0.3
+    version: 1.0.3
 
 devDependencies:
   '@iconify/json':
@@ -5651,6 +5654,10 @@ packages:
       is-typed-array: 1.1.12
     dev: true
 
+  /typed.js@2.1.0:
+    resolution: {integrity: sha512-bDuXEf7YcaKN4g08NMTUM6G90XU25CK3bh6U0THC/Mod/QPKlEt9g/EjvbYB8x2Qwr2p6J6I3NrsoYaVnY6wsQ==}
+    dev: false
+
   /typescript@5.1.6:
     resolution: {integrity: sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==}
     engines: {node: '>=14.17'}
@@ -5943,6 +5950,12 @@ packages:
       semver: 7.5.4
       typescript: 5.1.6
     dev: true
+
+  /vue3-typed-ts@1.0.3:
+    resolution: {integrity: sha512-xCPTDor7sFZH7pQvuyOKeEyGi03Vamrpw8zDJ29u1lo1WpQOVTnXOs1dvG5vjlTMERXYyK6I9P4sjxHO0jB72w==}
+    dependencies:
+      typed.js: 2.1.0
+    dev: false
 
   /vue@3.3.4:
     resolution: {integrity: sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==}

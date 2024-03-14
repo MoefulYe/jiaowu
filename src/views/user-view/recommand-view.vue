@@ -16,23 +16,8 @@
           </span></NBreadcrumbItem
         >
         <div class="w-full flex justify-center text-xl mb-4">你可能适合的方向</div>
-        <div class="w-full flex flex-col gap-4">
-          <NCard v-for="job of data" :key="job">
-            <template #header>
-              <div class="text-lg">{{ job }}</div>
-            </template>
-            <template #default>
-              <div class="grid lg:grid-cols-7 lg:gap-x-8 xl:gap-x-12 lg:items-center">
-                <div class="lg:col-span-4 mt-10 lg:mt-0">
-                  <img
-                    class="w-full rounded-xl shadow-xl"
-                    :src="`/img/jobs/${job}.avif`"
-                    alt="Image Description"
-                  />
-                </div>
-              </div>
-            </template>
-          </NCard>
+        <div class="w-full flex flex-col gap-8">
+          <JobIntro v-for="job of data" :key="job" :job="job" />
         </div>
       </NBreadcrumb>
     </NCard>
@@ -43,6 +28,7 @@
 import { ref } from 'vue'
 import { NBreadcrumb, NBreadcrumbItem, NCard } from 'naive-ui'
 import { JOBS } from '../../api/jobs'
+import JobIntro from '../../components/job-intro.vue'
 
 const data = ref(JOBS.slice(0, 4))
 </script>

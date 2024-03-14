@@ -1,13 +1,13 @@
 import type { SelectOption } from 'naive-ui'
 
 export const JOBS = [
-  '深度学习',
-  '机器学习',
-  '产品',
   '前端',
   '后端',
+  '机器学习',
+  '深度学习',
   '测试',
   '运维',
+  '产品',
   '运营',
   '销售',
   '电子',

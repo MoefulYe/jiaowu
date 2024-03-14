@@ -25,7 +25,7 @@
       </div>
       <template #footer>
         <div class="flex gap-4">
-          <NButton type="primary">保存</NButton>
+          <NButton type="primary" @click="saveInterest(_data)">保存</NButton>
           <NButton
             type="info"
             @click="
@@ -60,9 +60,10 @@ import type {
   RadarComponentOption
 } from 'echarts/components'
 import VChart from 'vue-echarts'
-import EmojiRadio from '../../components/emoji-radio.vue'
+import EmojiRadio, { Score } from '../../components/emoji-radio.vue'
 import confirm from '../../components/confirm'
 import { JOBS } from '../../api/jobs'
+import { saveInterest } from '../../api/assessment/interest'
 
 use([TitleComponent, LegendComponent, RadarChart, CanvasRenderer, GraphicComponent])
 
@@ -73,7 +74,7 @@ type EChartsOption = ComposeOption<
   | GraphicComponentOption
   | RadarComponentOption
 >
-type Score = number | undefined
+
 const data = ref<Score[]>(JOBS.map(() => undefined))
 const _data = computed(() => data.value.map((val) => val ?? 0))
 const option = computed<EChartsOption>(() => ({

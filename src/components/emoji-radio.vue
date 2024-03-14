@@ -11,7 +11,7 @@
           @click="
             () => {
               if (model !== i) {
-                model = i
+                model = i as Score
               } else {
                 model = undefined
               }
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { NTooltip } from 'naive-ui'
 
-const model = defineModel<number>()
+const model = defineModel<Score>()
 const props = withDefaults(
   defineProps<{
     emojiClass?: string
@@ -61,5 +61,5 @@ const emojisFill = [
 ]
 const emoji = (option: number) => emojis[option - 1]
 export const emojiFill = (option: number) => emojisFill[option - 1]
-export type Score = 1 | 2 | 3 | 4 | 5
+export type Score = 1 | 2 | 3 | 4 | 5 | undefined
 </script>
