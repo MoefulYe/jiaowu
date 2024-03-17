@@ -64,7 +64,7 @@ import ShowOrEdit from 'components/show-or-edit.vue'
 import confirm from 'components/confirm'
 
 const SideMenu = defineAsyncComponent(() => import('components/side-menu.vue'))
-const { username } = storeToRefs(useStateStore())
+const { _username: username } = storeToRefs(useStateStore())
 const isCollapsed = ref(true)
 
 const selectDropdown = async (key: string) => {

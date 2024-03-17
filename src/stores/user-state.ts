@@ -1,21 +1,50 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
+export enum Role {
+  Unlogin,
+  Employee,
+  Employer
+}
+
+export type Token = string
+
 export const useStateStore = defineStore(
   'State',
   () => {
-    const _token = ref<string>()
-    const _username = ref('mono')
-    const login = (token: string) => (_token.value = token)
-    const logout = () => (_token.value = undefined)
-    const isUnlogin = (): boolean => _token.value === undefined
-
+    const _token = ref('')
+    const _username = ref('')
+    const _role = ref(Role.Unlogin)
+    const login = (token: string, role: Role) => {
+      _token.value = token
+      _role.value = role
+      _username.value = ''
+    }
+    const logout = () => {
+      _token.value = ''
+      _role.value = Role.Unlogin
+      _username.value = ''
+    }
+    const isUnlogin = () => _role.value === Role.Unlogin
+    const isEmployee = () => _role.value === Role.Employee
+    const isEmployer = () => _role.value === Role.Employer
+    const role = () => _role.value
+    const token = () => _token.value
+    const username = () => _username.value
+    const setUsername = (username: string) => _username.value = username
     return {
-      token: _token,
-      username: _username,
+      token,
+      username,
+      role,
+      setUsername,
       login,
       logout,
-      isUnlogin
+      isUnlogin,
+      isEmployee,
+      isEmployer,
+      _role,
+      _token,
+      _username
     }
   },
   {

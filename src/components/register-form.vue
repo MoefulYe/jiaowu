@@ -36,7 +36,7 @@ import {
   NInput
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
-import { useStateStore } from 'stores/user-state'
+import { Role, useStateStore } from 'stores/user-state'
 import { register } from 'api/user/account'
 
 const emit = defineEmits<{
@@ -56,8 +56,8 @@ const click = async () => {
     await formRef.value!.validate()
     const token = await register(data.value)
     const state = useStateStore()
-    state.username = `用户${data.value.phone}`
-    state.token = token
+    state.login(token, Role.Employee)
+    state.setUsername(`用户${data.value.phone}`)
     emit('success')
   } catch {
     // do nothing

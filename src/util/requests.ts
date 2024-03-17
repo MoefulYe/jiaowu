@@ -10,7 +10,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    config.headers['token'] = useStateStore().token
+    config.headers['token'] = useStateStore().token()
     window.$loading.start()
     return config
   },

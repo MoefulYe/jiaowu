@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
-import { useStateStore } from '@/stores/user-state'
+import { Role, useStateStore } from '@/stores/user-state'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -8,27 +8,43 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/error-view/not-found-view.vue')
   },
   {
+    path: '/coming-soon',
+    name: 'coming-soon',
+    component: () => import('@/views/error-view/coming-soon-view.vue')
+  },
+  {
+    path: '/401',
+    name: 'forbidden',
+    component: () => import('@/views/error-view/forbidden-view.vue')
+  },
+  {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login-view.vue')
+    component: () => import('@/views/login-view.vue'),
+    meta: {
+      role: Role.Unlogin
+    }
   },
   {
     path: '/register',
     name: 'register',
-    component: () => import('@/views/register-view.vue')
+    component: () => import('@/views/register-view.vue'),
+    meta: {
+      role: Role.Unlogin
+    }
   },
   {
     path: '/',
-    component: () => import('@/views/user-view/user-view.vue'),
+    component: () => import('@/views/employee-view/employee-view.vue'),
     meta: {
-      requiresLogin: true
+      role: Role.Employee
     },
     children: [
       { path: '', redirect: { name: 'welcome' } },
       {
         name: 'welcome',
         path: 'welcome',
-        component: () => import('@/views/user-view/welcome-view.vue')
+        component: () => import('@/views/employee-view/welcome-view.vue')
       },
       {
         name: 'profile',
@@ -37,18 +53,20 @@ const routes: RouteRecordRaw[] = [
           {
             name: 'basic-profile',
             path: 'basic',
-            component: () => import('@/views/user-view/user-profile-view/basic-profile-view.vue')
+            component: () =>
+              import('@/views/employee-view/employee-profile-view/basic-profile-view.vue')
           },
           {
             name: 'academic-profile',
             path: 'academic',
-            component: () => import('@/views/user-view/user-profile-view/academic-profile-view.vue')
+            component: () =>
+              import('@/views/employee-view/employee-profile-view/academic-profile-view.vue')
           },
           {
             name: 'resume-profile',
             path: 'resume',
             component: () =>
-              import('@/views/user-view/user-profile-view/resume-view/resume-view.vue')
+              import('@/views/employee-view/employee-profile-view/resume-view/resume-view.vue')
           }
         ]
       },
@@ -59,24 +77,24 @@ const routes: RouteRecordRaw[] = [
           {
             name: 'job-market',
             path: 'market',
-            component: () => import('@/views/user-view/job-view/job-market-view.vue')
+            component: () => import('@/views/employee-view/job-view/job-market-view.vue')
           },
           {
             name: 'skill-required',
             path: 'skill',
-            component: () => import('@/views/user-view/job-view/skill-require-view.vue')
+            component: () => import('@/views/employee-view/job-view/skill-require-view.vue')
           },
           {
             name: 'trend',
             path: 'trend',
-            component: () => import('@/views/user-view/job-view/trend-view.vue')
+            component: () => import('@/views/employee-view/job-view/trend-view.vue')
           }
         ]
       },
       {
         name: 'company',
         path: 'company/:company',
-        component: () => import('@/views/user-view/company-view.vue'),
+        component: () => import('@/views/employee-view/company-view.vue'),
         props: (route) => ({
           company: route.params.company
         })
@@ -84,7 +102,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'tech',
         path: 'tech/:tech',
-        component: () => import('@/views/user-view/tech-view.vue'),
+        component: () => import('@/views/employee-view/tech-view.vue'),
         props: (route) => ({
           tech: route.params.tech
         })
@@ -92,17 +110,17 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'assessment',
         path: 'assessment',
-        component: () => import('@/views/user-view/assessment-view/assessment-view.vue')
+        component: () => import('@/views/employee-view/assessment-view/assessment-view.vue')
       },
       {
         name: 'interest',
         path: 'interest',
-        component: () => import('@/views/user-view/interest-view.vue')
+        component: () => import('@/views/employee-view/interest-view.vue')
       },
       {
         name: 'recommand',
         path: 'recommand',
-        component: () => import('@/views/user-view/recommend-view/recommand-view.vue')
+        component: () => import('@/views/employee-view/recommend-view/recommand-view.vue')
       },
       {
         name: 'study',
@@ -111,12 +129,12 @@ const routes: RouteRecordRaw[] = [
           {
             name: 'study-plan',
             path: 'plan',
-            component: () => import('@/views/user-view/study-view/study-plan-view.vue')
+            redirect: { name: 'coming-soon' }
           },
           {
             name: 'study-material',
             path: 'material',
-            component: () => import('@/views/user-view/study-view/study-material-view.vue')
+            redirect: { name: 'coming-soon' }
           }
         ]
       }
@@ -134,8 +152,23 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  if (to.meta.requiresLogin && useStateStore().isUnlogin()) {
-    gotoLogin()
+  const state = useStateStore()
+  const metaRole = to.meta.role
+  const role = state.role()
+  if (metaRole !== undefined && metaRole !== role) {
+    switch (role) {
+      case Role.Unlogin:
+        window.$message.error('请先登录')
+        router.push({ name: 'login' })
+        break
+      case Role.Employee:
+        window.$message.error('您没有权限访问该页面')
+        router.push({ name: 'welcome' })
+        break
+      case Role.Employer:
+        window.$message.error('您没有权限访问该页面')
+        router.push({ name: '401' })
+    }
   }
 })
 

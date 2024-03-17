@@ -91,6 +91,6 @@ const recommended = computed(() =>
 
 const share = () =>
   navigator.clipboard
-    .writeText(`${useStateStore().username}适合当${recommended.value.join(',')}`)
+    .writeText(`${useStateStore().username()}适合当${recommended.value.join(',')}`)
     .then(() => window.$message.success('复制成功'))
 </script>

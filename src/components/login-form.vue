@@ -28,7 +28,7 @@ import {
   NDivider
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
-import { useStateStore } from 'stores/user-state'
+import { Role, useStateStore } from 'stores/user-state'
 import { gotoHome } from '@/router'
 import { type LoginData, login } from 'api/user/account'
 
@@ -47,8 +47,8 @@ const click = async () => {
     await formRef.value!.validate()
     const token = await login(data.value)
     const state = useStateStore()
-    state.username = `用户${data.value.phone}`
-    state.login(token)
+    state.login(token, Role.Employee)
+    state.setUsername(`用户${data.value.phone}`)
     gotoHome()
   } catch {
     // do nothing

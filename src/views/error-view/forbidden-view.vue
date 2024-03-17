@@ -1,5 +1,5 @@
 <template>
-  <n-result status="404" title="404 页面不存在" class="p-8" />
+  <n-result status="error" title="401 页面不许访问" class="p-8" />
 </template>
 
 <script setup lang="ts">
