@@ -83,6 +83,7 @@ import { defineComponent } from 'vue'
 import { gotoHome } from '@/router'
 import BasicInfoForm from 'components/basic-info-form.vue'
 import AcademicInfoForm from 'components/academic-info-form.vue'
+import { Role } from '@/stores/user-state'
 
 enum Step {
   Register,
@@ -99,7 +100,7 @@ const GuidetoWelcome = defineComponent({
       countDown.value--
       if (countDown.value === 0) {
         clearInterval(handler)
-        gotoHome()
+        gotoHome(Role.Employee)
       }
     }, 1000)
     return () => (
@@ -109,7 +110,7 @@ const GuidetoWelcome = defineComponent({
           <NButton
             onClick={() => {
               clearInterval(handler)
-              gotoHome()
+              gotoHome(Role.Employee)
             }}
           >
             不想等待? 点此跳转

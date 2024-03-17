@@ -176,7 +176,19 @@ router.beforeEach((to) => {
 export const gotoTechPage = (tech: string) =>
   window.$router.push({ name: 'tech', params: { tech } })
 
-export const gotoHome = () => window.$router.push({ name: 'welcome' })
+export const gotoHome = (role: Role) => {
+  switch(role) {
+  case Role.Unlogin:
+    window.$router.push({ name: 'login' })
+    break
+  case Role.Employee:
+    window.$router.push({ name: 'welcome' })
+    break
+  case Role.Employer:
+    window.$router.push({ name: 'coming-soon' })
+    break
+  }
+}
 export const gotoLogin = () => window.$router.push({ name: 'login' })
 export const gotoRegister = () => window.$router.push({ name: 'register' })
 export const gotoBaicProfile = () => window.$router.push({ name: 'basic-profile' })

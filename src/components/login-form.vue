@@ -49,7 +49,7 @@ const click = async () => {
     const state = useStateStore()
     state.login(token, Role.Employee)
     state.setUsername(`用户${data.value.phone}`)
-    gotoHome()
+    gotoHome(Role.Employee)
   } catch {
     // do nothing
   }
