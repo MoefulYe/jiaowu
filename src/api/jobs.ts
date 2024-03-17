@@ -23,7 +23,7 @@ export const JOBS: Job[] = [
   '管理'
 ]
 
-export const JOB_OPTS: SelectOption[] = JOBS.map((job) => ({
+export const JOB_OPTS:  SelectOption[] = JOBS.map((job) => ({
   label: job,
   value: job
 }))

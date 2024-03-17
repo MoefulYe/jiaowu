@@ -26,11 +26,18 @@
 </template>
 
 <script setup lang="ts">
-import { NDivider } from 'naive-ui'
-import { type FormInst, type FormRules, NButton, NForm, NFormItem, NInput } from 'naive-ui/lib'
+import {
+  NDivider,
+  type FormInst,
+  type FormRules,
+  NButton,
+  NForm,
+  NFormItem,
+  NInput
+} from 'naive-ui'
 import { ref, shallowRef } from 'vue'
-import { useStateStore } from '../stores/user-state'
-import { register } from '../api/user/account'
+import { useStateStore } from 'stores/user-state'
+import { register } from 'api/user/account'
 
 const emit = defineEmits<{
   login: []

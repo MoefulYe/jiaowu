@@ -95,8 +95,8 @@ import { shallowRef } from 'vue'
 import ResumeIntershipsView from './resume-interships-view.vue'
 import ResumeProjectsView from './resume-projects-view.vue'
 import ResumeCompetitionsView from './resume-competitions-view.vue'
-import { JOB_OPTS } from '../../../../api/jobs'
-import { defaultResumeProfile, submitResume } from '../../../../api/user/resume'
+import { JOB_OPTS } from 'api/jobs'
+import { defaultResumeProfile, submitResume } from 'api/user/resume'
 
 const formRef = shallowRef<FormInst>()
 const resumeRef = shallowRef<InstanceType<typeof ResumeIntershipsView>>()

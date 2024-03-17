@@ -45,14 +45,14 @@ const tip = (option: number) => props.tips[option - 1]
 </script>
 
 <script lang="ts">
-const emojis = [
+const emojis: string[] = [
   'icon-[bi--emoji-frown]',
   'icon-[bi--emoji-astonished]',
   'icon-[bi--emoji-expressionless]',
   'icon-[bi--emoji-smile]',
   'icon-[bi--emoji-laughing]'
 ]
-const emojisFill = [
+const emojisFill: string[] = [
   'icon-[bi--emoji-frown-fill]',
   'icon-[bi--emoji-astonished-fill]',
   'icon-[bi--emoji-expressionless-fill]',

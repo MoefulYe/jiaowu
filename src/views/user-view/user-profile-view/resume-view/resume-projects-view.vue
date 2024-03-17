@@ -94,8 +94,8 @@ import {
   NTooltip
 } from 'naive-ui'
 import { shallowRef } from 'vue'
-import confirm from '../../../../components/confirm'
-import { type OptionalProject } from '../../../../api/user/resume'
+import confirm from 'components/confirm'
+import { type OptionalProject } from 'api/user/resume'
 
 const data = defineModel<OptionalProject[]>({ required: true })
 const formRefs = shallowRef<FormInst[]>([])

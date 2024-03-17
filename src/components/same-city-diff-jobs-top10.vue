@@ -26,9 +26,8 @@
 <script setup lang="ts">
 import { type Tech, type Techs, fetchTechCompareJob } from '../api/data_analysis/tech'
 import { ref, computed } from 'vue'
-import { type SelectOption, NSelect, NButton } from 'naive-ui/lib'
-import { gotoTechPage } from '../router'
-
+import { type SelectOption, NSelect, NButton } from 'naive-ui'
+import { gotoTechPage } from '@/router'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
 import {
@@ -46,7 +45,7 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import type { GridComponentOption } from 'echarts/components'
 import VChart from 'vue-echarts'
-import { JOB_OPTS } from '../api/jobs'
+import { JOB_OPTS } from 'api/jobs'
 import { NSkeleton } from 'naive-ui'
 use([
   BarChart,

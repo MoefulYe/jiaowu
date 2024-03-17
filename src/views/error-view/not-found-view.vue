@@ -7,7 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import { NButton } from 'naive-ui'
-import { NResult } from 'naive-ui/lib'
-import { gotoHome } from '../../router'
+import { NButton, NResult } from 'naive-ui'
+import { gotoHome } from '@/router'
 </script>

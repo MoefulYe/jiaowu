@@ -26,11 +26,11 @@ import {
   NFormItem,
   NInput,
   NDivider
-} from 'naive-ui/lib'
+} from 'naive-ui'
 import { ref, shallowRef } from 'vue'
-import { useStateStore } from '../stores/user-state'
-import { gotoHome } from '../router'
-import { type LoginData, login } from '../api/user/account'
+import { useStateStore } from 'stores/user-state'
+import { gotoHome } from '@/router'
+import { type LoginData, login } from 'api/user/account'
 
 const emit = defineEmits<{
   register: []

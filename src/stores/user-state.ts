@@ -24,5 +24,3 @@ export const useStateStore = defineStore(
     }
   }
 )
-
-export type StateStore = ReturnType<typeof useStateStore>

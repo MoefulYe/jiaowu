@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
-import { useStateStore } from '../stores/user-state'
+import { useStateStore } from '@/stores/user-state'
 
 const routes: RouteRecordRaw[] = [
   {

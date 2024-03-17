@@ -29,11 +29,10 @@
 
 <script setup lang="tsx">
 import { type PropType, computed, defineComponent, ref } from 'vue'
-import { type Rate, type ResumeResult } from '../../../api/recommand/resume_result'
+import { type Rate, type ResumeResult } from 'api/recommand/resume_result'
 import { NButton } from 'naive-ui'
-import JobIntro from '../../../components/job-intro.vue'
-// import { JOBS } from '../../../api/jobs'
-import * as echarts from 'echarts/core'
+import JobIntro from 'components/job-intro.vue'
+import { use, type ComposeOption } from 'echarts/core'
 import {
   TitleComponent,
   type TitleComponentOption,
@@ -45,8 +44,8 @@ import {
 import { RadarChart, type RadarSeriesOption } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
-import { JOBS } from '../../../api/jobs'
-echarts.use([TitleComponent, LegendComponent, RadarChart, CanvasRenderer, TooltipComponent])
+import { JOBS } from 'api/jobs'
+use([TitleComponent, LegendComponent, RadarChart, CanvasRenderer, TooltipComponent])
 
 // const data = ref<ResumeResult>()
 // const data = ref<ResumeResult>({ state: 'ambiguity', recommend: JOBS.slice(1, 5) })
@@ -62,7 +61,7 @@ const data = ref<ResumeResult>({
 </script>
 
 <script lang="tsx">
-type EChartsOption = echarts.ComposeOption<
+type EChartsOption = ComposeOption<
   TitleComponentOption | LegendComponentOption | RadarSeriesOption | TooltipComponentOption
 >
 

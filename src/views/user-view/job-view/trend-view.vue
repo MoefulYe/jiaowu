@@ -40,8 +40,8 @@
 <script setup lang="ts">
 import { NCard, type SelectOption, NSelect, NButton } from 'naive-ui'
 import { computed, ref } from 'vue'
-import { DEFAULT_JOB, JOB_OPTS } from '../../../api/jobs'
-import { CITY_OPTS, DEFAULT_CITY } from '../../../api/city'
+import { DEFAULT_JOB, JOB_OPTS } from 'api/jobs'
+import { CITY_OPTS, DEFAULT_CITY } from 'api/city'
 
 import { use } from 'echarts/core'
 import { LineChart } from 'echarts/charts'

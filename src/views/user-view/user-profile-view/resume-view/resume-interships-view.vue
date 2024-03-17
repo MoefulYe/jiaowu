@@ -98,12 +98,12 @@ import {
   NFormItemGi,
   NGrid,
   NInput,
-  NTooltip
+  NTooltip,
+  type FormInst
 } from 'naive-ui'
 import { shallowRef } from 'vue'
-import confirm from '../../../../components/confirm'
-import { type FormInst } from 'naive-ui'
-import { type OptionalInternship } from '../../../../api/user/resume'
+import confirm from 'components/confirm'
+import { type OptionalInternship } from 'api/user/resume'
 
 const data = defineModel<OptionalInternship[]>({ required: true })
 const formRefs = shallowRef<FormInst[]>([])

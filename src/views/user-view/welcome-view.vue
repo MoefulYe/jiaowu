@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { NCard } from 'naive-ui'
-import { TITLE } from '../../constants'
+import { TITLE } from '@/constants'
 
 interface NavItem {
   icon: string

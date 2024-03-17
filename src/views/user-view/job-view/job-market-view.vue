@@ -64,13 +64,13 @@
 </template>
 
 <script setup lang="ts">
-import { NButton, NSelect, NTabPane, NTabs } from 'naive-ui/lib'
+import { NButton, NSelect, NTabPane, NTabs, NCard, NSkeleton, NTag } from 'naive-ui/lib'
 import { ref, computed, onBeforeMount } from 'vue'
-import { CITY_OPTS, DEFAULT_CITY } from '../../../api/city'
-import { JOB_OPTS, DEFAULT_JOB } from '../../../api/jobs'
-import { type SalaryAnalysis, fetchSalaryInitalChoice } from '../../../api/data_analysis/salary'
-import SameCityDiffJobs from '../../../components/same-city-diff-jobs-salary.vue'
-import SameJobDiffCities from '../../../components/same-job-diff-cities-salary.vue'
+import { CITY_OPTS, DEFAULT_CITY } from 'api/city'
+import { JOB_OPTS, DEFAULT_JOB } from 'api/jobs'
+import { type SalaryAnalysis, fetchSalaryInitalChoice } from 'api/data_analysis/salary'
+import SameCityDiffJobs from 'components/same-city-diff-jobs-salary.vue'
+import SameJobDiffCities from 'components/same-job-diff-cities-salary.vue'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
 import {
@@ -86,8 +86,7 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import VChart from 'vue-echarts'
 import { RouterLink } from 'vue-router'
-import { NCard, NSkeleton, NTag } from 'naive-ui'
-import { fetchInitialChoice as fetchCompanyInitialChoice } from '../../../api/recommand/company'
+import { fetchInitialChoice as fetchCompanyInitialChoice } from 'api/recommand/company'
 use([GridComponent, BarChart, CanvasRenderer, LegendComponent, TooltipComponent])
 type ChartOpts = ComposeOption<
   GridComponentOption | BarSeriesOption | LegendComponentOption | TooltipComponentOption

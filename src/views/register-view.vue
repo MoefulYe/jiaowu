@@ -71,18 +71,18 @@
 
 <script setup lang="tsx">
 import { ref } from 'vue'
-import RegisterForm from '../components/register-form.vue'
+import RegisterForm from 'components/register-form.vue'
 import { NCard, NButton, NProgress, NTooltip } from 'naive-ui'
-import { gotoLogin } from '../router'
+import { gotoLogin } from '@/router'
 
 const step = ref(Step.Register)
 </script>
 
 <script lang="tsx">
 import { defineComponent } from 'vue'
-import { gotoHome } from '../router'
-import BasicInfoForm from '../components/basic-info-form.vue'
-import AcademicInfoForm from '../components/academic-info-form.vue'
+import { gotoHome } from '@/router'
+import BasicInfoForm from 'components/basic-info-form.vue'
+import AcademicInfoForm from 'components/academic-info-form.vue'
 
 enum Step {
   Register,

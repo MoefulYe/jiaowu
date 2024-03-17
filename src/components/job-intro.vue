@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
 import { VueTypedJs } from 'vue3-typed-ts'
-import introductions from '../assets/introductions.json'
+import introductions from 'assets/introductions.json'
 defineProps<{
   job: string
 }>()

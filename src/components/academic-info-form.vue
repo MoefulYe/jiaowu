@@ -52,7 +52,7 @@ import {
   StudentType,
   fetchAcademicInfo,
   modifyAcademicInfo
-} from '../api/user/profile'
+} from 'api/user/profile'
 
 const emit = defineEmits<Emits>()
 const props = withDefaults(defineProps<Props>(), {

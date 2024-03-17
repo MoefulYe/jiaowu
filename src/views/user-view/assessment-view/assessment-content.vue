@@ -53,11 +53,11 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import EmojiRadio, { type Score, emojiFill } from '../../../components/emoji-radio.vue'
+import EmojiRadio, { type Score, emojiFill } from 'components/emoji-radio.vue'
 import { NButton, NSelect, NTooltip } from 'naive-ui'
-import confirm from '../../../components/confirm'
-import { JOBS } from '../../../api/jobs'
-import questions from '../../../assets/questions.json'
+import confirm from 'components/confirm'
+import { JOBS } from 'api/jobs'
+import questions from 'assets/questions.json'
 
 const emit = defineEmits<{
   done: [scores: number[]]

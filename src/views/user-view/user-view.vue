@@ -53,17 +53,17 @@ import {
   NAvatar,
   NDropdown,
   type DropdownOption
-} from 'naive-ui/lib'
-import { isMobile } from '../../util/reponsive'
-import { renderIcon } from '../../util/render'
-import { TITLE } from '../../constants'
+} from 'naive-ui'
+import { isMobile } from 'util/reponsive'
+import { renderIcon } from 'util/render'
+import { TITLE } from '@/constants'
 import { storeToRefs } from 'pinia'
-import { useStateStore } from '../../stores/user-state'
-import { gotoLogin, gotoBaicProfile } from '../../router'
-import ShowOrEdit from '../../components/show-or-edit.vue'
-import confirm from '../../components/confirm'
+import { useStateStore } from 'stores/user-state'
+import { gotoLogin, gotoBaicProfile } from '@/router'
+import ShowOrEdit from 'components/show-or-edit.vue'
+import confirm from 'components/confirm'
 
-const SideMenu = defineAsyncComponent(() => import('../../components/side-menu.vue'))
+const SideMenu = defineAsyncComponent(() => import('components/side-menu.vue'))
 const { username } = storeToRefs(useStateStore())
 const isCollapsed = ref(true)
 

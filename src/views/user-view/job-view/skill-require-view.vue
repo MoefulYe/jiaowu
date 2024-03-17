@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NSelect, NButton, NTabs, NTabPane } from 'naive-ui/lib'
+import { NCard, NSelect, NButton, NTabs, NTabPane } from 'naive-ui'
 import { computed, onBeforeMount, ref } from 'vue'
 import { use } from 'echarts/core'
 import { PieChart, type PieSeriesOption } from 'echarts/charts'
@@ -56,13 +56,13 @@ import {
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
-import { fetchTechInitialChoice, type Tech } from '../../../api/data_analysis/tech'
+import { fetchTechInitialChoice, type Tech } from 'api/data_analysis/tech'
 import { type ComposeOption } from 'echarts'
-import SameCityDiffJobs from '../../../components/same-city-diff-jobs-top10.vue'
-import SameJobDiffCities from '../../../components/same-job-diff-cities-top10.vue'
-import { gotoTechPage } from '../../../router'
-import { DEFAULT_JOB, JOB_OPTS } from '../../../api/jobs'
-import { CITY_OPTS, DEFAULT_CITY } from '../../../api/city'
+import SameCityDiffJobs from 'components/same-city-diff-jobs-top10.vue'
+import SameJobDiffCities from 'components/same-job-diff-cities-top10.vue'
+import { gotoTechPage } from '@/router'
+import { DEFAULT_JOB, JOB_OPTS } from 'api/jobs'
+import { CITY_OPTS, DEFAULT_CITY } from 'api/city'
 import { NSkeleton } from 'naive-ui'
 
 use([TitleComponent, TooltipComponent, LegendComponent, PieChart, CanvasRenderer])

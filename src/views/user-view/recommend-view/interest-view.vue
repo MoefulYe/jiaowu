@@ -24,10 +24,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { type InterestResult } from '../../../api/recommand/interest_result'
+import { type InterestResult } from 'api/recommand/interest_result'
 import { NButton } from 'naive-ui'
-import JobIntro from '../../../components/job-intro.vue'
-import { JOBS } from '../../../api/jobs'
+import JobIntro from 'components/job-intro.vue'
+import { JOBS } from 'api/jobs'
 
 // const data = ref<InterestResult>({ state: 'unfulfill' })
 // const data = ref<InterestResult>({
