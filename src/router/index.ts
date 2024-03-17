@@ -20,7 +20,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login-view.vue'),
+    component: () => import('@/views/employee-view/login-view.vue'),
     meta: {
       role: Role.Unlogin
     }
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/register',
     name: 'register',
-    component: () => import('@/views/register-view.vue'),
+    component: () => import('@/views/employee-view/register-view.vue'),
     meta: {
       role: Role.Unlogin
     }
@@ -177,16 +177,16 @@ export const gotoTechPage = (tech: string) =>
   window.$router.push({ name: 'tech', params: { tech } })
 
 export const gotoHome = (role: Role) => {
-  switch(role) {
-  case Role.Unlogin:
-    window.$router.push({ name: 'login' })
-    break
-  case Role.Employee:
-    window.$router.push({ name: 'welcome' })
-    break
-  case Role.Employer:
-    window.$router.push({ name: 'coming-soon' })
-    break
+  switch (role) {
+    case Role.Unlogin:
+      window.$router.push({ name: 'login' })
+      break
+    case Role.Employee:
+      window.$router.push({ name: 'welcome' })
+      break
+    case Role.Employer:
+      window.$router.push({ name: 'coming-soon' })
+      break
   }
 }
 export const gotoLogin = () => window.$router.push({ name: 'login' })

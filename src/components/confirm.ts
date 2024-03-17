@@ -1,9 +1,9 @@
-import type { VNodeChild } from "vue"
+import type { VNodeChild } from 'vue'
 
 export default (
   title: string,
   content: string | (() => VNodeChild),
-  type?: 'default' | 'error' | 'info' | 'success' | 'warning',
+  type?: 'default' | 'error' | 'info' | 'success' | 'warning'
 ): Promise<boolean> =>
   new Promise((resolve) => {
     window.$dialog.create({

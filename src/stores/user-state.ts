@@ -31,7 +31,7 @@ export const useStateStore = defineStore(
     const role = () => _role.value
     const token = () => _token.value
     const username = () => _username.value
-    const setUsername = (username: string) => _username.value = username
+    const setUsername = (username: string) => (_username.value = username)
     return {
       token,
       username,

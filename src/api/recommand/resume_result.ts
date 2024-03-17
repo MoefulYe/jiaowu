@@ -2,9 +2,9 @@ import type { Job } from '../jobs'
 export type Skill = string
 export type UnFulfill = { state: 'unfulfill' }
 export type Ambiguity = { state: 'ambiguity'; recommend: Job[] }
-export type Rate =  {
-  job: Job,
-  matchSkills: Skill[],
+export type Rate = {
+  job: Job
+  matchSkills: Skill[]
   score: number
 }
 export type Match = {
