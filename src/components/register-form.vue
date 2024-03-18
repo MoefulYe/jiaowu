@@ -1,6 +1,6 @@
 <template>
   <NButton class="w-full mt-4" @click="() => emit('login')">登录账号</NButton>
-  <NDivider class="text-[#4c566a] opacity-90">或者</NDivider>
+  <NDivider class="text-[#4c566a] opacity-90 text-sm">或者</NDivider>
   <NForm ref="formRef" :label-width="80" :model="data" :rules="rules">
     <NFormItem label="手机" path="phone">
       <NInput v-model:value="data.phone" placeholder="请输入手机" />
@@ -37,18 +37,18 @@ import {
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
 import { Role, useStateStore } from 'stores/user-state'
-import { RegisterData, register } from 'api/user/account'
+import { type RegisterData, register } from 'api/user/account'
 
 const emit = defineEmits<{
   login: []
   success: []
 }>()
 
-const data = ref<
-  RegisterData & {
-    password2: string
-  }
->({
+interface ConfirmPassword {
+  password2: string
+}
+
+const data = ref<RegisterData & ConfirmPassword>({
   phone: '',
   password: '',
   password2: ''

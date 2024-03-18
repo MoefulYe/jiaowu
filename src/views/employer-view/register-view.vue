@@ -1,19 +1,17 @@
 <template>
   <NCard class="w-fit shadow-lg">
     <template #header>
-      <div class="flex justify-center">企业招聘人员登录</div>
+      <div class="flex justify-center">企业招聘人员注册</div>
     </template>
     <template #default>
-      <NTooltip>
-        <template #trigger>
-          <NButton class="w-full" @click="gotoEmployeeLogin">我想要找工作</NButton>
-        </template>
-        <template #default> 点此登录或者注册求职者账号 </template>
-      </NTooltip>
+      <NButton class="w-full mt-4" @click="emit('login')">登录账号</NButton>
       <NDivider class="text-[#4c566a] opacity-90 text-sm">或者</NDivider>
       <NForm ref="formRef" :label-width="80" :model="data" :rules="rules">
-        <NFormItem label="手机号码" path="phone">
-          <NInput v-model:value="data.phone" placeholder="请输入手机号码" />
+        <NFormItem label="手机" path="phone">
+          <NInput v-model:value="data.phone" placeholder="请输入手机" />
+        </NFormItem>
+        <NFormItem label="员工号" path="code">
+          <NInput v-model:value="data.code" placeholder="请输入员工号" />
         </NFormItem>
         <NFormItem label="密码" path="password">
           <NInput
@@ -23,55 +21,58 @@
             show-password-on="click"
           />
         </NFormItem>
+        <NFormItem label="确认密码" path="password2">
+          <NInput
+            v-model:value="data.password2"
+            placeholder="请再次输入密码"
+            type="password"
+            @keydown.enter="click"
+          />
+        </NFormItem>
       </NForm>
     </template>
     <template #footer>
-      <div class="flex gap-2 justify-stretch">
-        <NTooltip placement="bottom">
-          <template #trigger>
-            <NButton class="grow" @click="click">登录</NButton>
-          </template>
-          <template #default> 点此登录 </template>
-        </NTooltip>
-        <NTooltip placement="bottom">
-          <template #trigger>
-            <NButton class="grow" type="primary" @click="emit('register')">注册</NButton>
-          </template>
-          <template #default> 跳转到注册页面 </template>
-        </NTooltip>
-      </div>
+      <NButton type="primary" class="w-full mt-4" @click="click">注册</NButton>
     </template>
   </NCard>
 </template>
 
 <script setup lang="ts">
 import {
+  NDivider,
   type FormInst,
   type FormRules,
   NButton,
   NForm,
   NFormItem,
   NInput,
-  NDivider,
-  NTooltip,
   NCard
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
-import { gotoEmployeeLogin, gotoHome } from '@/router'
-import { type LoginData, login } from 'api/employer/account'
-import { Role, useStateStore } from '@/stores/user-state'
+import { Role, useStateStore } from 'stores/user-state'
+import { type RegisterData, register } from 'api/employer/account'
+import { gotoHome } from '@/router'
 
 const emit = defineEmits<{
-  register: []
+  login: []
 }>()
 
-const data = ref<Partial<LoginData>>({})
-const formRef = shallowRef<FormInst>()
+interface ConfirmPassword {
+  password2: string
+}
 
+const data = ref<RegisterData & ConfirmPassword>({
+  phone: '',
+  password: '',
+  password2: '',
+  code: ''
+})
+
+const formRef = shallowRef<FormInst>()
 const click = async () => {
   try {
     await formRef.value!.validate()
-    const token = await login(data.value as LoginData)
+    const token = await register(data.value)
     const state = useStateStore()
     state.login(token, Role.Employer)
     state.setUsername(`招聘官${data.value.phone}`)
@@ -96,6 +97,20 @@ const rules: FormRules = {
   password: [
     { required: true, message: '请输入密码' },
     { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+  ],
+  password2: [
+    { required: true, message: '请再次输入密码' },
+    { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+    {
+      validator: (_, value) => {
+        if (value !== data.value.password) {
+          return new Error('两次输入密码不一致')
+        } else {
+          return true
+        }
+      },
+      trigger: ['blur', 'input']
+    }
   ]
 }
 </script>

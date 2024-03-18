@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 import { Role, useStateStore } from '@/stores/user-state'
+import { EMPLOYEE_TITLE, EMPLOYER_TITLE } from '@/constants'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -149,6 +150,19 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: '/employer',
+    meta: {
+      role: Role.Employer
+    },
+    children: [
+      {
+        path: '',
+        name: 'employer-home',
+        component: () => import('@/views/employer-view/employer-home.vue')
+      }
+    ]
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: { name: 'not-found' }
   }
@@ -156,7 +170,7 @@ const routes: RouteRecordRaw[] = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+  routes
 })
 
 router.beforeEach((to) => {
@@ -166,11 +180,10 @@ router.beforeEach((to) => {
   console.log(metaRole)
   console.log(role)
   if (metaRole !== undefined && metaRole !== role) {
-        window.$message.error('您没有权限访问该页面')
-        router.push({ name: 'forbidden' })
-    }
+    window.$message.error('您没有权限访问该页面')
+    router.push({ name: 'forbidden' })
   }
-)
+})
 
 // router.afterEach((to, from, failure) => {})
 export const gotoTechPage = (tech: string) =>
@@ -185,13 +198,19 @@ export const gotoHome = (role: Role) => {
       window.$router.push({ name: 'welcome' })
       break
     case Role.Employer:
-      window.$router.push({ name: 'coming-soon' })
+      window.$router.push({ name: 'employer-home' })
       break
   }
 }
-export const gotoEmployeeLogin = () => window.$router.push({ name: 'employee-login' })
+export const gotoEmployeeLogin = () => {
+  window.document.title = EMPLOYEE_TITLE
+  window.$router.push({ name: 'employee-login' })
+}
 export const gotoEmployeeRegister = () => window.$router.push({ name: 'employee-register' })
 export const gotoBaicProfile = () => window.$router.push({ name: 'basic-profile' })
-export const gotoEmployerLoginRegister = () => window.$router.push({name: 'employer-login-register'})
+export const gotoEmployerLoginRegister = () => {
+  window.document.title = EMPLOYER_TITLE
+  window.$router.push({ name: 'employer-login-register' })
+}
 
 export default router

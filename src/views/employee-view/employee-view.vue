@@ -23,11 +23,13 @@
             <SideMenu :collapsed="false" />
           </template>
         </NPopover>
-        <span class="ml-2 sm:ml-0" @click="$router.push({ name: 'welcome' })">{{ TITLE }}</span>
+        <span class="ml-2 sm:ml-0" @click="$router.push({ name: 'welcome' })">{{
+          EMPLOYEE_TITLE
+        }}</span>
         <span class="flex-grow" />
         <NDropdown :options="avatarDropdownOpts" trigger="click" @select="selectDropdown">
           <NAvatar size="small" class="mr-2" round>
-            {{ username.slice(0, 1) }}
+            {{ username.charAt(0) }}
           </NAvatar>
         </NDropdown>
         <span class="flex items-center"> 你好，<ShowOrEdit v-model:value="username" /> </span>
@@ -56,7 +58,7 @@ import {
 } from 'naive-ui'
 import { isMobile } from 'util/reponsive'
 import { renderIcon } from 'util/render'
-import { TITLE } from '@/constants'
+import { EMPLOYEE_TITLE } from '@/constants'
 import { storeToRefs } from 'pinia'
 import { useStateStore } from 'stores/user-state'
 import { gotoEmployeeLogin, gotoBaicProfile } from '@/router'

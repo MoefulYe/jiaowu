@@ -2,7 +2,7 @@
   <div
     class="w-full h-full flex flex-col items-center bg-[url('/img/home-bg.avif')] bg-center bg-cover font-serif"
   >
-    <span class="mt-8 text-2xl text-white"> 欢迎来到{{ TITLE }}! </span>
+    <span class="mt-8 text-2xl text-white"> 欢迎来到{{ EMPLOYEE_TITLE }}! </span>
     <div class="flex flex-col justify-center items-center w-full h-full">
       <NCard
         class="shadow-lg rounded-lg h-fit w-fit"
@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { NCard } from 'naive-ui'
-import { TITLE } from '@/constants'
+import { EMPLOYEE_TITLE } from '@/constants'
 
 interface NavItem {
   icon: string

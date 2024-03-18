@@ -5,7 +5,7 @@
     </template>
     <template #default> 点此登录或者注册企业账号 </template>
   </NTooltip>
-  <NDivider class="text-[#4c566a] opacity-90">或者</NDivider>
+  <NDivider class="text-[#4c566a] opacity-90 text-sm">或者</NDivider>
   <NForm ref="formRef" :label-width="80" :model="data" :rules="rules">
     <NFormItem label="手机号码" path="phone">
       <NInput v-model:value="data.phone" placeholder="请输入手机号码" />

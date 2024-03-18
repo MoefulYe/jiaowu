@@ -7,8 +7,10 @@ interface Data {
   password: string
 }
 
-export type RegisterData = Data
-export type LoginData = Data
+export type RegisterData = Data & {
+  code: string
+}
+export type LoginData = Data 
 
 export const login = (data: LoginData): Promise<Token> => 
   request({
