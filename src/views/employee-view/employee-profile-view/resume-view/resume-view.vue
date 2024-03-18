@@ -23,7 +23,6 @@
         <NFormItem
           label="求职方向"
           path="directions"
-          required
           label-style="font-size: 1.125rem;line-height: 1.75rem;"
         >
           <NSelect
@@ -34,7 +33,11 @@
             :options="JOB_OPTS"
           />
         </NFormItem>
-        <NFormItem label="技能" label-style="font-size: 1.125rem;line-height: 1.75rem;">
+        <NFormItem
+          label="技能"
+          path="skills"
+          label-style="font-size: 1.125rem;line-height: 1.75rem;"
+        >
           <NDynamicTags v-model:value="resume!.skills" type="primary" />
         </NFormItem>
         <NFormItem
@@ -125,11 +128,11 @@ const rules: FormRules = {
       }
     }
   },
-  directions: {
+  skills: {
     trigger: 'blur',
     validator: () => {
-      if (resume.value!.directions.length === 0) {
-        return Promise.reject(new Error('至少选择一个投递方向'))
+      if (resume.value!.skills.length === 0) {
+        return Promise.reject(new Error('请选择技能'))
       }
     }
   },

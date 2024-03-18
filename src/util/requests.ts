@@ -32,8 +32,8 @@ service.interceptors.response.use(
     return resp.data.data
   },
   (error: AxiosError<any>) => {
-    window.$loading.error()
     const resp = error.response
+    window.$loading.error()
     if (resp !== undefined) {
       switch (resp.headers['Content-Type']) {
         case 'application/json':

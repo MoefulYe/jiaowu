@@ -2,7 +2,7 @@
   <div v-if="data === undefined" class="w-full h-full flex flex-col items-center justify-center">
     <span class="icon-[eos-icons--bubble-loading] text-4xl" />
   </div>
-  <div v-else-if="data.state === 'unfulfill'">
+  <div v-else-if="data[0] === ResumeResultState.unfulfill">
     <div class="flex flex-col gap-4">
       <div>简历尚未填写未能给你生成个性化推荐请前往简历页填写信息</div>
       <div>
@@ -12,84 +12,83 @@
       </div>
     </div>
   </div>
-  <div v-else-if="data.state === 'ambiguity'">
+  <div v-else-if="data[0] === ResumeResultState.ambiguity">
     <span class="text-xl">您的简历未选择任何方向，我们为您做出了以下推荐</span>
     <div class="flex flex-col flex-wrap gap-8 mt-4">
-      <JobIntro v-for="job of data.recommend" :key="job" :job="job" />
+      <JobIntro v-for="job of data[1]" :key="job" :job="job" />
     </div>
   </div>
   <div v-else class="flex flex-col items-center">
     <div class="text-xl w-full">
-      您的简历选择了{{ data.rates.map((rate) => rate.job).join(',') }}等方向,
+      您的简历选择了{{ data[1].map((item) => item.direction).join(',') }}等方向,
       以下是我们对你的匹配度分析
     </div>
-    <Radar :rates="data.rates" class="w-96 h-96 lg:w-[30rem] lg:h-[30rem]" />
+    <Radar :rates="data[1]" class="w-96 h-96 lg:w-[30rem] lg:h-[30rem]" />
   </div>
 </template>
 
 <script setup lang="tsx">
-import { type PropType, computed, defineComponent, ref } from 'vue'
-import { type Rate, type ResumeResult } from 'api/recommand/resume_result'
+import { type PropType, computed, defineComponent } from 'vue'
+import { fetchResumeResult, MatchResult, ResumeResultState } from 'api/recommand/resume_result'
 import { NButton } from 'naive-ui'
 import JobIntro from 'components/job-intro.vue'
-import { use, type ComposeOption } from 'echarts/core'
-import {
-  TitleComponent,
-  type TitleComponentOption,
-  LegendComponent,
-  type LegendComponentOption,
-  TooltipComponent,
-  type TooltipComponentOption
-} from 'echarts/components'
-import { RadarChart, type RadarSeriesOption } from 'echarts/charts'
+import { use } from 'echarts/core'
+import { BarChart } from 'echarts/charts'
+import { TitleComponent, PolarComponent, TooltipComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
+import type { ComposeOption } from 'echarts/core'
+import type { BarSeriesOption } from 'echarts/charts'
+import type {
+  TitleComponentOption,
+  PolarComponentOption,
+  TooltipComponentOption
+} from 'echarts/components'
 import VChart from 'vue-echarts'
-import { JOBS } from 'api/jobs'
-use([TitleComponent, LegendComponent, RadarChart, CanvasRenderer, TooltipComponent])
-
-// const data = ref<ResumeResult>()
-// const data = ref<ResumeResult>({ state: 'ambiguity', recommend: JOBS.slice(1, 5) })
-// const data = ref<ResumeResult>({ state: 'unfulfill' })
-const data = ref<ResumeResult>({
-  state: 'match',
-  rates: JOBS.slice(0, 3).map((job) => ({
-    job,
-    matchSkills: ['a'],
-    score: 1
-  }))
+window.$message.info('正在加载数据, 加载数据可能需要一些时间，请耐心等待', {
+  duration: 5000
 })
+use([TitleComponent, PolarComponent, TooltipComponent, BarChart, CanvasRenderer])
+
+const data = await fetchResumeResult()
 </script>
 
 <script lang="tsx">
 type EChartsOption = ComposeOption<
-  TitleComponentOption | LegendComponentOption | RadarSeriesOption | TooltipComponentOption
+  TitleComponentOption | PolarComponentOption | TooltipComponentOption | BarSeriesOption
 >
 
 const Radar = defineComponent({
   props: {
-    rates: {
-      type: Object as PropType<Rate[]>,
+    res: {
+      type: Object as PropType<MatchResult>,
       required: true
     }
   },
   setup: (props) => {
     const opts = computed<EChartsOption>(() => ({
-      radar: {
-        indicator: props.rates.map((rate) => ({ name: rate.job, max: 5, min: 0 }))
+      polar: {
+        radius: [30, '80%']
       },
+      angleAxis: {
+        max: 1,
+        startAngle: 75
+      },
+      radiusAxis: {
+        type: 'category',
+        data: props.res.map((_) => _.direction)
+      },
+      tooltip: {},
       series: {
-        type: 'radar',
-        data: [{ value: props.rates.map((rate) => rate.score) }],
-        symbol: 'none',
-        name: '匹配度',
-        tooltip: {
-          formatter: () =>
-            props.rates
-              .map(({ job, score }) => `${job}: ${matchText[Math.floor(score - 1)]}`)
-              .join(' ')
-        }
-      },
-      tooltip: {}
+        type: 'bar',
+        data: props.res.map((_) => _.score),
+        coordinateSystem: 'polar',
+        label: {
+          show: true,
+          position: 'middle',
+          formatter: '{b}: {c}'
+        },
+        colorBy: 'series'
+      }
     }))
     return () => <VChart option={opts.value} autoresize />
   }
