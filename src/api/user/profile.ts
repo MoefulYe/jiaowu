@@ -1,4 +1,5 @@
 import service from '@/util/requests'
+import type { ResumeProfile } from './resume'
 
 export const enum Gender {
   Female = '女',
@@ -42,6 +43,13 @@ export interface AcademicInfo {
   //班级
   classNumber?: string
 }
+
+export type Profile = {
+  basic?: BasicInfo,
+  education?: AcademicInfo
+  resume?: ResumeProfile
+}
+
 
 export const fetchBasicInfo = (): Promise<BasicInfo> =>
   service({

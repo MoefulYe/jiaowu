@@ -33,7 +33,6 @@ export type Prize = 0 | 1 | 2 | 3 | 4 | 5
 export type OptionalCompetition = Partial<Competition>
 
 export interface ResumeProfile {
-  doc: UploadFileInfo[]
   directions: string[]
   skills: string[]
   internships: OptionalInternship[]
@@ -42,9 +41,13 @@ export interface ResumeProfile {
   selfEvaluation: string
 }
 
-export const defaultResumeProfile = (): Ref<ResumeProfile> =>
+export interface ResumeProfileWithAttachment extends ResumeProfile {
+  attachments: UploadFileInfo[]
+}
+
+export const defaultResumeProfile = (): Ref<ResumeProfileWithAttachment> =>
   ref({
-    doc: [],
+    attachments: [],
     directions: [],
     skills: [],
     selfEvaluation: '',
@@ -53,12 +56,12 @@ export const defaultResumeProfile = (): Ref<ResumeProfile> =>
     competitions: [{}]
   })
 
-export const submitResume = async ({ doc: [doc], ...rst }: ResumeProfile) =>
+export const submitResume = async ({ attachments: [attachment], ...rst }: ResumeProfileWithAttachment) =>
   service.post(
     '/user/profile/resume',
     {
       data: JSON.stringify(rst),
-      resume: doc.file
+      resume: attachment.file
     },
     {
       headers: {

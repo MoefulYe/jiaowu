@@ -4,11 +4,11 @@
       <NForm ref="formRef" :rules="rules" v-model="data">
         <NFormItem
           label="附件简历"
-          path="doc"
+          path="attachments"
           required
           label-style="font-size: 1.125rem;line-height: 1.75rem;"
         >
-          <NUpload :max="1" v-model:file-list="data.doc" @before-upload="checkUpload">
+          <NUpload :max="1" v-model:file-list="data.attachments" @before-upload="checkUpload">
             <NUploadDragger>
               <div class="flex flex-col items-center">
                 <div class="icon-[ri--upload-cloud-2-line] text-2xl" />
@@ -106,7 +106,7 @@ const rules: FormRules = {
   doc: {
     trigger: 'blur',
     validator: () => {
-      if (data.value.doc.length === 0) {
+      if (data.value.attachments.length === 0) {
         return Promise.reject(new Error('请上传个人简历'))
       }
     }

@@ -11,6 +11,11 @@ declare global {
     $dialog: DialogApiInjection
     $router: Router
   }
+
+  interface Pagination<T> {
+    total: number,
+    data: T[]
+  }
 }
 
 declare module 'vue-router' {
