@@ -72,7 +72,7 @@ const dropdownOpts: DropdownOption[] = [
 </script>
 
 <script lang="tsx">
-enum Kind {
+const enum Kind {
   简历推荐 = '简历推荐',
   兴趣推荐 = '兴趣推荐'
 }

@@ -37,14 +37,18 @@ import {
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
 import { Role, useStateStore } from 'stores/user-state'
-import { register } from 'api/user/account'
+import { RegisterData, register } from 'api/user/account'
 
 const emit = defineEmits<{
   login: []
   success: []
 }>()
 
-const data = ref({
+const data = ref<
+  RegisterData & {
+    password2: string
+  }
+>({
   phone: '',
   password: '',
   password2: ''

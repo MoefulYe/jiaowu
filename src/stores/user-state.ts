@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export enum Role {
+export const enum Role {
   Unlogin,
   Employee,
   Employer

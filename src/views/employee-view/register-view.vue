@@ -11,7 +11,7 @@
       <NCard v-if="step === Step.Register" class="w-fit h-fit m-12 shadow-sm">
         <template #header> <div class="flex justify-center">注册账号</div> </template>
         <template #default>
-          <RegisterForm @login="gotoLogin" @success="() => (step = Step.FillBasicInfo)" />
+          <RegisterForm @login="gotoEmployeeLogin" @success="() => (step = Step.FillBasicInfo)" />
         </template>
       </NCard>
       <NCard v-else-if="step === Step.FillBasicInfo" class="w-fit h-fit m-12 shadow-sm">
@@ -73,7 +73,7 @@
 import { ref } from 'vue'
 import RegisterForm from 'components/register-form.vue'
 import { NCard, NButton, NProgress, NTooltip } from 'naive-ui'
-import { gotoLogin } from '@/router'
+import { gotoEmployeeLogin } from '@/router'
 
 const step = ref(Step.Register)
 </script>
@@ -85,7 +85,7 @@ import BasicInfoForm from 'components/basic-info-form.vue'
 import AcademicInfoForm from 'components/academic-info-form.vue'
 import { Role } from '@/stores/user-state'
 
-enum Step {
+const enum Step {
   Register,
   FillBasicInfo,
   FillAcademicInfo,

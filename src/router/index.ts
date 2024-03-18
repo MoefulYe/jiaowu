@@ -18,23 +18,31 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/error-view/forbidden-view.vue')
   },
   {
-    path: '/login',
-    name: 'login',
+    path: '/employee/login',
+    name: 'employee-login',
     component: () => import('@/views/employee-view/login-view.vue'),
     meta: {
       role: Role.Unlogin
     }
   },
   {
-    path: '/register',
-    name: 'register',
+    path: '/employee/register',
+    name: 'employee-register',
     component: () => import('@/views/employee-view/register-view.vue'),
     meta: {
       role: Role.Unlogin
     }
   },
   {
-    path: '/',
+    path: '/employer/login-regiser',
+    name: 'employer-login-register',
+    component: () => import('@/views/employer-view/login-register-view.vue'),
+    meta: {
+      role: Role.Unlogin
+    }
+  },
+  {
+    path: '/employee',
     component: () => import('@/views/employee-view/employee-view.vue'),
     meta: {
       role: Role.Employee
@@ -148,29 +156,21 @@ const routes: RouteRecordRaw[] = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
 })
 
 router.beforeEach((to) => {
   const state = useStateStore()
   const metaRole = to.meta.role
   const role = state.role()
+  console.log(metaRole)
+  console.log(role)
   if (metaRole !== undefined && metaRole !== role) {
-    switch (role) {
-      case Role.Unlogin:
-        window.$message.error('请先登录')
-        router.push({ name: 'login' })
-        break
-      case Role.Employee:
         window.$message.error('您没有权限访问该页面')
-        router.push({ name: 'welcome' })
-        break
-      case Role.Employer:
-        window.$message.error('您没有权限访问该页面')
-        router.push({ name: '401' })
+        router.push({ name: 'forbidden' })
     }
   }
-})
+)
 
 // router.afterEach((to, from, failure) => {})
 export const gotoTechPage = (tech: string) =>
@@ -179,7 +179,7 @@ export const gotoTechPage = (tech: string) =>
 export const gotoHome = (role: Role) => {
   switch (role) {
     case Role.Unlogin:
-      window.$router.push({ name: 'login' })
+      window.$router.push({ name: 'employee-login' })
       break
     case Role.Employee:
       window.$router.push({ name: 'welcome' })
@@ -189,8 +189,9 @@ export const gotoHome = (role: Role) => {
       break
   }
 }
-export const gotoLogin = () => window.$router.push({ name: 'login' })
-export const gotoRegister = () => window.$router.push({ name: 'register' })
+export const gotoEmployeeLogin = () => window.$router.push({ name: 'employee-login' })
+export const gotoEmployeeRegister = () => window.$router.push({ name: 'employee-register' })
 export const gotoBaicProfile = () => window.$router.push({ name: 'basic-profile' })
+export const gotoEmployerLoginRegister = () => window.$router.push({name: 'employer-login-register'})
 
 export default router

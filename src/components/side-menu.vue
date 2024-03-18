@@ -14,10 +14,10 @@ import { ref, computed } from 'vue'
 import { isMobile } from 'util/reponsive'
 import { renderIcon, renderRouterLink } from 'util/render'
 import { useStateStore } from 'stores/user-state'
-import { gotoLogin } from '@/router'
+import { gotoEmployeeLogin } from '@/router'
 import confirm from './confirm'
 
-enum Entry {
+const enum Entry {
   Toggle,
   Home,
   Person,
@@ -53,7 +53,7 @@ const menuEntries = computed<MenuOption[]>(() => [
       : renderIcon(<span class="icon-[ant-design--menu-fold-outlined] text-2xl" />)
   },
   {
-    label: renderRouterLink('/welcome', '首页'),
+    label: renderRouterLink('/employee/welcome', '首页'),
     key: Entry.Home,
     icon: renderIcon(<span class="icon-[ant-design--home-outlined] text-2xl" />)
   },
@@ -63,17 +63,17 @@ const menuEntries = computed<MenuOption[]>(() => [
     icon: renderIcon(<span class="icon-[ph--person] text-2xl" />),
     children: [
       {
-        label: renderRouterLink('/profile/basic', '基本信息'),
+        label: renderRouterLink('/employee/profile/basic', '基本信息'),
         key: Entry.Profile,
         icon: renderIcon(<span class="icon-[ant-design--idcard-outlined]" />)
       },
       {
-        label: renderRouterLink('/profile/academic', '学业信息'),
+        label: renderRouterLink('/employee/profile/academic', '学业信息'),
         key: Entry.Education,
         icon: renderIcon(<span class="icon-[fluent-mdl2--education]" />)
       },
       {
-        label: renderRouterLink('/profile/resume', '简历管理'),
+        label: renderRouterLink('/employee/profile/resume', '简历管理'),
         key: Entry.Resume,
         icon: renderIcon(<span class="icon-[ph--read-cv-logo]" />)
       }
@@ -85,17 +85,17 @@ const menuEntries = computed<MenuOption[]>(() => [
     icon: renderIcon(<span class="icon-[solar--global-outline] text-2xl" />),
     children: [
       {
-        label: renderRouterLink('/job/market', '职业行情'),
+        label: renderRouterLink('/employee/job/market', '职业行情'),
         key: Entry.Job,
         icon: renderIcon(<span class="icon-[flowbite--bars-from-left-outline]" />)
       },
       {
-        label: renderRouterLink('/job/skill', '技能需求'),
+        label: renderRouterLink('/employee/job/skill', '技能需求'),
         key: Entry.SkillRequire,
         icon: renderIcon(<span class="icon-[carbon--intent-request-active]" />)
       },
       {
-        label: renderRouterLink('/job/trend', '趋势分析'),
+        label: renderRouterLink('/employee/job/trend', '趋势分析'),
         key: Entry.Trend,
         icon: renderIcon(<span class="icon-[ph--trend-up]" />)
       }
@@ -107,17 +107,17 @@ const menuEntries = computed<MenuOption[]>(() => [
     icon: renderIcon(<span class="icon-[carbon--cube] text-2xl" />),
     children: [
       {
-        label: renderRouterLink('/assessment', '职业测评'),
+        label: renderRouterLink('/employee/assessment', '职业测评'),
         key: Entry.Assessment,
         icon: renderIcon(<span class="icon-[ph--exam]" />)
       },
       {
-        label: renderRouterLink('/interest', '兴趣方向'),
+        label: renderRouterLink('/employee/interest', '兴趣方向'),
         key: Entry.Interest,
         icon: renderIcon(<span class="icon-[ph--heart]" />)
       },
       {
-        label: renderRouterLink('/recommand', '职业推荐'),
+        label: renderRouterLink('/employee/recommand', '职业推荐'),
         key: Entry.Recommand,
         icon: renderIcon(<span class="icon-[ph--lightbulb]" />)
       }
@@ -129,12 +129,12 @@ const menuEntries = computed<MenuOption[]>(() => [
     icon: renderIcon(<span class="icon-[ep--guide] text-2xl" />),
     children: [
       {
-        label: renderRouterLink('/study/plan', '学习规划'),
+        label: renderRouterLink('/employee/study/plan', '学习规划'),
         key: Entry.Plan,
         icon: renderIcon(<span class="icon-[ph--paper-plane-tilt]" />)
       },
       {
-        label: renderRouterLink('/study/material', '资源推荐'),
+        label: renderRouterLink('/employee/study/material', '资源推荐'),
         key: Entry.Material,
         icon: renderIcon(<span class="icon-[lets-icons--materials]" />)
       }
@@ -156,7 +156,7 @@ const handleClick = async (entry: Entry) => {
     case Entry.Logout:
       if (await confirm('注销', '确定要注销吗？')) {
         useStateStore().logout()
-        gotoLogin()
+        gotoEmployeeLogin()
       }
       break
   }

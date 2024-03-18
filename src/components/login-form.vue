@@ -1,5 +1,10 @@
 <template>
-  <NButton class="w-full mt-4" @click="() => emit('register')">注册账号</NButton>
+  <NTooltip>
+    <template #trigger>
+      <NButton class="w-full" @click="gotoEmployerLoginRegister">我是企业招聘人员</NButton>
+    </template>
+    <template #default> 点此登录或者注册企业账号 </template>
+  </NTooltip>
   <NDivider class="text-[#4c566a] opacity-90">或者</NDivider>
   <NForm ref="formRef" :label-width="80" :model="data" :rules="rules">
     <NFormItem label="手机号码" path="phone">
@@ -13,7 +18,20 @@
         show-password-on="click"
       />
     </NFormItem>
-    <NButton type="primary" class="w-full mt-4" @click="click">登录</NButton>
+    <div class="flex gap-2 justify-stretch">
+      <NTooltip placement="bottom">
+        <template #trigger>
+          <NButton class="grow" @click="click">登录</NButton>
+        </template>
+        <template #default> 点此登录 </template>
+      </NTooltip>
+      <NTooltip placement="bottom">
+        <template #trigger>
+          <NButton class="grow" type="primary" @click="() => emit('register')">注册</NButton>
+        </template>
+        <template #default> 跳转到注册页面 </template>
+      </NTooltip>
+    </div>
   </NForm>
 </template>
 
@@ -25,11 +43,12 @@ import {
   NForm,
   NFormItem,
   NInput,
-  NDivider
+  NDivider,
+  NTooltip
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
 import { Role, useStateStore } from 'stores/user-state'
-import { gotoHome } from '@/router'
+import { gotoEmployerLoginRegister, gotoHome } from '@/router'
 import { type LoginData, login } from 'api/user/account'
 
 const emit = defineEmits<{

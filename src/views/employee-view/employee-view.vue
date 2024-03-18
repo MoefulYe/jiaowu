@@ -59,7 +59,7 @@ import { renderIcon } from 'util/render'
 import { TITLE } from '@/constants'
 import { storeToRefs } from 'pinia'
 import { useStateStore } from 'stores/user-state'
-import { gotoLogin, gotoBaicProfile } from '@/router'
+import { gotoEmployeeLogin, gotoBaicProfile } from '@/router'
 import ShowOrEdit from 'components/show-or-edit.vue'
 import confirm from 'components/confirm'
 
@@ -75,7 +75,7 @@ const selectDropdown = async (key: string) => {
     case 'logout':
       if (await confirm('注销', '确定要注销吗?')) {
         useStateStore().logout()
-        gotoLogin()
+        gotoEmployeeLogin()
       }
       break
   }

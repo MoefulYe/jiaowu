@@ -66,7 +66,7 @@ const scores = ref<number[]>(Array.from({ length: 20 }))
 </script>
 
 <script lang="ts">
-enum Status {
+const enum Status {
   '未开始',
   '说明页',
   '测评中',

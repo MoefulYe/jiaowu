@@ -2,7 +2,7 @@
   <RouterView />
 </template>
 
-<script setup lang="tsx">
+<script setup lang="ts">
 import { onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useDialog, useLoadingBar, useMessage } from 'naive-ui'

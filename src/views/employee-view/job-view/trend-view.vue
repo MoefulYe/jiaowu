@@ -229,14 +229,24 @@ const chartOpts2 = computed<ChartOpts>(() => ({
 </script>
 
 <script lang="ts">
-enum Unit {
+const enum Unit {
   Year = '年',
   Month = '月',
   Week = '周'
 }
 
-const unitOpts: SelectOption[] = Object.values(Unit).map((item) => ({
-  label: item,
-  value: item
-}))
+const unitOpts: SelectOption[] = [
+  {
+    label: '年',
+    value: Unit.Year
+  },
+  {
+    label: '月',
+    value: Unit.Month
+  },
+  {
+    label: '周',
+    value: Unit.Week
+  }
+]
 </script>

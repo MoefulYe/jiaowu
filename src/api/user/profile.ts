@@ -1,11 +1,11 @@
 import service from '@/util/requests'
 
-export enum Gender {
+export const enum Gender {
   Female = '女',
   Male = '男'
 }
 
-export enum StudentType {
+export const enum StudentType {
   Undergraduate = '本科生',
   Graduate = '研究生'
 }
