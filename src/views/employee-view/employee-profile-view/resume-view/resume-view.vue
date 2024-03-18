@@ -1,14 +1,14 @@
 <template>
   <div class="p-2 grow flex flex-col">
     <NCard class="grow shadow-lg rounded-lg">
-      <NForm ref="formRef" :rules="rules" v-model="data">
+      <NForm ref="formRef" :rules="rules" v-model="resume">
         <NFormItem
           label="附件简历"
           path="attachments"
           required
           label-style="font-size: 1.125rem;line-height: 1.75rem;"
         >
-          <NUpload :max="1" v-model:file-list="data.attachments" @before-upload="checkUpload">
+          <NUpload :max="1" v-model:file-list="attachments" @before-upload="checkUpload">
             <NUploadDragger>
               <div class="flex flex-col items-center">
                 <div class="icon-[ri--upload-cloud-2-line] text-2xl" />
@@ -27,7 +27,7 @@
           label-style="font-size: 1.125rem;line-height: 1.75rem;"
         >
           <NSelect
-            v-model:value="data.directions"
+            v-model:value="resume!.directions"
             multiple
             filterable
             placeholder="请选择求职方向"
@@ -35,28 +35,28 @@
           />
         </NFormItem>
         <NFormItem label="技能" label-style="font-size: 1.125rem;line-height: 1.75rem;">
-          <NDynamicTags v-model:value="data.skills" type="primary" />
+          <NDynamicTags v-model:value="resume!.skills" type="primary" />
         </NFormItem>
         <NFormItem
           label="实习经历"
           path="internships"
           label-style="font-size: 1.125rem;line-height: 1.75rem;"
         >
-          <ResumeIntershipsView v-model="data.internships" ref="resumeRef" />
+          <ResumeIntershipsView v-model="resume!.internships" ref="resumeRef" />
         </NFormItem>
         <NFormItem
           label="项目经历"
           path="projects"
           label-style="font-size: 1.125rem;line-height: 1.75rem;"
         >
-          <ResumeProjectsView v-model="data.projects" ref="projRef" />
+          <ResumeProjectsView v-model="resume!.projects" ref="projRef" />
         </NFormItem>
         <NFormItem
           label="竞赛经历"
           path="competitions"
           label-style="font-size: 1.125rem;line-height: 1.75rem;"
         >
-          <ResumeCompetitionsView v-model="data.competitions" ref="competitionsRef" />
+          <ResumeCompetitionsView v-model="resume!.competitions" ref="competitionsRef" />
         </NFormItem>
         <NFormItem
           label="自我评价"
@@ -67,7 +67,7 @@
             type="textarea"
             maxlength="256"
             minlength="32"
-            v-model:value="data.selfEvaluation"
+            v-model:value="resume!.selfEvaluation"
           />
         </NFormItem>
       </NForm>
@@ -91,22 +91,36 @@ import {
   NUploadDragger,
   type UploadFileInfo
 } from 'naive-ui'
-import { shallowRef } from 'vue'
+import { ref, shallowRef } from 'vue'
 import ResumeIntershipsView from './resume-interships-view.vue'
 import ResumeProjectsView from './resume-projects-view.vue'
 import ResumeCompetitionsView from './resume-competitions-view.vue'
 import { JOB_OPTS } from 'api/jobs'
-import { defaultResumeProfile, submitResume } from 'api/user/resume'
+import { submitResume } from 'api/user/resume'
+import { useStateStore } from '@/stores/user-state'
+import { storeToRefs } from 'pinia'
 
+const state = useStateStore()
+await state.fetchResume()
+const { resume } = storeToRefs(state)
+const attachments = ref<UploadFileInfo[]>([])
+const submit = async () => {
+  try {
+    await formRef.value?.validate()
+    await submitResume(resume.value!, attachments.value)
+  } catch {
+    return
+  }
+}
 const formRef = shallowRef<FormInst>()
 const resumeRef = shallowRef<InstanceType<typeof ResumeIntershipsView>>()
 const projRef = shallowRef<InstanceType<typeof ResumeProjectsView>>()
 const competitionsRef = shallowRef<InstanceType<typeof ResumeCompetitionsView>>()
 const rules: FormRules = {
-  doc: {
+  attachments: {
     trigger: 'blur',
     validator: () => {
-      if (data.value.attachments.length === 0) {
+      if (attachments.value.length === 0) {
         return Promise.reject(new Error('请上传个人简历'))
       }
     }
@@ -114,7 +128,7 @@ const rules: FormRules = {
   directions: {
     trigger: 'blur',
     validator: () => {
-      if (data.value.directions.length === 0) {
+      if (resume.value!.directions.length === 0) {
         return Promise.reject(new Error('至少选择一个投递方向'))
       }
     }
@@ -133,15 +147,6 @@ const rules: FormRules = {
     trigger: 'blur',
     asyncValidator: () =>
       Promise.all(competitionsRef.value!.formRefs.map((form) => form.validate())).then(() => {})
-  }
-}
-const data = defaultResumeProfile()
-const submit = async () => {
-  try {
-    await formRef.value?.validate()
-    await submitResume(data.value)
-  } catch {
-    return
   }
 }
 </script>

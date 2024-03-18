@@ -18,20 +18,20 @@
         <div class="flex flex-col gap-2 justify-center items-center">
           <div v-for="(direction, idx) in JOBS" :key="direction" class="flex gap-2 items-center">
             <span class="w-16">{{ direction }}</span
-            ><EmojiRadio v-model="data[idx]" emoji-class="text-3xl" />
+            ><EmojiRadio v-model="interest!![idx]" emoji-class="text-3xl" />
           </div>
         </div>
         <VChart :option="option" autoresize class="w-96 h-96 lg:w-[36rem] lg:h-[36rem]" />
       </div>
       <template #footer>
         <div class="flex gap-4">
-          <NButton type="primary" @click="saveInterest(_data)">保存</NButton>
+          <NButton type="primary" @click="saveInterest(interest!)">保存</NButton>
           <NButton
             type="info"
             @click="
               async () => {
                 if (await confirm('复位', '确定清除兴趣方向?', 'info')) {
-                  data.forEach((_, i) => (data[i] = undefined))
+                  interest!.forEach((_, i) => (interest![i] = undefined))
                 }
               }
             "
@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { NBreadcrumb, NBreadcrumbItem, NButton, NCard } from 'naive-ui'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 import { use } from 'echarts/core'
 import { RadarChart } from 'echarts/charts'
@@ -60,10 +60,16 @@ import type {
   RadarComponentOption
 } from 'echarts/components'
 import VChart from 'vue-echarts'
-import EmojiRadio, { type Score } from 'components/emoji-radio.vue'
+import EmojiRadio from 'components/emoji-radio.vue'
 import confirm from 'components/confirm'
 import { JOBS } from 'api/jobs'
 import { saveInterest } from 'api/assessment/interest'
+import { useStateStore } from '@/stores/user-state'
+import { storeToRefs } from 'pinia'
+
+const state = useStateStore()
+await state.fetchInterest()
+const { interest } = storeToRefs(state)
 
 use([TitleComponent, LegendComponent, RadarChart, CanvasRenderer, GraphicComponent])
 
@@ -75,8 +81,6 @@ type EChartsOption = ComposeOption<
   | RadarComponentOption
 >
 
-const data = ref<Score[]>(JOBS.map(() => undefined))
-const _data = computed(() => data.value.map((val) => val ?? 0))
 const option = computed<EChartsOption>(() => ({
   graphic: [
     {
@@ -91,7 +95,7 @@ const option = computed<EChartsOption>(() => ({
       type: 'radar',
       data: [
         {
-          value: _data.value,
+          value: interest.value!.map((val) => val ?? 0),
           symbol: 'none'
         }
       ]

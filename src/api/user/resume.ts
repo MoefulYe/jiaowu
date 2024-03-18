@@ -1,6 +1,5 @@
 import service from '@/util/requests'
 import type { UploadFileInfo } from 'naive-ui'
-import { ref, type Ref } from 'vue'
 
 export interface Internship {
   company: string
@@ -45,22 +44,20 @@ export interface ResumeProfileWithAttachment extends ResumeProfile {
   attachments: UploadFileInfo[]
 }
 
-export const defaultResumeProfile = (): Ref<ResumeProfileWithAttachment> =>
-  ref({
-    attachments: [],
-    directions: [],
-    skills: [],
-    selfEvaluation: '',
-    internships: [{}],
-    projects: [{}],
-    competitions: [{}]
-  })
+const defaultResumeProfile = (): ResumeProfile => ({
+  directions: [],
+  skills: [],
+  selfEvaluation: '',
+  internships: [{}],
+  projects: [{}],
+  competitions: [{}]
+})
 
-export const submitResume = async ({ attachments: [attachment], ...rst }: ResumeProfileWithAttachment) =>
+export const submitResume = async (resume: ResumeProfile, [attachment]: UploadFileInfo[]) =>
   service.post(
     '/user/profile/resume',
     {
-      data: JSON.stringify(rst),
+      data: JSON.stringify(resume),
       resume: attachment.file
     },
     {
@@ -69,3 +66,8 @@ export const submitResume = async ({ attachments: [attachment], ...rst }: Resume
       }
     }
   )
+
+export const fetchResume = async (): Promise<ResumeProfile> => {
+  const data = (await service.get('/user/profile/resume')) as ResumeProfile | null
+  return data ?? defaultResumeProfile()
+}

@@ -45,11 +45,10 @@ export interface AcademicInfo {
 }
 
 export type Profile = {
-  basic?: BasicInfo,
+  basic?: BasicInfo
   education?: AcademicInfo
   resume?: ResumeProfile
 }
-
 
 export const fetchBasicInfo = (): Promise<BasicInfo> =>
   service({

@@ -14,7 +14,6 @@ import { ref, computed } from 'vue'
 import { isMobile } from 'util/reponsive'
 import { renderIcon, renderRouterLink } from 'util/render'
 import { useStateStore } from 'stores/user-state'
-import { gotoEmployeeLogin } from '@/router'
 import confirm from './confirm'
 
 const enum Entry {
@@ -156,7 +155,6 @@ const handleClick = async (entry: Entry) => {
     case Entry.Logout:
       if (await confirm('注销', '确定要注销吗？')) {
         useStateStore().logout()
-        gotoEmployeeLogin()
       }
       break
   }

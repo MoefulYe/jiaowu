@@ -3,7 +3,9 @@
     <NDialogProvider>
       <NMessageProvider>
         <NLoadingBarProvider>
-          <TopEntry class="w-screen h-screen" />
+          <Suspense>
+            <TopEntry class="w-screen h-screen" />
+          </Suspense>
         </NLoadingBarProvider>
       </NMessageProvider>
     </NDialogProvider>

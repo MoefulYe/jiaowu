@@ -13,7 +13,7 @@ const entry = async () => {
   const app = createApp(App).use(pinia).use(router)
   app.mount('#app')
   if (useStateStore().role() === Role.Employer) {
-    window.document.title = EMPLOYER_TITLE 
+    window.document.title = EMPLOYER_TITLE
   } else {
     window.document.title = EMPLOYEE_TITLE
   }

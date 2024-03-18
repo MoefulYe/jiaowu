@@ -13,7 +13,7 @@ declare global {
   }
 
   interface Pagination<T> {
-    total: number,
+    total: number
     data: T[]
   }
 }

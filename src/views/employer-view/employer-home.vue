@@ -12,7 +12,6 @@
                 case 'exit':
                   if (await confirm('注销', '确定退出登录？')) {
                     useStateStore().logout()
-                    gotoEmployeeLogin()
                   }
                   break
               }
@@ -64,7 +63,6 @@ import { JOB_OPTS, Job } from '@/api/jobs'
 import confirm from '@/components/confirm'
 import showOrEdit from '@/components/show-or-edit.vue'
 import { EMPLOYER_TITLE } from '@/constants'
-import { gotoEmployeeLogin } from '@/router'
 import { useStateStore } from '@/stores/user-state'
 import { renderIcon } from '@/util/render'
 import {

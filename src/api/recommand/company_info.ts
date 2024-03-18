@@ -1,4 +1,4 @@
-import service from "@/util/requests"
+import service from '@/util/requests'
 
 export interface CompanyInfo {
   name: string
@@ -25,14 +25,15 @@ export interface CompanyInfo {
   logo: string
 }
 
-export const fetchCompanyInfo = async (company: string): Promise<CompanyInfo> => service({
-  method:'GET',
-  url:`/recommend/company/info`,
-  params: {
-    company
-  },
-  timeout: 600000
-})
+export const fetchCompanyInfo = async (company: string): Promise<CompanyInfo> =>
+  service({
+    method: 'GET',
+    url: `/recommend/company/info`,
+    params: {
+      company
+    },
+    timeout: 600000
+  })
 
 // export const fetchCompanyInfo = async (company: string): Promise<CompanyInfo> => {
 //   window.$loading.start()

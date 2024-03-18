@@ -21,7 +21,7 @@ export const JOBS = [
   '机械',
   '金融',
   '管理'
-] as const 
+] as const
 
 export const JOB_OPTS: SelectOption[] = JOBS.map((job) => ({
   label: job,

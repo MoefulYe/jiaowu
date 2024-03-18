@@ -1,8 +1,6 @@
-import { useStateStore } from '@/stores/user-state'
 import type { Profile } from '../user/profile'
 import { type Job } from './../jobs'
 import service from '@/util/requests'
-import axios from 'axios'
 export interface QualifiedApplicant {
   birth?: string
   college?: string
@@ -29,10 +27,11 @@ export const fetchQualifiedApplicants = (
     params
   })
 
-export const fetchEmployeeProfileById = (id: number): Promise<Profile> => service({
-  method: 'GET',
-  url: `/employer/${id}/profile`
-})
+export const fetchEmployeeProfileById = (id: number): Promise<Profile> =>
+  service({
+    method: 'GET',
+    url: `/employer/${id}/profile`
+  })
 
 // export const downloadEmployeeResumeAttachment = async (id: number): Promise<void> => {
 //   const res = await fetch(`http://101.37.165.19:8080/employer/${id}/profile/resume`)

@@ -1,18 +1,18 @@
-import { request } from "@/util/requests"
+import { request } from '@/util/requests'
 
 export type Token = string
 
 interface Data {
-  phone: string,
+  phone: string
   password: string
 }
 
 export type RegisterData = Data & {
   code: string
 }
-export type LoginData = Data 
+export type LoginData = Data
 
-export const login = (data: LoginData): Promise<Token> => 
+export const login = (data: LoginData): Promise<Token> =>
   request({
     method: 'POST',
     url: '/employer/account/login',
