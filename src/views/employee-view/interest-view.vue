@@ -42,7 +42,7 @@
               $router.push({
                 name: 'recommand',
                 query: {
-                  kind: '兴趣推荐'
+                  kind: Kind.兴趣推荐
                 }
               })
             "
@@ -78,6 +78,7 @@ import { JOBS } from 'api/jobs'
 import { saveInterest } from 'api/assessment/interest'
 import { useStateStore } from '@/stores/user-state'
 import { storeToRefs } from 'pinia'
+import { Kind } from './recommend-view/recommand-view.vue'
 
 const state = useStateStore()
 await state.fetchInterest()

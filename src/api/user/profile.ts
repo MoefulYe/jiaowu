@@ -45,9 +45,22 @@ export interface AcademicInfo {
 }
 
 export type Profile = {
-  basic?: BasicInfo
+  basic: BasicInfo & {
+    userId: number
+    phone: string
+  }
   education?: AcademicInfo
   resume?: ResumeProfile
+}
+
+export type BriefProfile = {
+  birthday?: string
+  college?: string
+  gender?: string
+  userId: number
+  name?: string
+  school?: string
+  studentType?: string
 }
 
 export const fetchBasicInfo = (): Promise<BasicInfo> =>

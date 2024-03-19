@@ -21,7 +21,8 @@
     "vue": "^3.3.4",
     "vue-echarts": "^6.6.1",
     "vue-router": "^4.2.4",
-    "vue3-typed-ts": "^1.0.3"
+    "vue3-typed-ts": "^1.0.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.183",

@@ -80,7 +80,7 @@
           @click="
             $router.push({
               name: 'recommand',
-              query: { kind: '简历推荐' }
+              query: { kind: Kind.简历推荐 }
             })
           "
           >查看推荐</NButton
@@ -113,6 +113,7 @@ import { JOB_OPTS } from 'api/jobs'
 import { submitResume } from 'api/user/resume'
 import { useStateStore } from '@/stores/user-state'
 import { storeToRefs } from 'pinia'
+import { Kind } from '../../recommend-view/recommand-view.vue'
 
 const state = useStateStore()
 await state.fetchResume()

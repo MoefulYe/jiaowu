@@ -1,15 +1,9 @@
-import type { Profile } from '../user/profile'
+import { useStateStore } from '@/stores/user-state'
+import type { BriefProfile, Profile } from '../user/profile'
 import { type Job } from './../jobs'
 import service from '@/util/requests'
-export interface QualifiedApplicant {
-  birth?: string
-  college?: string
-  gender?: string
-  id: number
-  name?: string
-  school?: string
-  studentType?: string
-}
+import axios from 'axios'
+import download from '@/util/download'
 
 export interface FetchQualifiedApplicantsParams {
   page: number
@@ -20,7 +14,7 @@ export interface FetchQualifiedApplicantsParams {
 
 export const fetchQualifiedApplicants = (
   params: FetchQualifiedApplicantsParams
-): Promise<Pagination<QualifiedApplicant>> =>
+): Promise<Pagination<BriefProfile>> =>
   service({
     method: 'GET',
     url: '/employer/qualified',
@@ -33,16 +27,20 @@ export const fetchEmployeeProfileById = (id: number): Promise<Profile> =>
     url: `/employer/${id}/profile`
   })
 
-// export const downloadEmployeeResumeAttachment = async (id: number): Promise<void> => {
-//   const res = await fetch(`http://101.37.165.19:8080/employer/${id}/profile/resume`)
-//   // const filename = res.headers['Content-Disposition'].split('filename=')[1]
-//   // const content = await res.blob()
-//   // const a = document.createElement('a')
-//   // a.setAttribute('download', filename)
-//   // const href = URL.createObjectURL(content)
-//   // console.log(href)
-//   // a.href = href
-//   // a.setAttribute('target', '_blank')
-//   // a.click()
-//   // URL.revokeObjectURL(href)
-// }
+export const downloadEmployeeResumeAttachment = async (id: number): Promise<void> => {
+  const resp = await axios.get(
+    `${import.meta.env.VITE_AXIOS_BASE_URL}/employer/${id}/profile/attachment`,
+    {
+      headers: {
+        token: useStateStore().token()
+      }
+    }
+  )
+  if ((resp.headers['content-type'] as string).indexOf('octet-stream') === -1) {
+    throw new Error(`not such employee\`${id}\``)
+  } else {
+    const filename = resp.headers['content-disposition'].split('filename=')[1]
+    const blob = new Blob([resp.data], { type: 'application/octet-stream' })
+    download(filename, blob)
+  }
+}

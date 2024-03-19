@@ -17,7 +17,16 @@
             </span></NBreadcrumbItem
           >
           <NBreadcrumbItem :clickable="false">
-            <CrumbItem :kind="kind" />
+            <span class="flex items-center gap-1">
+              <span class="flex items-center gap-1">
+                <span
+                  v-if="kind === Kind.兴趣推荐"
+                  class="icon-[streamline--interface-favorite-star-reward-rating-rate-social-star-media-favorite-like-stars]"
+                />
+                <span class="icon-[uil--briefcase-alt]" />
+                {{ kind }}
+              </span>
+            </span>
           </NBreadcrumbItem>
         </NBreadcrumb>
       </template>
@@ -29,51 +38,15 @@
   </div>
 </template>
 
-<script setup lang="tsx">
-import { defineComponent, defineModel } from 'vue'
-import { type DropdownOption, NBreadcrumb, NBreadcrumbItem, NCard, NDropdown } from 'naive-ui'
+<script setup lang="ts">
+import { NBreadcrumb, NBreadcrumbItem, NCard } from 'naive-ui'
 import ResumeView from './resume-view.vue'
 import InterestView from './interest-view.vue'
-const kind = defineModel<Kind>('kind', {
-  default: Kind.简历推荐
-})
-const CrumbItem = defineComponent({
-  setup: () => () => (
-    <NDropdown options={dropdownOpts}>
-      <span class="flex items-center gap-1">
-        {kind.value === Kind.兴趣推荐 ? (
-          <span class="icon-[streamline--interface-favorite-star-reward-rating-rate-social-star-media-favorite-like-stars]" />
-        ) : (
-          <span class="icon-[uil--briefcase-alt]" />
-        )}
-        {kind.value}
-      </span>
-    </NDropdown>
-  )
-})
-
-const dropdownOpts: DropdownOption[] = [
-  {
-    label: () => (
-      <span class="flex items-center gap-1" onClick={() => (kind.value = Kind.简历推荐)}>
-        <span class="icon-[uil--briefcase-alt]" />
-        简历推荐
-      </span>
-    )
-  },
-  {
-    label: () => (
-      <span class="flex items-center gap-1" onClick={() => (kind.value = Kind.兴趣推荐)}>
-        <span class="icon-[streamline--interface-favorite-star-reward-rating-rate-social-star-media-favorite-like-stars]" />
-        兴趣推荐
-      </span>
-    )
-  }
-]
+withDefaults(defineProps<{ kind: Kind }>(), { kind: Kind.简历推荐 })
 </script>
 
-<script lang="tsx">
-const enum Kind {
+<script lang="ts">
+export const enum Kind {
   简历推荐 = '简历推荐',
   兴趣推荐 = '兴趣推荐'
 }
