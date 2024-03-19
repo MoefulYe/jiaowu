@@ -31,11 +31,11 @@ export const fetchResumeResult = async () : Promise<ResumeResult> => {
     const jobs = await service.get('/recommend/position/ambiguity') as Job[]
     return [ResumeResultState.ambiguity, jobs]
   } else {
-    // const result = await service.get('/recommend/position/match',{
-    //   timeout: 10 * 60 * 1000
-    // }) as MatchResult
+    const result = await service.get('/recommend/position/match',{
+      timeout: 10 * 60 * 1000
+    }) as MatchResult
     // const result = [{"userId":null,"direction":"前端","matchSkills":["vue"],"score":0.7,"shortboardSkills":null,"interpretation":null},{"userId":null,"direction":"后端","matchSkills":[],"score":0.0,"shortboardSkills":null,"interpretation":null}]
-    // return [ResumeResultState.match, result]
+    return [ResumeResultState.match, result]
     
   }
 }

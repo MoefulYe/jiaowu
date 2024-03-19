@@ -23,16 +23,18 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (resp) => {
-    if ((resp.data.code as number) !== 0) {
-      window.$loading.error()
-      window.$message.error(`${resp.data.message} (${resp.data.code})`)
-      throw new Error(resp.data.message)
-    }
+    /// TODO: 周五告诉后端修改返回状态码
+    // if ((resp.data.code as number) !== 0) {
+    //   window.$loading.error()
+    //   window.$message.error(`${resp.data.message} (${resp.data.code})`)
+    //   throw new Error(resp.data.message)
+    // }
     window.$loading.finish()
     return resp.data.data
   },
   (error: AxiosError<any>) => {
     const resp = error.response
+    console.log(error)
     window.$loading.error()
     if (resp !== undefined) {
       switch (resp.headers['Content-Type']) {
