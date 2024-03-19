@@ -16,8 +16,8 @@ export const fetchInterestResult = async (): Promise<InterestResult> => {
   const state = useStateStore()
   await state.fetchInterest()
   const interest = state.interest as Score[]
-  const cnt = interest.reduce((acc, val) => (acc += val !== undefined ? 1 : 0), 0)
-  console.log(cnt)
+  console.log(interest)
+  const cnt = interest.reduce((acc, val) => typeof val === 'number' ? acc + 1 : acc, 0)
   if (cnt < MIN) {
     return { state: 'unfulfill' }
   } else if (cnt > MAX) {
