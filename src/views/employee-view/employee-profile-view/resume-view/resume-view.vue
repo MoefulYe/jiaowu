@@ -74,7 +74,18 @@
           />
         </NFormItem>
       </NForm>
-      <NButton @click="submit">提交</NButton>
+      <div class="flex gap-2">
+        <NButton @click="submit">提交表单</NButton>
+        <NButton
+          @click="
+            $router.push({
+              name: 'recommand',
+              query: { kind: '简历推荐' }
+            })
+          "
+          >查看推荐</NButton
+        >
+      </div>
     </NCard>
   </div>
 </template>

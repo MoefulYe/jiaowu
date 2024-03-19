@@ -25,17 +25,29 @@
       </div>
       <template #footer>
         <div class="flex gap-4">
-          <NButton type="primary" @click="saveInterest(interest!)">保存</NButton>
+          <NButton @click="saveInterest(interest!)">保存</NButton>
           <NButton
             type="info"
             @click="
               async () => {
                 if (await confirm('复位', '确定清除兴趣方向?', 'info')) {
-                  interest!.forEach((_, i) => (interest![i] = undefined))
+                  interest = Array.from({ length: JOBS.length })
                 }
               }
             "
             >复位</NButton
+          >
+          <NButton
+            @click="
+              $router.push({
+                name: 'recommand',
+                query: {
+                  kind: '兴趣推荐'
+                }
+              })
+            "
+            type="primary"
+            >查看推荐信息</NButton
           >
         </div>
       </template>

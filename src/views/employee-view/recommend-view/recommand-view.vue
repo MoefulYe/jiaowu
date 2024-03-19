@@ -30,12 +30,13 @@
 </template>
 
 <script setup lang="tsx">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, defineModel } from 'vue'
 import { type DropdownOption, NBreadcrumb, NBreadcrumbItem, NCard, NDropdown } from 'naive-ui'
 import ResumeView from './resume-view.vue'
 import InterestView from './interest-view.vue'
-
-const kind = ref(Kind.简历推荐)
+const kind = defineModel<Kind>('kind', {
+  default: Kind.简历推荐
+})
 const CrumbItem = defineComponent({
   setup: () => () => (
     <NDropdown options={dropdownOpts}>

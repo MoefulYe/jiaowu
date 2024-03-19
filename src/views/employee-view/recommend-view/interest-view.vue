@@ -2,39 +2,38 @@
   <div v-if="data === undefined" class="w-full h-full flex flex-col items-center justify-center">
     <span class="icon-[eos-icons--bubble-loading] text-4xl" />
   </div>
-  <div v-else-if="data.state === 'unfulfill'">
-    <div class="flex flex-col gap-4">
-      <div>兴趣情况尚未填写未能给你生成推荐请前往兴趣页填写信息</div>
-      <div>
-        <NButton type="error" @click="$router.push({ name: 'interest' })"> 前往兴趣页 </NButton>
+  <div v-else class="flex flex-col gap-4">
+    <div v-if="data.state === 'unfulfill'" class="text-lg flex items-center gap-2">
+      <span class="icon-[carbon--misuse] text-[#bf616a]" />
+      兴趣情况尚未填写或者填写内容过少，不能给你生成推荐。请前往兴趣页填写信息
+    </div>
+    <div v-else-if="data.state === 'ok'" class="text-lg flex items-center gap-2">
+      <span class="icon-[websymbol--ok-circle] text-[#8fbcbb]" />兴趣情况填写信息完整或者基本完整，
+      无须进行更多兴趣推荐
+    </div>
+    <div v-else>
+      <span class="text-xl">基于你的兴趣情况，我们猜测你也可能喜欢...</span>
+      <div class="flex flex-col flex-wrap gap-8 mt-4">
+        <JobIntro v-for="job of data.recommend" :key="job" :job="job" />
       </div>
     </div>
-  </div>
-  <div v-else-if="data.state === 'ok'" class="flex items-center gap-2">
-    <span class="icon-[websymbol--ok-circle] text-lg text-[#8fbcbb]" />兴趣情况填写信息完整，
-    无须进行更多兴趣推荐
-  </div>
-  <div v-else>
-    <span class="text-xl">基于你的兴趣情况，我们猜测你也可能喜欢...</span>
-    <div class="flex flex-col flex-wrap gap-8 mt-4">
-      <JobIntro v-for="job of data.recommend" :key="job" :job="job" />
+    <div>
+      <NButton type="info" @click="$router.push({ name: 'interest' })">
+        <template #icon>
+          <span class="icon-[carbon--caret-right]" />
+        </template>
+        修改兴趣信息
+      </NButton>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { type InterestResult } from 'api/recommand/interest_result'
 import { NButton } from 'naive-ui'
 import JobIntro from 'components/job-intro.vue'
-import { JOBS } from 'api/jobs'
+import { InterestResult, fetchInterestResult } from '@/api/recommand/interest_result'
+import { onBeforeMount, ref } from 'vue'
 
-// const data = ref<InterestResult>({ state: 'unfulfill' })
-// const data = ref<InterestResult>({
-//   state: 'ok'
-// })
-const data = ref<InterestResult>({
-  state: 'recommand',
-  recommend: JOBS.slice(0, 4)
-})
+const data = ref<InterestResult>()
+onBeforeMount(() => fetchInterestResult().then((ok) => (data.value = ok)))
 </script>

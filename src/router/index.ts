@@ -129,7 +129,10 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'recommand',
         path: 'recommand',
-        component: () => import('@/views/employee-view/recommend-view/recommand-view.vue')
+        component: () => import('@/views/employee-view/recommend-view/recommand-view.vue'),
+        props: (route) => ({
+          kind: route.query.kind
+        })
       },
       {
         name: 'study',
@@ -177,8 +180,8 @@ router.beforeEach((to) => {
   const state = useStateStore()
   const metaRole = to.meta.role
   const role = state.role()
-  console.log(metaRole)
-  console.log(role)
+  // console.log(metaRole)
+  // console.log(role)
   if (metaRole !== undefined && metaRole !== role) {
     window.$message.error('您没有权限访问该页面')
     router.push({ name: 'forbidden' })
