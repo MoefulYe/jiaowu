@@ -134,7 +134,7 @@ const { _username: username } = storeToRefs(useStateStore())
 const job = ref<Job>()
 const skills = ref<string[]>([])
 const loading = ref(false)
-const profiles = ref<BriefProfile[]>([])
+const profiles = shallowRef<BriefProfile[]>([])
 const pagination = reactive({
   page: 1,
   pageSize: 25,
@@ -200,7 +200,7 @@ const downloadXlsx = async () => {
     const wbout = write(wb, {
       bookType: 'xlsx',
       bookSST: false,
-      type: 'binary'
+      type: 'array'
     })
     const blob = new Blob([wbout], { type: 'application/octet-stream' })
     download('符合条件的求职者信息.xlsx', blob)
@@ -260,19 +260,15 @@ const columns = (
       <NTooltip>
         {{
           trigger: () => (
-            <NButton
-              type="primary"
-              size="small"
-              class="rounded-full"
+            <span
+              class="icon-[uiw--more] hover:text-[#88c0d0]"
               onClick={() => {
                 show.value = true
                 nextTick(() => {
-                  drawerContent.value!.fetch(userId)
+                  drawerContent.value?.fetch(userId)
                 })
               }}
-            >
-              <span class="icon-[uiw--more]" />
-            </NButton>
+            />
           ),
           default: () => '查看详情'
         }}

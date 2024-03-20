@@ -48,7 +48,7 @@
                       :is-date-disabled="(ts: number) => ts > Date.now()"
                     />
                   </NFormItemGi>
-                  <NFormItemGi label="描述" path="description" :span="24">
+                  <NFormItemGi label="描述" path="description" required :span="24">
                     <NInput v-model:value="internship.description" type="textarea" clearable />
                   </NFormItemGi>
                 </NGrid>
@@ -148,9 +148,9 @@ const rules = (idx: number): FormRules => ({
     trigger: 'blur',
     validator: () => {
       const description = data.value[idx].description
-      if (description === undefined) {
-        return Error('描述不得为空')
-      } else if (description.length > 128) {
+      if (description === undefined || description.length <= 32) {
+        return Error('描述内容过少')
+      } else if (description.length > 256) {
         return Error('描述不得超过128字')
       }
     }

@@ -19,7 +19,7 @@
       <NFormItemGi label="学校" path="school" :span="12">
         <NInput v-model:value="data.school" placeholder="输入学校" />
       </NFormItemGi>
-      <NFormItemGi label="学院" path="college" :span="12">
+      <NFormItemGi label="专业" path="college" :span="12">
         <NInput v-model:value="data.college" placeholder="输入学院" />
       </NFormItemGi>
       <NFormItemGi label="班级" path="classNumber" :span="12">

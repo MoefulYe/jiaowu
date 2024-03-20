@@ -13,10 +13,10 @@ export type OptionalInternship = Partial<Internship>
 
 export interface Project {
   name: string
-  role?: string
+  role: string
   start: string
   end: string
-  link?: string
+  link: string
   description: string
 }
 
@@ -29,6 +29,9 @@ export interface Competition {
 
 export type Prize = 0 | 1 | 2 | 3 | 4 | 5
 
+const prize = ['未获奖', '院级', '校级', '省级', '国家级', '世界级']
+export const prizeMap = (idx: Prize) => prize[idx]
+
 export type OptionalCompetition = Partial<Competition>
 
 export interface ResumeProfile {
@@ -37,6 +40,15 @@ export interface ResumeProfile {
   internships: OptionalInternship[]
   projects: OptionalProject[]
   competitions: OptionalCompetition[]
+  selfEvaluation: string
+}
+
+export interface ResumeProfile_ {
+  directions: string[]
+  skills: string[]
+  internships: Internship[]
+  projects: Project[]
+  competitions: Competition[]
   selfEvaluation: string
 }
 

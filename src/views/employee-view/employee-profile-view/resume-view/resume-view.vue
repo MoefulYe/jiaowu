@@ -66,12 +66,7 @@
           path="selfEvaluation"
           label-style="font-size: 1.125rem;line-height: 1.75rem;"
         >
-          <NInput
-            type="textarea"
-            maxlength="256"
-            minlength="32"
-            v-model:value="resume!.selfEvaluation"
-          />
+          <NInput type="textarea" v-model:value="resume!.selfEvaluation" />
         </NFormItem>
       </NForm>
       <div class="flex gap-2">
@@ -162,6 +157,17 @@ const rules: FormRules = {
     trigger: 'blur',
     asyncValidator: () =>
       Promise.all(competitionsRef.value!.formRefs.map((form) => form.validate())).then(() => {})
+  },
+  selfEvaluation: {
+    trigger: 'blur',
+    validator: () => {
+      const text = resume.value!.selfEvaluation
+      if (text.length <= 32) {
+        return Error('自我评价内容过短')
+      } else if (text.length > 512) {
+        return Error('自我评价内容过长')
+      }
+    }
   }
 }
 </script>

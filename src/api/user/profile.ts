@@ -1,5 +1,5 @@
 import service from '@/util/requests'
-import type { ResumeProfile } from './resume'
+import type { ResumeProfile_ } from './resume'
 
 export const enum Gender {
   Female = '女',
@@ -47,10 +47,9 @@ export interface AcademicInfo {
 export type Profile = {
   basic: BasicInfo & {
     userId: number
-    phone: string
   }
-  education?: AcademicInfo
-  resume?: ResumeProfile
+  education: AcademicInfo
+  resume: ResumeProfile_
 }
 
 export type BriefProfile = {

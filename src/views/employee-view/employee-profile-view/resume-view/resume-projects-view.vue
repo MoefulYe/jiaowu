@@ -22,7 +22,7 @@
                   <NFormItemGi label="名称" path="name" required :span="12">
                     <NInput v-model:value="proj.name" />
                   </NFormItemGi>
-                  <NFormItemGi label="角色" path="role" :span="12">
+                  <NFormItemGi label="角色" path="role" required :span="12">
                     <NInput v-model:value="proj.role" clearable />
                   </NFormItemGi>
                   <NFormItemGi label="开始时间" path="start" required :span="12">
@@ -39,10 +39,10 @@
                       :is-date-disabled="(ts: number) => ts > Date.now()"
                     />
                   </NFormItemGi>
-                  <NFormItemGi label="链接" path="link" :span="12">
+                  <NFormItemGi label="链接" path="link" required :span="12">
                     <NInput v-model:value="proj.link" clearable />
                   </NFormItemGi>
-                  <NFormItemGi label="描述" path="description" :span="24">
+                  <NFormItemGi label="描述" path="description" required :span="24">
                     <NInput v-model:value="proj.description" type="textarea" clearable />
                   </NFormItemGi>
                 </NGrid>
@@ -109,6 +109,14 @@ const rules = (idx: number): FormRules => ({
       }
     }
   },
+  role: {
+    trigger: 'blur',
+    validator: () => {
+      if (data.value[idx].role === undefined) {
+        return Error('角色不能为空')
+      }
+    }
+  },
   start: {
     trigger: 'blur',
     validator: () => {
@@ -128,13 +136,21 @@ const rules = (idx: number): FormRules => ({
     },
     trigger: 'blur'
   },
+  link: {
+    trigger: 'blur',
+    validator: () => {
+      if (data.value[idx].link === undefined) {
+        return Error('链接不能为空')
+      }
+    }
+  },
   description: {
     trigger: 'blur',
     validator: () => {
       const description = data.value[idx].description
-      if (description === undefined) {
-        return Error('描述不得为空')
-      } else if (description.length > 128) {
+      if (description === undefined || description.length <= 32) {
+        return Error('描述内容过短')
+      } else if (description.length > 256) {
         return Error('描述不得超过128字')
       }
     }
