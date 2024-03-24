@@ -1,8 +1,24 @@
 <template>
   <div class="sm:p-2 grow flex flex-col">
-    <NCard class="grow shadow-lg rounded-none sm:rounded-md">
+    <NCard
+      class="grow shadow-lg rounded-none sm:rounded-md"
+      content-style="display: flex; flex-direction: column; gap: 1rem;"
+    >
+      <NBreadcrumb>
+        <NBreadcrumbItem :clickable="false">
+          <span class="flex items-center gap-1">
+            <span class="icon-[solar--global-outline]" />
+            市场行情
+          </span>
+        </NBreadcrumbItem>
+        <NBreadcrumbItem :clickable="false">
+          <span class="flex items-center gap-1">
+            <span class="icon-[carbon--intent-request-active]" />
+            技能需求
+          </span>
+        </NBreadcrumbItem>
+      </NBreadcrumb>
       <div class="w-full h-full flex flex-col gap-2">
-        <h2 class="text-2xl font-bold">技能需求</h2>
         <span class="text-lg">筛选</span>
         <div class="flex">
           <NSelect
@@ -42,7 +58,16 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NSelect, NButton, NTabs, NTabPane } from 'naive-ui'
+import {
+  NCard,
+  NSelect,
+  NButton,
+  NTabs,
+  NTabPane,
+  NSkeleton,
+  NBreadcrumb,
+  NBreadcrumbItem
+} from 'naive-ui'
 import { computed, onBeforeMount, ref } from 'vue'
 import { use } from 'echarts/core'
 import { PieChart, type PieSeriesOption } from 'echarts/charts'
@@ -56,14 +81,13 @@ import {
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
-import { fetchTechInitialChoice, type Tech } from 'api/data_analysis/tech'
+import { fetchTechInitialChoice, type Tech } from '@/api/data_analysis/tech'
 import { type ComposeOption } from 'echarts'
-import SameCityDiffJobs from 'components/same-city-diff-jobs-top10.vue'
-import SameJobDiffCities from 'components/same-job-diff-cities-top10.vue'
+import SameCityDiffJobs from '@/components/same-city-diff-jobs-top10.vue'
+import SameJobDiffCities from '@/components/same-job-diff-cities-top10.vue'
 import { gotoTechPage } from '@/router'
-import { DEFAULT_JOB, JOB_OPTS } from 'api/jobs'
-import { CITY_OPTS, DEFAULT_CITY } from 'api/city'
-import { NSkeleton } from 'naive-ui'
+import { DEFAULT_JOB, JOB_OPTS } from '@/api/jobs'
+import { CITY_OPTS, DEFAULT_CITY } from '@/api/city'
 
 use([TitleComponent, TooltipComponent, LegendComponent, PieChart, CanvasRenderer])
 type ChartOpts = ComposeOption<
@@ -113,5 +137,3 @@ onBeforeMount(fetchData)
   height: 36rem;
 }
 </style>
-
-<script lang="ts"></script>

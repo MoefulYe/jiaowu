@@ -1,8 +1,24 @@
 <template>
   <div class="sm:p-2 grow flex flex-col">
-    <NCard class="grow shadow-lg rounded-none sm:rounded-md">
+    <NCard
+      class="grow shadow-lg rounded-none sm:rounded-md"
+      content-style="display: flex; flex-direction: column; gap: 1rem;"
+    >
+      <NBreadcrumb>
+        <NBreadcrumbItem :clickable="false">
+          <span class="flex items-center gap-1">
+            <span class="icon-[solar--global-outline]" />
+            市场行情
+          </span>
+        </NBreadcrumbItem>
+        <NBreadcrumbItem :clickable="false">
+          <span class="flex items-center gap-1">
+            <span class="icon-[flowbite--bars-from-left-outline]" />
+            职业行情
+          </span>
+        </NBreadcrumbItem>
+      </NBreadcrumb>
       <div class="grow flex flex-col">
-        <h2 class="text-2xl font-bold">职位行情</h2>
         <span class="text-lg pb-1">筛选</span>
         <div class="flex">
           <NSelect
@@ -64,7 +80,17 @@
 </template>
 
 <script setup lang="ts">
-import { NButton, NSelect, NTabPane, NTabs, NCard, NSkeleton, NTag } from 'naive-ui/lib'
+import {
+  NButton,
+  NSelect,
+  NTabPane,
+  NTabs,
+  NCard,
+  NSkeleton,
+  NTag,
+  NBreadcrumbItem,
+  NBreadcrumb
+} from 'naive-ui'
 import { ref, computed, onBeforeMount } from 'vue'
 import { CITY_OPTS, DEFAULT_CITY } from '@/api/city'
 import { JOB_OPTS, DEFAULT_JOB } from '@/api/jobs'

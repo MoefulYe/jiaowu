@@ -1,6 +1,23 @@
 <template>
   <div class="p-2 grow flex flex-col">
-    <NCard class="grow shadow-lg rounded-lg">
+    <NCard
+      class="grow shadow-lg rounded-none sm:rounded-md"
+      content-style="display: flex; flex-direction: column; gap: 1rem;"
+    >
+      <NBreadcrumb>
+        <NBreadcrumbItem :clickable="false">
+          <span class="flex items-center gap-1">
+            <span class="icon-[ph--person-arms-spread]" />
+            个人中心
+          </span>
+        </NBreadcrumbItem>
+        <NBreadcrumbItem :clickable="false">
+          <span class="flex items-center gap-1">
+            <span class="icon-[ph--read-cv-logo]" />
+            简历信息
+          </span>
+        </NBreadcrumbItem>
+      </NBreadcrumb>
       <NForm ref="formRef" :rules="rules" v-model="resume">
         <NFormItem
           label="附件简历"
@@ -98,7 +115,9 @@ import {
   NSelect,
   NUpload,
   NUploadDragger,
-  type UploadFileInfo
+  type UploadFileInfo,
+  NBreadcrumb,
+  NBreadcrumbItem
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
 import ResumeIntershipsView from './resume-interships-view.vue'
