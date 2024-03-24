@@ -100,15 +100,15 @@
 
 <script lang="tsx" setup>
 import { fetchQualifiedApplicants } from '@/api/employee'
-import { JOB_OPTS, Job } from '@/api/jobs'
-import { BriefProfile } from '@/api/user/profile'
+import { JOB_OPTS, type Job } from '@/api/jobs'
+import { type BriefProfile } from '@/api/user/profile'
 import confirm from '@/components/confirm'
 import showOrEdit from '@/components/show-or-edit.vue'
 import { EMPLOYER_TITLE } from '@/constants'
 import { useStateStore } from '@/stores/user-state'
 import { renderIcon } from '@/util/render'
 import {
-  DataTableColumns,
+  type DataTableColumns,
   NAvatar,
   NButton,
   NCard,
@@ -124,7 +124,7 @@ import {
 } from 'naive-ui'
 import { type DropdownOption } from 'naive-ui'
 import { storeToRefs } from 'pinia'
-import { Ref, ShallowRef, nextTick, reactive, ref, shallowRef } from 'vue'
+import { type Ref, type ShallowRef, nextTick, reactive, ref, shallowRef } from 'vue'
 import DetailProfile from './detail-profile.vue'
 import { utils, write } from 'xlsx'
 import download from '@/util/download'

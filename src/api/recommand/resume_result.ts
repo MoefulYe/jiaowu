@@ -31,14 +31,14 @@ export const fetchResumeResult = async (): Promise<ResumeResult> => {
     const jobs = (await service.get('/recommend/position/ambiguity')) as Job[]
     return [ResumeResultState.ambiguity, jobs]
   } else {
-    const result = await service.get('/recommend/position/match',{
+    const result = (await service.get('/recommend/position/match', {
       timeout: 10 * 60 * 1000
-    }) as MatchResult
-    result.forEach(item => {
+    })) as MatchResult
+    result.forEach((item) => {
       const interpretation = item.interpretation
       const idx = interpretation.indexOf('1.')
       if (idx !== -1) {
-        item.interpretation = interpretation.slice(idx) 
+        item.interpretation = interpretation.slice(idx)
       }
     })
     return [ResumeResultState.match, result]

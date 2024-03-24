@@ -152,7 +152,7 @@
 
 <script setup lang="ts">
 import { downloadEmployeeResumeAttachment, fetchEmployeeProfileById } from '@/api/employee'
-import { Profile } from '@/api/user/profile'
+import { type Profile } from '@/api/user/profile'
 import { prizeMap } from '@/api/user/resume'
 import { NButton, NH2, NH3, NHr, NLi, NOl, NTag, NUl } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
