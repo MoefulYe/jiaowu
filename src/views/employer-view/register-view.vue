@@ -49,8 +49,8 @@ import {
   NCard
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
-import { Role, useStateStore } from 'stores/user-state'
-import { type RegisterData, register } from 'api/employer/account'
+import { Role, useStateStore } from '@/stores/user-state'
+import { type RegisterData, register } from '@/api/employer/account'
 import { gotoHome } from '@/router'
 
 const emit = defineEmits<{

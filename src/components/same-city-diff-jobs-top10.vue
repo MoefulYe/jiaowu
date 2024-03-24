@@ -45,7 +45,7 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import type { GridComponentOption } from 'echarts/components'
 import VChart from 'vue-echarts'
-import { JOB_OPTS } from 'api/jobs'
+import { JOB_OPTS } from '@/api/jobs'
 import { NSkeleton } from 'naive-ui'
 use([
   BarChart,

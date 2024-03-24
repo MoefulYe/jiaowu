@@ -39,9 +39,9 @@ import type {
 } from 'echarts/components'
 import VChart from 'vue-echarts'
 import { NButton, NDivider, NTooltip } from 'naive-ui'
-import { JOBS } from 'api/jobs'
-import JobIntro from 'components/job-intro.vue'
-import { useStateStore } from 'stores/user-state'
+import { JOBS } from '@/api/jobs'
+import JobIntro from '@/components/job-intro.vue'
+import { useStateStore } from '@/stores/user-state'
 use([TitleComponent, LegendComponent, RadarChart, CanvasRenderer, GraphicComponent])
 
 type EChartsOption = ComposeOption<

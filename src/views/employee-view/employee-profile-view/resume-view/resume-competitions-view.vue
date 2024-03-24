@@ -82,8 +82,8 @@ import {
 } from 'naive-ui'
 import type { FormInst } from 'naive-ui'
 import { ref } from 'vue'
-import confirm from 'components/confirm'
-import { type OptionalCompetition } from 'api/user/resume'
+import confirm from '@/components/confirm'
+import { type OptionalCompetition } from '@/api/user/resume'
 const data = defineModel<OptionalCompetition[]>({ required: true })
 const formRefs = ref<FormInst[]>([])
 const rules = (idx: number): FormRules => ({

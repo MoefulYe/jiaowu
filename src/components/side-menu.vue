@@ -11,9 +11,9 @@
 <script setup lang="tsx">
 import { type MenuOption, NMenu } from 'naive-ui'
 import { ref, computed } from 'vue'
-import { isMobile } from 'util/reponsive'
-import { renderIcon, renderRouterLink } from 'util/render'
-import { useStateStore } from 'stores/user-state'
+import { isMobile } from '@/util/reponsive'
+import { renderIcon, renderRouterLink } from '@/util/render'
+import { useStateStore } from '@/stores/user-state'
 import confirm from './confirm'
 
 const enum Entry {

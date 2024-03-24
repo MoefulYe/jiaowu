@@ -44,13 +44,13 @@
 </template>
 
 <script setup lang="ts">
-import { type SalaryAnalysis, fetchSalaryCompareReigon } from 'api/data_analysis/salary'
+import { type SalaryAnalysis, fetchSalaryCompareReigon } from '@/api/data_analysis/salary'
 import { computed, ref } from 'vue'
 import { NSelect, type SelectOption, NButton, NTag, NSkeleton } from 'naive-ui'
 import { BarChart } from 'echarts/charts'
 import { use } from 'echarts/core'
 import { RouterLink } from 'vue-router'
-import { type RelateCompanies, fetchRelateRegion } from 'api/recommand/company'
+import { type RelateCompanies, fetchRelateRegion } from '@/api/recommand/company'
 import {
   GridComponent,
   LegendComponent,
@@ -67,7 +67,7 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import type { GridComponentOption } from 'echarts/components'
 import VChart from 'vue-echarts'
-import { CITY_OPTS } from 'api/city'
+import { CITY_OPTS } from '@/api/city'
 use([
   GridComponent,
   BarChart,

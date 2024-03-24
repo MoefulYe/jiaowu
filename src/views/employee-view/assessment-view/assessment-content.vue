@@ -53,11 +53,11 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import EmojiRadio, { type Score, emojiFill } from 'components/emoji-radio.vue'
+import EmojiRadio, { type Score, emojiFill } from '@/components/emoji-radio.vue'
 import { NButton, NSelect, NTooltip } from 'naive-ui'
-import confirm from 'components/confirm'
-import { JOBS } from 'api/jobs'
-import questions from 'assets/questions.json'
+import confirm from '@/components/confirm'
+import { JOBS } from '@/api/jobs'
+import questions from '@/assets/questions.json'
 
 const emit = defineEmits<{
   done: [scores: number[]]
@@ -101,14 +101,12 @@ const tooltip = (score?: number) => (score !== undefined ? tips[score - 1] : '�
 const QUESTIONS_PER_JOB = 5
 const TOTAL = JOBS.length * QUESTIONS_PER_JOB
 const tips = ['很不符合', '不符合', '一般', '符合', '很符合']
-const SELECT_OPTS = (JOBS as string[])
-  .map((job, idx) => ({
-    value: idx,
-    label: job
-  }))
-  .concat({
-    value: JOBS.length,
-    label: '检查'
-  })
+const SELECT_OPTS = JOBS.map((job: string, idx) => ({
+  value: idx,
+  label: job
+})).concat({
+  value: JOBS.length,
+  label: '检查'
+})
 const QUESTIONS: Record<string, string[]> = questions
 </script>

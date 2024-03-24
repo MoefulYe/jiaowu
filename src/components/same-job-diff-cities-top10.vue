@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { type Tech, type Techs, fetchCompareRegion } from 'api/data_analysis/tech'
+import { type Tech, type Techs, fetchCompareRegion } from '@/api/data_analysis/tech'
 import { ref, computed } from 'vue'
 import { type SelectOption, NSelect, NButton } from 'naive-ui'
 import { gotoTechPage } from '@/router'
@@ -46,7 +46,7 @@ import type { ComposeOption } from 'echarts/core'
 import type { BarSeriesOption } from 'echarts/charts'
 import type { GridComponentOption } from 'echarts/components'
 import VChart from 'vue-echarts'
-import { CITY_OPTS } from 'api/city'
+import { CITY_OPTS } from '@/api/city'
 import { NSkeleton } from 'naive-ui'
 use([
   BarChart,

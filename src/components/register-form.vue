@@ -36,8 +36,8 @@ import {
   NInput
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
-import { Role, useStateStore } from 'stores/user-state'
-import { type RegisterData, register } from 'api/user/account'
+import { Role, useStateStore } from '@/stores/user-state'
+import { type RegisterData, register } from '@/api/user/account'
 
 const emit = defineEmits<{
   login: []

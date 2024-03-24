@@ -58,7 +58,7 @@ import {
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
 import { gotoEmployeeLogin, gotoHome } from '@/router'
-import { type LoginData, login } from 'api/employer/account'
+import { type LoginData, login } from '@/api/employer/account'
 import { Role, useStateStore } from '@/stores/user-state'
 
 const emit = defineEmits<{

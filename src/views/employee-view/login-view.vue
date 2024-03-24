@@ -21,6 +21,6 @@
 
 <script setup lang="ts">
 import { NCard, NCarousel } from 'naive-ui'
-import LoginForm from 'components/login-form.vue'
+import LoginForm from '@/components/login-form.vue'
 import { gotoEmployeeRegister } from '@/router'
 </script>

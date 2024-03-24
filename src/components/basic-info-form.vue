@@ -37,7 +37,7 @@ import {
   NButton
 } from 'naive-ui'
 import { onBeforeMount, ref, shallowRef } from 'vue'
-import { type BasicInfo, Gender, fetchBasicInfo, modifyBasicInfo } from 'api/user/profile'
+import { type BasicInfo, Gender, fetchBasicInfo, modifyBasicInfo } from '@/api/user/profile'
 
 const emit = defineEmits<Emits>()
 const props = withDefaults(defineProps<Props>(), {

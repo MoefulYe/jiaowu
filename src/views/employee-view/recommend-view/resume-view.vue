@@ -98,9 +98,13 @@
 
 <script setup lang="tsx">
 import { type PropType, computed, defineComponent } from 'vue'
-import { fetchResumeResult, MatchResult, ResumeResultState } from 'api/recommand/resume_result'
+import {
+  fetchResumeResult,
+  type MatchResult,
+  ResumeResultState
+} from '@/api/recommand/resume_result'
 import { NButton, NDivider, NH3, NHr, NRate, NTooltip, NP, NTag, NH4 } from 'naive-ui'
-import JobIntro from 'components/job-intro.vue'
+import JobIntro from '@/components/job-intro.vue'
 import { use } from 'echarts/core'
 import { BarChart } from 'echarts/charts'
 import { TitleComponent, PolarComponent, TooltipComponent } from 'echarts/components'

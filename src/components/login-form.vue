@@ -47,9 +47,9 @@ import {
   NTooltip
 } from 'naive-ui'
 import { ref, shallowRef } from 'vue'
-import { Role, useStateStore } from 'stores/user-state'
+import { Role, useStateStore } from '@/stores/user-state'
 import { gotoEmployerLoginRegister, gotoHome } from '@/router'
-import { type LoginData, login } from 'api/user/account'
+import { type LoginData, login } from '@/api/user/account'
 
 const emit = defineEmits<{
   register: []

@@ -30,8 +30,8 @@
 
 <script setup lang="ts">
 import { NButton } from 'naive-ui'
-import JobIntro from 'components/job-intro.vue'
-import { InterestResult, fetchInterestResult } from '@/api/recommand/interest_result'
+import JobIntro from '@/components/job-intro.vue'
+import { type InterestResult, fetchInterestResult } from '@/api/recommand/interest_result'
 import { onBeforeMount, ref } from 'vue'
 
 const data = ref<InterestResult>()
