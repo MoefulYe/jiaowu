@@ -21,15 +21,15 @@
     <div class="flex gap-2 justify-stretch">
       <NTooltip placement="bottom">
         <template #trigger>
-          <NButton class="grow" @click="click">登录</NButton>
+          <NButton class="grow" @click="() => emit('register')">注册</NButton>
         </template>
-        <template #default> 点此登录 </template>
+        <template #default> 跳转到注册页面 </template>
       </NTooltip>
       <NTooltip placement="bottom">
         <template #trigger>
-          <NButton class="grow" type="primary" @click="() => emit('register')">注册</NButton>
+          <NButton class="grow" @click="click" type="primary">登录</NButton>
         </template>
-        <template #default> 跳转到注册页面 </template>
+        <template #default> 点此登录 </template>
       </NTooltip>
     </div>
   </NForm>

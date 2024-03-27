@@ -32,7 +32,7 @@ export const downloadEmployeeResumeAttachment = async (id: number): Promise<void
     `${import.meta.env.VITE_AXIOS_BASE_URL}/employer/${id}/profile/attachment`,
     {
       headers: {
-        token: useStateStore().token()
+        token: useStateStore().token(),
       }
     }
   )
