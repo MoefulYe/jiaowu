@@ -142,7 +142,10 @@ const Radar = defineComponent({
         radius: [30, '80%']
       },
       angleAxis: {
-        max: 1,
+        max: 5,
+        axisLabel: {
+          show: false
+        },
         startAngle: 75
       },
       radiusAxis: {
