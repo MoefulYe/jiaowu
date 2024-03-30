@@ -151,7 +151,7 @@ const Radar = defineComponent({
       },
       tooltip: {
         valueFormatter: (value) => {
-          const idx = Math.floor((value as number) * 5)
+          const idx = Math.floor(value as number)
           return matchText[idx > 4 ? 4 : idx]
         }
       },
@@ -163,7 +163,7 @@ const Radar = defineComponent({
           show: true,
           position: 'middle',
           formatter: ({ value, name }) => {
-            const idx = Math.floor((value as number) * 5)
+            const idx = Math.floor(value as number)
             return `${name}: ${matchText[idx > 4 ? 4 : idx]}`
           },
           color: '#fff'
