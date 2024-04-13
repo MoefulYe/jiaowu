@@ -65,6 +65,9 @@
             </RouterLink>
           </span>
         </div>
+        <h2 class="text-2xl font-bold">相关岗位</h2>
+        <NSkeleton v-if="companies === undefined" class="rounded-sm h-16" text />
+        <NDataTable v-else :data="岗位" :columns="cols" />
         <h2 class="text-xl font-bold">比较</h2>
         <NTabs :default-value="''">
           <NTabPane name="相同职位不同城市">
@@ -79,7 +82,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import {
   NButton,
   NSelect,
@@ -89,11 +92,14 @@ import {
   NSkeleton,
   NTag,
   NBreadcrumbItem,
-  NBreadcrumb
+  NBreadcrumb,
+  NDataTable,
+  type DataTableColumns
 } from 'naive-ui'
 import { ref, computed, onBeforeMount } from 'vue'
 import { CITY_OPTS, DEFAULT_CITY } from '@/api/city'
 import { JOB_OPTS, DEFAULT_JOB } from '@/api/jobs'
+import { 岗位 } from '@/api/recommand/company'
 import { type SalaryAnalysis, fetchSalaryInitalChoice } from '@/api/data_analysis/salary'
 import SameCityDiffJobs from '@/components/same-city-diff-jobs-salary.vue'
 import SameJobDiffCities from '@/components/same-job-diff-cities-salary.vue'
@@ -224,4 +230,21 @@ const chartOpts = computed<ChartOpts>(() => ({
     }
   ]
 }))
+
+const cols: DataTableColumns<(typeof 岗位)[number]> = [
+  { title: '公司', key: 'company', rowSpan: ({ rowSpan }) => rowSpan ?? 1, width: '8rem' },
+  {
+    title: '岗位',
+    key: 'job',
+    render: ({ url, job }) => (
+      <a
+        href={url}
+        target="_blank"
+        class="text-blue-500 inline-block mx-auto text-[#434c5e] hover:text-[#88c0d0]"
+      >
+        {job}
+      </a>
+    )
+  }
+]
 </script>
