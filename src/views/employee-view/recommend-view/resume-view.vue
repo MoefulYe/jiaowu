@@ -31,7 +31,7 @@
       <span class="text-lg"> 如果你还想提升，我们建议... </span>
     </NDivider>
     <div
-      v-for="({ direction, shortboardSkills, interpretation }, index) in data[1]"
+      v-for="({ direction, shortboardSkills, interpretation, jobs }, index) in data[1]"
       :key="index"
       class="w-full"
     >
@@ -51,6 +51,8 @@
       >
         <span class="typing"></span>
       </VueTypedJs>
+      <NH4>相关岗位</NH4>
+      <NDataTable :data="jobs" :columns="cols" />
       <NHr v-if="index !== data[1].length - 1" />
     </div>
     <NDivider>
@@ -103,7 +105,19 @@ import {
   type MatchResult,
   ResumeResultState
 } from '@/api/recommand/resume_result'
-import { NButton, NDivider, NH3, NHr, NRate, NTooltip, NP, NTag, NH4 } from 'naive-ui'
+import {
+  NButton,
+  NDivider,
+  NH3,
+  NHr,
+  NRate,
+  NTooltip,
+  NP,
+  NTag,
+  NH4,
+  NDataTable,
+  type DataTableColumn
+} from 'naive-ui'
 import JobIntro from '@/components/job-intro.vue'
 import { use } from 'echarts/core'
 import { BarChart } from 'echarts/charts'
@@ -118,6 +132,7 @@ import type {
 } from 'echarts/components'
 import VChart from 'vue-echarts'
 import { VueTypedJs } from 'vue3-typed-ts'
+import type { Jobs } from '@/api/recommand/resume_result'
 window.$message.info('正在加载数据, 加载数据可能需要一些时间，请耐心等待')
 use([TitleComponent, PolarComponent, TooltipComponent, BarChart, CanvasRenderer])
 
@@ -179,4 +194,20 @@ const Radar = defineComponent({
 })
 
 const matchText = ['不太匹配', '一般', '还算匹配', '匹配', '非常匹配']
+const cols: DataTableColumn<Jobs>[] = [
+  { title: '公司', key: 'company', rowSpan: ({ rowSpan }) => rowSpan ?? 1, width: '8rem' },
+  {
+    title: '岗位',
+    key: 'job',
+    render: ({ url, job }) => (
+      <a
+        href={url}
+        target="_blank"
+        class="text-blue-500 inline-block mx-auto text-[#434c5e] hover:text-[#88c0d0]"
+      >
+        {job}
+      </a>
+    )
+  }
+]
 </script>

@@ -23,7 +23,7 @@
                   v-if="kind === Kind.兴趣推荐"
                   class="icon-[streamline--interface-favorite-star-reward-rating-rate-social-star-media-favorite-like-stars]"
                 />
-                <span class="icon-[uil--briefcase-alt]" />
+                <span class="icon-[uil--briefcase-alt]" v-else />
                 {{ kind }}
               </span>
             </span>

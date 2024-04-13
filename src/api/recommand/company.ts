@@ -43,3 +43,26 @@ export const fetchInitialChoice = (params: InitialChoiceParams): Promise<RelateC
     url: '/recommend/company/initial_choice',
     params
   })
+
+// 公司
+export const companies = [
+  '字节跳动',
+  '阿里巴巴',
+  '腾讯',
+  '美团',
+  '滴滴',
+  '京东',
+  '华为',
+  '网易',
+  '小米',
+  '快手',
+  '拼多多',
+  '今日头条',
+  '携程',
+  '百度',
+  '微软',
+  '亚马逊',
+  '谷歌',
+] as const
+
+export type Company = (typeof companies)[number]

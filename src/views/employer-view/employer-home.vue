@@ -1,5 +1,8 @@
 <template>
-  <NLayout>
+  <NLayout
+    class="min-h-screen"
+    content-style="display: flex; flex-direction: column; height: 100%;"
+  >
     <NLayoutHeader bordered>
       <div class="p-2 flex items-center gap-2">
         <span class="text-sm cursor-pointer font-serif">{{ EMPLOYER_TITLE }}</span>
@@ -26,8 +29,8 @@
         <showOrEdit v-model:value="username" />
       </div>
     </NLayoutHeader>
-    <NLayoutContent class="p-4 h-full">
-      <NCard class="round h-full">
+    <NLayoutContent class="p-4 flex-grow">
+      <NCard class="round h-full" content-style="height: 100%; overflow: auto;">
         <template #header> 查询符合条件的求职者 </template>
         <div class="flex flex-col gap-4">
           <div class="flex flex-wrap items-center gap-2">
@@ -53,6 +56,14 @@
                 </NTooltip>
               </template>
             </NDynamicTags>
+            <NSelect class="w-32" :options="学历" size="small" clearable placeholder="最低学历" />
+            <NSelect
+              class="w-32"
+              :options="应届非应届"
+              size="small"
+              clearable
+              placeholder="应届非应届"
+            />
             <NTooltip>
               <template #trigger>
                 <NButton type="info" size="small" @click="fetch">
@@ -120,7 +131,8 @@ import {
   NLayoutContent,
   NLayoutHeader,
   NSelect,
-  NTooltip
+  NTooltip,
+  type SelectOption
 } from 'naive-ui'
 import { type DropdownOption } from 'naive-ui'
 import { storeToRefs } from 'pinia'
@@ -276,4 +288,14 @@ const columns = (
     )
   }
 ]
+
+const 学历 = ['不限', '初中及以下', '中专', '高中', '大专', '本科', '硕士', '博士'].map((i) => ({
+  label: i,
+  value: i
+}))
+
+const 应届非应届: SelectOption[] = ['不限', '应届', '非应届'].map((i) => ({
+  label: i,
+  value: i
+}))
 </script>
